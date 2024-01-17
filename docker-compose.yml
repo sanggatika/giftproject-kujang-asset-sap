@@ -1,0 +1,73 @@
+version: '3.1'
+# Docker Service
+services:
+  #PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: starterkit-laravel-metronic
+    container_name: app-starterkit-laravel-metronic
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    working_dir: /var/www/starterkit-laravel-metronic
+    volumes:
+      - .:/var/www/starterkit-laravel-metronic
+      - ./storage/php.ini:/usr/local/etc/php/conf.d/local.ini
+      - ../storage-local/metronic-laravel-10-docker:/var/www/starterkit-laravel-metronic/storage/app
+    networks:
+      - starterkitnetwork
+  #Nginx Service
+  webserver:
+    image: nginx:alpine
+    container_name: nginx-starterkit-laravel-metronic
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8050:80"
+    volumes:
+      - .:/var/www/starterkit-laravel-metronic
+      - ./storage/:/etc/nginx/conf.d/
+    networks:
+      - starterkitnetwork
+  #MySQL Service
+  # db:
+  #   image: mysql:5.7
+  #   container_name: db-starterkit-laravel-metronic
+  #   restart: always
+  #   tty: true
+  #   ports:
+  #     - "9050:3306"
+  #   environment:
+  #     # MYSQL_DATABASE: cgl
+  #     # MYSQL_USER: root
+  #     MYSQL_PASSWORD: starterkitdb
+  #     MYSQL_ROOT_PASSWORD: starterkitdb
+  #     SERVICE_TAGS: dev
+  #     SERVICE_NAME: mysql
+  #   volumes:
+  #     - lbdata:/var/lib/mysql
+  #   networks:
+  #     - starterkitnetwork
+  #PHP My Admin
+  # phpmyadmin:
+  #   image: phpmyadmin/phpmyadmin
+  #   container_name: pma-starterkit-laravel-metronic
+  #   links:
+  #     - db
+  #   restart: always
+  #   ports:
+  #     - "7050:80"
+  #   networks:
+  #     - starterkitnetwork
+# Docker Networks
+networks:
+  starterkitnetwork:
+    driver: bridge
+# Docker volumes
+volumes:
+  lbdata:
+    driver: local
