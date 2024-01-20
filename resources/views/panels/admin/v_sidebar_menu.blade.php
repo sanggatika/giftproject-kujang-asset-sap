@@ -4,8 +4,8 @@
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
         <a href="index.html">
-            <img alt="Logo" src="{{ asset('images/logo_giftproject_landscape_3.png') }}" class="h-60px app-sidebar-logo-default" />
-            <img alt="Logo" src="{{ asset('images/logo_giftproject_titile.png') }}" class="h-50px app-sidebar-logo-minimize" />
+            <img alt="Logo" src="{{ asset('images/pupuk-indonesia-putih.png') }}" class="h-80px app-sidebar-logo-default" />
+            <img alt="Logo" src="{{ asset('images/pupuk-indonesia-title.png') }}" class="h-50px app-sidebar-logo-minimize" />
         </a>
         <!--end::Logo image-->
         <!--begin::Sidebar toggle-->

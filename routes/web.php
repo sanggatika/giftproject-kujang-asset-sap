@@ -13,6 +13,9 @@ use App\Http\Controllers\ManagementRoleController;
 use App\Http\Controllers\ManagementUsersController;
 use App\Http\Controllers\ManagementAccountController;
 
+// Masterdata
+use App\Http\Controllers\MasterdataProgramController;
+
 // Development
 use App\Http\Controllers\DevelopmentController;
 
@@ -70,6 +73,13 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     // Management Account
     Route::get('/management/account', [ManagementAccountController::class, 'page_indexManagementAccount'])->name('management.account');
     Route::post('/management/account/password/act_update', [ManagementAccountController::class, 'act_updatePasswordManagementAccount'])->name('management.account.password.act_update');
+
+    // Masterdata Program Anggaran
+    Route::get('/masterdata/program', [MasterdataProgramController::class, 'page_indexMasterdataProgram'])->name('masterdata.program');
+    Route::post('/masterdata/program/get_datatable', [MasterdataProgramController::class, 'get_datatableMasterdataProgram'])->name('masterdata.program.get_datatable');
+    Route::post('/masterdata/program/act_tambah', [MasterdataProgramController::class, 'act_tambahMasterdataProgram'])->name('masterdata.program.act_tambah');
+    Route::post('/masterdata/program/act_detail', [MasterdataProgramController::class, 'act_detailMasterdataProgram'])->name('masterdata.program.act_detail');
+    Route::post('/masterdata/program/act_update', [MasterdataProgramController::class, 'act_updateMasterdataProgram'])->name('masterdata.program.act_update');
 });
 
 Route::group(['middleware' => ['guest', 'log.access']], function () {
@@ -97,4 +107,8 @@ Route::group(['middleware' => ['log.access']], function () {
     Route::get('/dev/view/qr-code/{file_name}', [DevelopmentController::class, 'view_qrcodeDevelopment'])->name('dev.view.qrcode');
     Route::get('/dev/generate/qr-code', [DevelopmentController::class, 'generate_qrcodeDevelopment'])->name('dev.generate.qrcode');
 });
+
+Route::fallback( function () {
+    abort( 404 );
+} );
 

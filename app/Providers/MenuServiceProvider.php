@@ -29,6 +29,7 @@ class MenuServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {        
+        // Cache::flush();
         $this->data_key = null;
         
         if(env("SECURE_APP", true) == true)

@@ -108,11 +108,11 @@
 					<div class="d-flex flex-column flex-center py-7 py-lg-15 px-5 px-md-15 w-100">
 						<!--begin::Logo-->
 						<a href="index.html" class="mb-0 mb-lg-12">
-							<img alt="Logo" src="{{ asset('images/logo_giftproject_landscape_2.png') }}" class="h-85px h-lg-100px" />
+							<img alt="Logo" src="{{ asset('images/pupuk-indonesia-putih.png') }}" class="h-100px h-lg-120px" />
 						</a>
 						<!--end::Logo-->
 						<!--begin::Image-->
-						<img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="{{ asset('images/aset_admin_2.png') }}" alt="" />
+						<img class="d-none d-lg-block mx-auto w-275px w-md-50 w-xl-500px mb-10 mb-lg-20" src="{{ asset('images/kujang-asset.png') }}" alt="" />
 						<!--end::Image-->
 						<!--begin::Title-->
 						<h1 class="d-none d-lg-block text-white fs-2qx fw-bolder text-center mb-7">Fast, Efficient and Productive</h1>

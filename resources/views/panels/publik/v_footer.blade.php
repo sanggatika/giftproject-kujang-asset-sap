@@ -57,7 +57,7 @@
             <div class="d-flex align-items-center order-2 order-md-1 py-3">
                 <!--begin::Logo-->
                 <a href="#">
-                    <img alt="Logo" src="{{ asset('images/logo_giftproject_landscape_3.png') }}" class="h-75px h-lg-100px" />
+                    <img alt="Logo" src="{{ asset('images/pupuk-indonesia-putih.png') }}" class="h-75px h-lg-100px" />
                 </a>
                 <!--end::Logo image-->
                 <!--begin::Logo image-->

@@ -20,8 +20,8 @@
                         <!--end::Mobile menu toggle-->
                         <!--begin::Logo image-->
                         <a href="{{ url('/') }}">
-                            <img alt="Logo" src="{{ asset('images/logo_giftproject_landscape_3.png') }}" class="logo-default h-60px h-lg-75px" />
-                            <img alt="Logo" src="{{ asset('images/logo_giftproject_landscape_4.png') }}" class="logo-sticky h-60px h-lg-75px" />
+                            <img alt="Logo" src="{{ asset('images/pupuk-indonesia-putih.png') }}" class="logo-default h-60px h-lg-75px" />
+                            <img alt="Logo" src="{{ asset('images/pupuk-indonesia-hitam.png') }}" class="logo-sticky h-60px h-lg-75px" />
                         </a>
                         <!--end::Logo image-->
                     </div>
@@ -54,10 +54,10 @@
                     </span>
                 </h1>
                 <h1 class="text-white lh-base fw-bold fs-1x fs-lg-2x">
-                    APP ADMINISTRATION SYSTEM 
+                    APP KUJANG ASSET SAP 
                 </h1>
 
-                <img src="{{ asset('images/aset_admin.png') }}" class="img-fluid" style="max-height: 350px;" alt="bupati_logo">
+                <img src="{{ asset('images/kujang-asset-beranda.png') }}" class="img-fluid" style="max-height: 350px;" alt="bupati_logo">
                 <!--end::Title-->
             </div>
             <!--end::Heading-->            
