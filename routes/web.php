@@ -16,6 +16,11 @@ use App\Http\Controllers\ManagementAccountController;
 // Masterdata
 use App\Http\Controllers\MasterdataProgramController;
 
+// Transaksi
+use App\Http\Controllers\TrProgramRealisasiController;
+use App\Http\Controllers\TrProgresProgramSRController;
+use App\Http\Controllers\TrProgresProgramPRController;
+
 // Development
 use App\Http\Controllers\DevelopmentController;
 
@@ -81,6 +86,21 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     Route::post('/masterdata/program/act_tambah', [MasterdataProgramController::class, 'act_tambahMasterdataProgram'])->name('masterdata.program.act_tambah');
     Route::post('/masterdata/program/act_detail', [MasterdataProgramController::class, 'act_detailMasterdataProgram'])->name('masterdata.program.act_detail');
     Route::post('/masterdata/program/act_update', [MasterdataProgramController::class, 'act_updateMasterdataProgram'])->name('masterdata.program.act_update');
+
+    // Transaksi Program Realisasi
+    Route::get('/transaksi/program/realisasi', [TrProgramRealisasiController::class, 'page_indexTrProgramRealisasi'])->name('transaksi.program.realisasi');
+    Route::post('/transaksi/program/realisasi/get_datatable', [TrProgramRealisasiController::class, 'get_datatableTrProgramRealisasi'])->name('transaksi.program.realisasi.get_datatable');
+
+    // Transaksi Progres Program SR
+    Route::get('/transaksi/progres/program/mr_sr', [TrProgresProgramSRController::class, 'page_indexTrProgresProgramSR'])->name('transaksi.progres.program.mr_sr');
+    Route::post('/transaksi/progres/program/mr_sr/get_datatable', [TrProgresProgramSRController::class, 'get_datatableTrProgresProgramSR'])->name('transaksi.progres.program.mr_sr.get_datatable');
+    Route::post('/transaksi/progres/program/mr_sr/act_detail', [TrProgresProgramSRController::class, 'act_detailTrProgresProgramSR'])->name('transaksi.progres.program.mr_sr.act_detail');
+    Route::post('/transaksi/progres/program/mr_sr/act_update', [TrProgresProgramSRController::class, 'act_updateTrProgresProgramSR'])->name('transaksi.progres.program.mr_sr.act_update');
+
+    // Transaksi Progres Program PR
+    Route::get('/transaksi/progres/program/pr', [TrProgresProgramPRController::class, 'page_indexTrProgresProgramPR'])->name('transaksi.progres.program.pr');
+    Route::post('/transaksi/progres/program/pr/get_datatable', [TrProgresProgramPRController::class, 'get_datatableTrProgresProgramPR'])->name('transaksi.progres.program.pr.get_datatable');
+    Route::post('/transaksi/progres/program/pr/act_tambah', [TrProgresProgramPRController::class, 'act_tambahTrProgresProgramPR'])->name('transaksi.progres.program.pr.act_tambah');
 });
 
 Route::group(['middleware' => ['guest', 'log.access']], function () {

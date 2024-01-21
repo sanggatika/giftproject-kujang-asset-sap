@@ -328,7 +328,7 @@ class MasterdataProgramController extends Controller
             }
 
             // Cek Data Dalam Database
-            $checkExistingData =  mProgram::with('mProgramJenisCCK', 'mProgramLokasiCC')->where('uuid', $request->data_id)->first();
+            $checkExistingData =  mProgram::with('mProgramJenisCCK', 'mProgramLokasiCC','trProgresProgramSR')->where('uuid', $request->data_id)->first();
 
             if(!$checkExistingData)
             {
