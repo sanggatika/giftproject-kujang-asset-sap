@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class trProgresProgramPR extends Model
+class trProgresProgramPO extends Model
 {
     use HasFactory;
 
-    protected $table = 'tr_program_progres_pr';
+    protected $table = 'tr_program_progres_po';
     protected $primaryKey = 'id';
 
     const CREATED_AT = 'created_at';
@@ -25,8 +25,8 @@ class trProgresProgramPR extends Model
         return $this->hasOne(mProgramLokasiCC::class, 'id', 'id_program_lokasi_cc');
     }
 
-    public function trProgresProgramPO()
+    public function trProgresProgramPROne()
     {
-        return $this->hasMany(trProgresProgramPO::class, 'id_tr_program_progres_pr', 'id');
+        return $this->hasOne(trProgresProgramPR::class, 'id', 'id_tr_program_progres_pr');
     }
 }

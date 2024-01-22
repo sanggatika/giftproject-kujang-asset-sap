@@ -24,26 +24,27 @@ use App\Models\mProgramLokasiCC;
 use App\Models\mProgram;
 use App\Models\trProgresProgramSR;
 use App\Models\trProgresProgramPR;
+use App\Models\trProgresProgramPO;
 use App\Models\trProgramRealisasi;
 
-class TrProgresProgramPRController extends Controller
+class TrProgresProgramPOController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function page_indexTrProgresProgramPR(Request $request)
+    public function page_indexTrProgresProgramPO(Request $request)
     {
         $model['route'] = 'Master Data Program Anggaran';
 
         $model['ms_program_jenis_cck'] = mProgramJenisCCK::get();
         $model['ms_program_lokasi_cc'] = mProgramLokasiCC::get();
 
-        return view('pages.transaksi-progres-program-pr.v_index', ['model' => $model]);
-    }    
-    
-    public function get_datatableTrProgresProgramPR(Request $request)
+        return view('pages.transaksi-progres-program-po.v_index', ['model' => $model]);
+    } 
+
+    public function get_datatableTrProgresProgramPO(Request $request)
     {
         $status = false;
         $response_code = 'RC400';
@@ -61,49 +62,49 @@ class TrProgresProgramPRController extends Controller
             $form_filter_program_min_anggaran = $request->form_filter_program_min_anggaran;
             $form_filter_program_max_anggaran = $request->form_filter_program_max_anggaran;
 
-            $dataTrProgresProgramPR = trProgresProgramPR::whereNotNull('uuid');
+            $dataTrProgresProgramPO = trProgresProgramPO::whereNotNull('uuid');
 
             // Filter Data
             if($form_filter_program != "")
             {
-                $dataTrProgresProgramPR->where('name', 'like', '%'.$form_filter_program.'%');
+                $dataTrProgresProgramPO->where('name', 'like', '%'.$form_filter_program.'%');
             }
 
             if($form_filter_program_jenis != "-")
             {
                 $checkExistingDataProgramJenis =  mProgramJenisCCK::where('uuid', $request->form_filter_program_jenis)->first();
-                $dataTrProgresProgramPR->where('id_program_jenis_cck', $checkExistingDataProgramJenis->id);
+                $dataTrProgresProgramPO->where('id_program_jenis_cck', $checkExistingDataProgramJenis->id);
             }
 
             if($form_filter_program_lokasi != "-")
             {
                 $checkExistingDataProgramLokasi =  mProgramLokasiCC::where('uuid', $request->form_filter_program_lokasi)->first();
-                $dataTrProgresProgramPR->where('id_program_lokasi_cc', $checkExistingDataProgramLokasi->id);
+                $dataTrProgresProgramPO->where('id_program_lokasi_cc', $checkExistingDataProgramLokasi->id);
             }
 
             if($form_filter_program_priority != "-")
             {
-                $dataTrProgresProgramPR->where('priority', $request->form_filter_program_priority);
+                $dataTrProgresProgramPO->where('priority', $request->form_filter_program_priority);
             }
 
             if($form_filter_program_fundnumber != "")
             {
-                $dataTrProgresProgramPR->where('fund_number', 'like', '%'.$form_filter_program_fundnumber.'%');
+                $dataTrProgresProgramPO->where('fund_number', 'like', '%'.$form_filter_program_fundnumber.'%');
             }
 
             if($form_filter_program_min_anggaran != "")
             {
                 $minAnggaran = intval($form_filter_program_min_anggaran);
-                $dataTrProgresProgramPR->where('nominal', '>=', $minAnggaran);
+                $dataTrProgresProgramPO->where('nominal', '>=', $minAnggaran);
             }
 
             if($form_filter_program_max_anggaran != "")
             {
                 $maxAnggaran = intval($form_filter_program_max_anggaran);
-                $dataTrProgresProgramPR->where('nominal', '<=', $maxAnggaran);
+                $dataTrProgresProgramPO->where('nominal', '<=', $maxAnggaran);
             }
 
-            $data = $dataTrProgresProgramPR->get();
+            $data = $dataTrProgresProgramPO->get();
 
             return DataTables::of($data)
             ->addIndexColumn()
@@ -148,7 +149,7 @@ class TrProgresProgramPRController extends Controller
             })
             ->addColumn('fild_tanggal', function($row)
             {
-                $tanggal = Carbon::parse($row->pr_tanggal)->format('d F Y');
+                $tanggal = Carbon::parse($row->po_tanggal)->format('d F Y');
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-start">
@@ -161,7 +162,7 @@ class TrProgresProgramPRController extends Controller
             })
             ->addColumn('fild_nomor', function($row)
             {
-                $nomor = $row->pr_nomor;
+                $nomor = $row->po_nomor;
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-start">
@@ -172,9 +173,22 @@ class TrProgresProgramPRController extends Controller
 
                 return $html;
             })
+            ->addColumn('fild_tanggal_estimasi', function($row)
+            {
+                $tanggal_estimasi = Carbon::parse($row->po_tempo)->format('d F Y');
+                $html = '
+                <!--begin::User details-->
+                <div class="d-flex flex-column text-start">
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> '.$tanggal_estimasi.' </a>
+                </div>
+                <!--begin::User details-->
+                ';
+
+                return $html;
+            })
             ->addColumn('fild_nominal_fix', function($row)
             {
-                $nominal_fix = number_format($row->pr_nominal,0,',','.');
+                $nominal_fix = number_format($row->po_nominal,0,',','.');
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-end">
@@ -200,20 +214,20 @@ class TrProgresProgramPRController extends Controller
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnUpdateData(this)">Update Data</a></li>
-                        <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnPurchaseOrder(this)">Purchase Order (PO)</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnGoodReceipt(this)">Good Receipt (GR)</a></li>
                     </ul>
                 </div>
                 ';
 
                 return $html;
             })
-            ->rawColumns(['fund_number', 'fild_name', 'fild_nominal', 'fild_tanggal', 'fild_nomor', 'fild_nominal_fix', 'action'])
+            ->rawColumns(['fund_number', 'fild_name', 'fild_nominal', 'fild_tanggal', 'fild_nomor', 'fild_tanggal_estimasi', 'fild_nominal_fix', 'action'])
             ->make(true);
         }
         return $this->onResult($status, $response_code, $message, $dataAPI);
     }
-
-    public function act_tambahTrProgresProgramPR(Request $request)
+    
+    public function act_tambahTrProgresProgramPO(Request $request)
     {
         $status = false;
         $response_code = 'RC400';
@@ -223,11 +237,14 @@ class TrProgresProgramPRController extends Controller
         if ($request->ajax()) {  
             // dd($request->all());          
             $validator = Validator::make($request->all(), [
-                'form_masterdata_program_fundnumber' => 'required',
-                'form_masterdata_program_uuid' => 'required',
-                'form_masterdata_program_pr_tanggal' => 'required',
                 'form_masterdata_program_pr_nomor' => 'required',
-                'form_masterdata_program_pr_anggaran' => 'required',
+                'form_masterdata_program_pr_uuid' => 'required',
+                'form_masterdata_program_po_tanggal' => 'required',
+                'form_masterdata_program_po_nomor' => 'required',
+                'form_masterdata_program_po_anggaran' => 'required',
+                'form_masterdata_program_po_vendor' => 'required',
+                'form_masterdata_program_po_otoritas' => 'required',
+                'form_masterdata_program_po_tanggal_estimasi' => 'required',
             ]);
 
             // Ketika data kiriman tidak sesuai
@@ -239,34 +256,35 @@ class TrProgresProgramPRController extends Controller
             }
 
             // Cek Data Dalam Database
-            $checkExistingTrProgresProgramSR =  trProgresProgramSR::with('trProgresProgramPR')->where('uuid', $request->form_masterdata_program_uuid)->first();
+            $checkExistingTrProgresProgramPR =  trProgresProgramPR::with('trProgresProgramPO')->where('uuid', $request->form_masterdata_program_pr_uuid)->first();
             // dd($checkExistingTrProgresProgramSR);
 
-            if(!$checkExistingTrProgresProgramSR)
+            if(!$checkExistingTrProgresProgramPR)
             {
                 $response_code = "RC400";
-                $message = "Transaksi Progres Program SR Tidak Ada Dalam Sistem";
+                $message = "Transaksi Progres Program PR Tidak Ada Dalam Sistem";
                 return $this->onResult($status, $response_code, $message, $dataAPI);
             }
 
-            $total_pengajuan_sr = 0;
-            if($checkExistingTrProgresProgramSR->trProgresProgramPR)
+            $total_pengajuan_pr = $request->form_masterdata_program_po_anggaran;
+
+            if($checkExistingTrProgresProgramPR->trProgresProgramPO)
             {
-                $interval_pengajuan = $checkExistingTrProgresProgramSR->trProgresProgramPR->sum('pr_nominal') + intval($request->form_masterdata_program_pr_anggaran);
+                $interval_pengajuan = $checkExistingTrProgresProgramPR->trProgresProgramPO->sum('po_nominal') + intval($request->form_masterdata_program_po_anggaran);
                 // dd($interval_pengajuan);
-                if($interval_pengajuan > $checkExistingTrProgresProgramSR->sr_nominal)
+                if($interval_pengajuan > $checkExistingTrProgresProgramPR->pr_nominal)
                 {
                     $response_code = "RC400";
                     $message = "Pengajuan Purchase Requisition (PR) Melebihi Anggaran";
                     return $this->onResult($status, $response_code, $message, $dataAPI);
                 }
 
-                $total_pengajuan_sr = $interval_pengajuan;
+                $total_pengajuan_pr = $interval_pengajuan;
             }
             // dd($total_pengajuan_sr);
 
             // Cek Data Dalam Database
-            $checkExistingTrProgramRealisasi =  trProgramRealisasi::where('id_program', $checkExistingTrProgresProgramSR->id_program)->first();
+            $checkExistingTrProgramRealisasi =  trProgramRealisasi::where('id_program', $checkExistingTrProgresProgramPR->id_program)->first();
             if(!$checkExistingTrProgramRealisasi)
             {
                 $response_code = "RC400";
@@ -274,51 +292,54 @@ class TrProgresProgramPRController extends Controller
                 return $this->onResult($status, $response_code, $message, $dataAPI);
             }
 
-            $tr_realisasi =  $checkExistingTrProgramRealisasi->tr_realisasi + 1;
-            // dd($tr_realisasi);
+            // dd($checkExistingTrProgramRealisasi);
 
             $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-            $nomor_registrasi = "TRPROGPR-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
+            $nomor_registrasi = "TRPROGPO-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
 
             // Validasi Ketika Gagal Melakukan Transaksi Data Akan Di Rollback
             DB::beginTransaction();
 
             try {    
                 // Proses Simpan Data Kedalam Database      
-                $AddTrProgramProgresPR = new trProgresProgramPR();
+                $AddTrProgramProgresPO = new trProgresProgramPO();
 
-                $AddTrProgramProgresPR->uuid =  (string) Str::uuid();
-                $AddTrProgramProgresPR->code =  $nomor_registrasi;
-                $AddTrProgramProgresPR->id_program =  $checkExistingTrProgresProgramSR->id_program;
-                $AddTrProgramProgresPR->fund_number = $checkExistingTrProgresProgramSR->fund_number;
-                $AddTrProgramProgresPR->id_program_jenis_cck =  $checkExistingTrProgresProgramSR->id_program_jenis_cck;
-                $AddTrProgramProgresPR->name_program_jenis_cck =  $checkExistingTrProgresProgramSR->name_program_jenis_cck;
-                $AddTrProgramProgresPR->fund_center = $checkExistingTrProgresProgramSR->fund_center;
-                $AddTrProgramProgresPR->id_program_lokasi_cc =  $checkExistingTrProgresProgramSR->id_program_lokasi_cc;
-                $AddTrProgramProgresPR->name_program_lokasi_cc =  $checkExistingTrProgresProgramSR->name_program_lokasi_cc;
-                $AddTrProgramProgresPR->name = $checkExistingTrProgresProgramSR->name;
-                $AddTrProgramProgresPR->description = $checkExistingTrProgresProgramSR->description;
-                $AddTrProgramProgresPR->priority = $checkExistingTrProgresProgramSR->priority;
-                $AddTrProgramProgresPR->year = $checkExistingTrProgresProgramSR->year;
-                $AddTrProgramProgresPR->nominal = $checkExistingTrProgresProgramSR->nominal;
-                $AddTrProgramProgresPR->tr_realisasi = $tr_realisasi;
-                $AddTrProgramProgresPR->id_tr_program_progres_sr = $checkExistingTrProgresProgramSR->id;
-                $AddTrProgramProgresPR->pr_tanggal = $request->form_masterdata_program_pr_tanggal;
-                $AddTrProgramProgresPR->pr_nomor = $request->form_masterdata_program_pr_nomor;
-                $AddTrProgramProgresPR->pr_nominal = $request->form_masterdata_program_pr_anggaran;
-                $AddTrProgramProgresPR->pr_vendor = $request->form_masterdata_program_pr_vendor;
-                $AddTrProgramProgresPR->status =  1;
-                $AddTrProgramProgresPR->created_at = Carbon::now();
-                $AddTrProgramProgresPR->updated_at = Carbon::now();
-                $AddTrProgramProgresPR->created_by = Auth::user()->id;
+                $AddTrProgramProgresPO->uuid =  (string) Str::uuid();
+                $AddTrProgramProgresPO->code =  $nomor_registrasi;
+                $AddTrProgramProgresPO->id_program =  $checkExistingTrProgresProgramPR->id_program;
+                $AddTrProgramProgresPO->fund_number = $checkExistingTrProgresProgramPR->fund_number;
+                $AddTrProgramProgresPO->id_program_jenis_cck =  $checkExistingTrProgresProgramPR->id_program_jenis_cck;
+                $AddTrProgramProgresPO->name_program_jenis_cck =  $checkExistingTrProgresProgramPR->name_program_jenis_cck;
+                $AddTrProgramProgresPO->fund_center = $checkExistingTrProgresProgramPR->fund_center;
+                $AddTrProgramProgresPO->id_program_lokasi_cc =  $checkExistingTrProgresProgramPR->id_program_lokasi_cc;
+                $AddTrProgramProgresPO->name_program_lokasi_cc =  $checkExistingTrProgresProgramPR->name_program_lokasi_cc;
+                $AddTrProgramProgresPO->name = $checkExistingTrProgresProgramPR->name;
+                $AddTrProgramProgresPO->description = $checkExistingTrProgresProgramPR->description;
+                $AddTrProgramProgresPO->priority = $checkExistingTrProgresProgramPR->priority;
+                $AddTrProgramProgresPO->year = $checkExistingTrProgresProgramPR->year;
+                $AddTrProgramProgresPO->nominal = $checkExistingTrProgresProgramPR->nominal;
+                $AddTrProgramProgresPO->tr_realisasi = $checkExistingTrProgresProgramPR->tr_realisasi;
+                $AddTrProgramProgresPO->id_tr_program_progres_sr = $checkExistingTrProgresProgramPR->id_tr_program_progres_sr;
+                $AddTrProgramProgresPO->id_tr_program_progres_pr = $checkExistingTrProgresProgramPR->id;
+                $AddTrProgramProgresPO->po_tanggal = $request->form_masterdata_program_po_tanggal;
+                $AddTrProgramProgresPO->po_nomor = $request->form_masterdata_program_po_nomor;
+                $AddTrProgramProgresPO->po_nominal = $request->form_masterdata_program_po_anggaran;
+                $AddTrProgramProgresPO->po_vendor = $request->form_masterdata_program_po_vendor;
+                $AddTrProgramProgresPO->po_otorisasi = $request->form_masterdata_program_po_otoritas;
+                $AddTrProgramProgresPO->po_tempo = $request->form_masterdata_program_po_tanggal_estimasi;
+                $AddTrProgramProgresPO->status =  1;
+                $AddTrProgramProgresPO->created_at = Carbon::now();
+                $AddTrProgramProgresPO->updated_at = Carbon::now();
+                $AddTrProgramProgresPO->created_by = Auth::user()->id;
 
-                $AddTrProgramProgresPR->save();
+                $AddTrProgramProgresPO->save();
 
-                $checkExistingTrProgramRealisasi->tr_realisasi = $AddTrProgramProgresPR->tr_realisasi;
-                $checkExistingTrProgramRealisasi->pr_tanggal = $AddTrProgramProgresPR->pr_tanggal;
-                $checkExistingTrProgramRealisasi->pr_nomor = $AddTrProgramProgresPR->pr_nomor;
-                $checkExistingTrProgramRealisasi->pr_nominal = $total_pengajuan_sr;
-                $checkExistingTrProgramRealisasi->pr_vendor = $AddTrProgramProgresPR->pr_vendor;
+                $checkExistingTrProgramRealisasi->po_tanggal = $AddTrProgramProgresPO->po_tanggal;
+                $checkExistingTrProgramRealisasi->po_nomor = $AddTrProgramProgresPO->po_nomor;
+                $checkExistingTrProgramRealisasi->po_nominal =  $total_pengajuan_pr;
+                $checkExistingTrProgramRealisasi->po_vendor = $AddTrProgramProgresPO->po_vendor;
+                $checkExistingTrProgramRealisasi->po_otorisasi = $AddTrProgramProgresPO->po_otorisasi;
+                $checkExistingTrProgramRealisasi->po_tempo = $AddTrProgramProgresPO->po_tempo;
                 $checkExistingTrProgramRealisasi->updated_at = Carbon::now();
                 $checkExistingTrProgramRealisasi->updated_by = Auth::user()->id;
 
@@ -343,7 +364,7 @@ class TrProgresProgramPRController extends Controller
         return $this->onResult($status, $response_code, $message, $dataAPI);
     }
 
-    public function act_detailTrProgresProgramPR(Request $request)
+    public function act_detailTrProgresProgramPO(Request $request)
     {
         $status = false;
         $response_code = 'RC400';
@@ -366,8 +387,9 @@ class TrProgresProgramPRController extends Controller
             }
 
             // Cek Data Dalam Database
-            $checkExistingData =  trProgresProgramPR::with('mProgramJenisCCK', 'mProgramLokasiCC')->where('uuid', $request->data_id)->orWhere('pr_nomor', $request->data_id)->first();
-
+            $checkExistingData =  trProgresProgramPO::with('mProgramJenisCCK', 'mProgramLokasiCC','trProgresProgramPROne')->where('uuid', $request->data_id)->orWhere('po_nomor', $request->data_id)->first();
+            // dd($checkExistingData);
+            
             if(!$checkExistingData)
             {
                 $response_code = "RC400";

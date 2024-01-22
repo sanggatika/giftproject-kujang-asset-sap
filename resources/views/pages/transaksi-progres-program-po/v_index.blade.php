@@ -1,6 +1,6 @@
 @extends('layouts/adminLayoutMaster')
 
-@section('title', '- Transaksi Progres Program - PR')
+@section('title', '- Transaksi Progres Program - Purchase Order (PO)')
 
 @section('page-style')
     <!-- Current Page CSS Costum -->
@@ -20,7 +20,7 @@
         <!--begin::Page title-->
         <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
             <!--begin::Title-->
-            <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Transaksi Progres Program - PR</h1>
+            <h1 class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0">Transaksi Progres Program - Purchase Order (PO)</h1>
             <!--end::Title-->
             <!--begin::Breadcrumb-->
             <ul class="breadcrumb breadcrumb-separatorless fw-semibold fs-7 my-0 pt-1">
@@ -35,7 +35,7 @@
                 </li>
                 <!--end::Item-->
                 <!--begin::Item-->
-                <li class="breadcrumb-item text-muted">Progres Program - PR</li>
+                <li class="breadcrumb-item text-muted">Progres Program - Purchase Order (PO)</li>
                 <!--end::Item-->
             </ul>
             <!--end::Breadcrumb-->
@@ -52,7 +52,7 @@
             <!--begin::Primary button-->
             <button type="button" class="btn btn-sm fw-bold btn-primary" onclick="btn_tambahMasterdata()">
                 <i class="bi bi-clipboard-plus fs-4 me-2"></i>
-                Tambah Purchase Requisition (PR)
+                Tambah Purchase Order (PO)
             </button>
             <!--end::Primary button-->
         </div>
@@ -163,9 +163,10 @@
                                         <th class="text-center">Fund Number</th>
                                         <th class="text-center">Program</th>
                                         <th class="text-center">Anggaran</th>
-                                        <th class="text-center">Tanggal PR</th>
-                                        <th class="text-center">Nomor PR</th>
-                                        <th class="text-center">Anggaran PR</th>
+                                        <th class="text-center">Tanggal PO</th>
+                                        <th class="text-center">Nomor PO</th>
+                                        <th class="text-center">Tanggal Estimasi</th>
+                                        <th class="text-center">Anggaran PO</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                     <!--end::Table row-->
@@ -213,9 +214,9 @@
                             </div>
                         </div>  
                         <div class="col-md-6">
-                            <div class="form-group mb-3">
+                            <div class="form-group mb-1">
                                 <!--begin::Label-->
-                                <label class="form-label fw-bold">Fund Number / MMR :</label>
+                                <label class="form-label fw-bold">Nomor Purchase Requisition (PR) :</label>
                                 <!--end::Label-->
         
                                 <!--begin::Input group-->                                
@@ -225,62 +226,13 @@
                                             <span class="input-group-text" id="basic-addon1">
                                                 <i class="bi bi-stickies fs-1"></i>
                                             </span>
-                                            <input type="text" class="form-control" name="form_masterdata_program_fundnumber" id="form_masterdata_program_fundnumber" placeholder="Fund Number / MMR" aria-label="Fund Number" value="" aria-describedby="basic-addon1"/>
+                                            <input type="text" class="form-control" name="form_masterdata_program_pr_nomor" id="form_masterdata_program_pr_nomor" placeholder="Nomor Purchase Requisition (PR)" aria-label="Nomor Purchase Requisition (PR)" value="" aria-describedby="basic-addon1"/>
                                         </div>                                            
                                     </div>
                                     <div class="col-md-4">
                                         <a href="#" class="btn btn-primary" id="btn_syncMasterData" onclick="sync_masterdata()"><i class="bi bi-chat-square-text-fill fs-4 me-2"></i> Sync</a>
                                     </div>
                                 </div>  
-                                <!--end::Input group-->        
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <!--begin::Label-->
-                                <label class="form-label fw-bold">Nama Program :</label>
-                                <!--end::Label-->
-        
-                                <!--begin::Input group-->
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="bi bi-boxes fs-1"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="form_masterdata_program_nama" id="form_masterdata_program_nama" placeholder="Nama Program" aria-label="Nama Program" value="" aria-describedby="basic-addon1" disabled/>
-                                    <input type="hidden" class="form-control" name="form_masterdata_program_uuid" id="form_masterdata_program_uuid" value="" aria-describedby="basic-addon1"/>
-                                </div>
-                                <!--end::Input group-->        
-                            </div>                            
-
-                            <div class="form-group mb-3">
-                                <!--begin::Label-->
-                                <label class="form-label fw-bold">Anggaran Program</label>
-                                <!--end::Label-->
-
-                                <!--begin::Input group-->
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text fw-bold" id="basic-addon1">
-                                        Rp.
-                                    </span>
-                                    <input type="number" class="form-control" name="form_masterdata_program_anggaran" id="form_masterdata_program_anggaran" placeholder="Anggaran Program" aria-label="Anggaran Program" value="" aria-describedby="basic-addon1" disabled/>
-                                </div>
-                                <!--end::Input group-->
-                            </div>
-
-                        </div>  
-                        
-                        <div class="col-md-6">
-                            <div class="form-group mb-3">
-                                <!--begin::Label-->
-                                <label class="form-label fw-bold">Fund Center :</label>
-                                <!--end::Label-->
-        
-                                <!--begin::Input group-->
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="bi bi-buildings-fill fs-1"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="form_masterdata_program_fundcenter" id="form_masterdata_program_fundcenter" placeholder="Fund Center" aria-label="Fund Center" value="" aria-describedby="basic-addon1" disabled/>
-                                </div>
                                 <!--end::Input group-->        
                             </div>
 
@@ -296,7 +248,47 @@
                                     @endforeach                             
                                 </select>
                                 <!--end::Input-->
-                            </div>   
+                            </div>  
+
+                            <div class="form-group mb-3">
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Purchase Requisition (PR)</label>
+                                <!--begin::Input-->
+                                <div class="position-relative d-flex align-items-center">
+                                    <!--begin::Icon-->
+                                    <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                        <span class="path6"></span>
+                                    </i>
+                                    <!--end::Icon-->
+                                    <!--begin::Datepicker-->
+                                    <input class="form-control ps-12" placeholder="Select a date" value="{{date('Y-m-d')}}" placeholder="{{date('Y-m-d')}}" id="form_masterdata_program_pr_tanggal" name="form_masterdata_program_pr_tanggal" disabled/>
+                                    <!--end::Datepicker-->
+                                </div>
+                                <!--end::Input-->
+                            </div>
+
+                        </div>  
+                        
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Nama Program :</label>
+                                <!--end::Label-->
+        
+                                <!--begin::Input group-->
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <i class="bi bi-boxes fs-1"></i>
+                                    </span>
+                                    <input type="text" class="form-control" name="form_masterdata_program_nama" id="form_masterdata_program_nama" placeholder="Nama Program" aria-label="Nama Program" value="" aria-describedby="basic-addon1" disabled/>
+                                    <input type="hidden" class="form-control" name="form_masterdata_program_pr_uuid" id="form_masterdata_program_pr_uuid" value="" aria-describedby="basic-addon1"/>
+                                </div>
+                                <!--end::Input group-->        
+                            </div>                               
                             
                             <div class="form-group mb-3">
                                 <!--begin::Label-->
@@ -311,19 +303,34 @@
                                 </select>
                                 <!--end::Input-->
                             </div>
+
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Anggaran Purchase Requisition (PR)</label>
+                                <!--end::Label-->
+
+                                <!--begin::Input group-->
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text fw-bold" id="basic-addon1">
+                                        Rp.
+                                    </span>
+                                    <input type="number" class="form-control" name="form_masterdata_program_pr_nominal" id="form_masterdata_program_pr_nominal" placeholder="Anggaran Purchase Requisition (PR)" aria-label="Anggaran Purchase Requisition (PR)" value="" aria-describedby="basic-addon1" disabled/>
+                                </div>
+                                <!--end::Input group-->
+                            </div>
                         </div>
 
                         <div class="col-md-12">
                             <hr>
                         </div>
 
-                        <div class="col-md-6 dataContenFormPR">
+                        <div class="col-md-4 dataContenFormPR">
                             <div class="form-group mb-3">
-                                <label class="required fs-6 fw-bold mb-2">Tanggal PR</label>
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Purchase Order (PO)</label>
                                 <!--begin::Input-->
                                 <div class="position-relative d-flex align-items-center">
                                     <!--begin::Icon-->
-                                    <i class="ki-duotone ki-calendar-8 fs-2 position-absolute mx-4">
+                                    <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
                                         <span class="path1"></span>
                                         <span class="path2"></span>
                                         <span class="path3"></span>
@@ -333,31 +340,50 @@
                                     </i>
                                     <!--end::Icon-->
                                     <!--begin::Datepicker-->
-                                    <input class="form-control ps-12" placeholder="Select a date" value="{{date('Y-m-d')}}" placeholder="{{date('Y-m-d')}}" id="form_masterdata_program_pr_tanggal" name="form_masterdata_program_pr_tanggal" />
+                                    <input class="form-control ps-12" placeholder="Select a date" value="{{date('Y-m-d')}}" placeholder="{{date('Y-m-d')}}" id="form_masterdata_program_po_tanggal" name="form_masterdata_program_po_tanggal"/>
                                     <!--end::Datepicker-->
                                 </div>
                                 <!--end::Input-->
-                            </div>                            
-                        </div>
-
-                        <div class="col-md-6 dataContenFormPR">
-                            <div class="form-group mb-3">
-                                <!--begin::Label-->
-                                <label class="form-label fw-bold">Nomor PR :</label>
-                                <!--end::Label-->
-        
-                                <!--begin::Input group-->
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text" id="basic-addon1">
-                                        <i class="bi bi-grid fs-1"></i>
-                                    </span>
-                                    <input type="text" class="form-control" name="form_masterdata_program_pr_nomor" id="form_masterdata_program_pr_nomor" placeholder="Nomor PR" aria-label="Nomor PR" value="" aria-describedby="basic-addon1"/>
-                                </div>
-                                <!--end::Input group-->        
                             </div>
                         </div>
 
-                        <div class="col-md-6 dataContenFormPR">
+                        <div class="col-md-4 dataContenFormPR">
+                            <div class="form-group mb-3">
+                                <div class="form-group mb-3">
+                                    <!--begin::Label-->
+                                    <label class="form-label fw-bold">Nomor Purchase Order (PO) :</label>
+                                    <!--end::Label-->
+            
+                                    <!--begin::Input group-->
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="bi bi-grid fs-1"></i>
+                                        </span>
+                                        <input type="text" class="form-control" name="form_masterdata_program_po_nomor" id="form_masterdata_program_po_nomor" placeholder="Nomor Purchase Order (PO)" aria-label="Nomor Purchase Order (PO)" value="" aria-describedby="basic-addon1"/>
+                                    </div>
+                                    <!--end::Input group-->        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 dataContenFormPR">
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Anggaran Purchase Order (PO):</label>
+                                <!--end::Label-->
+
+                                <!--begin::Input group-->
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text fw-bold" id="basic-addon1">
+                                        Rp.
+                                    </span>
+                                    <input type="number" class="form-control" name="form_masterdata_program_po_anggaran" id="form_masterdata_program_po_anggaran" placeholder="Anggaran Purchase Order (PO)" aria-label="Anggaran Purchase Order (PO)" value="" aria-describedby="basic-addon1"/>
+                                </div>
+                                <!--end::Input group-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 dataContenFormPR">
                             <div class="form-group mb-3">
                                 <!--begin::Label-->
                                 <label class="form-label fw-bold">Vendor :</label>
@@ -368,28 +394,61 @@
                                     <span class="input-group-text" id="basic-addon1">
                                         <i class="bi bi-bank fs-1"></i>
                                     </span>
-                                    <input type="text" class="form-control" name="form_masterdata_program_pr_vendor" id="form_masterdata_program_pr_vendor" placeholder="Nama Vendor" aria-label="Nama Vendor" value="" aria-describedby="basic-addon1"/>
+                                    <input type="text" class="form-control" name="form_masterdata_program_po_vendor" id="form_masterdata_program_po_vendor" placeholder="Nama Vendor" aria-label="Nama Vendor" value="" aria-describedby="basic-addon1"/>
                                 </div>
                                 <!--end::Input group-->        
                             </div>
                         </div>
 
-                        <div class="col-md-6 dataContenFormPR">
+                        <div class="col-md-4 dataContenFormPR">
                             <div class="form-group mb-3">
                                 <!--begin::Label-->
-                                <label class="form-label fw-bold">Anggaran PR:</label>
+                                <label class="form-label fw-bold">Otoritas Order : </label>
                                 <!--end::Label-->
-
-                                <!--begin::Input group-->
-                                <div class="input-group mb-2">
-                                    <span class="input-group-text fw-bold" id="basic-addon1">
-                                        Rp.
-                                    </span>
-                                    <input type="number" class="form-control" name="form_masterdata_program_pr_anggaran" id="form_masterdata_program_pr_anggaran" placeholder="Anggaran PR" aria-label="Anggaran PR" value="" aria-describedby="basic-addon1"/>
-                                </div>
-                                <!--end::Input group-->
+                                <!--begin::Input-->
+                                <select class="form-select mb-2" name="form_masterdata_program_po_otoritas" id="form_masterdata_program_po_otoritas"  data-control="select2" data-placeholder="Select an option" data-dropdown-parent="#modal-masterdata-program" >
+                                    <option value="-">-- Otoritas Order -- </option> 
+                                    <option value="dalam negeri">Dalam Negeri</option> 
+                                    <option value="luar negeri">Luar Negeri</option>                            
+                                </select>
+                                <!--end::Input-->
                             </div>
                         </div>
+
+
+                        <div class="col-md-4 dataContenFormPR">
+                            <div class="form-group mb-3">
+                                <label class="required fs-6 fw-bold mb-2">Estimasi Purchase Order (PO)</label>
+                                <!--begin::Input-->
+                                <div class="position-relative d-flex align-items-center">
+                                    <!--begin::Icon-->
+                                    <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                        <span class="path6"></span>
+                                    </i>
+                                    <!--end::Icon-->
+
+                                    @php
+                                        use Carbon\Carbon;
+
+                                        // Get the current date
+                                        $date_now = Carbon::now();
+
+                                        // Add 60 days to the current date
+                                        $date_in_60_days = $date_now->addDays(180)->format('Y-m-d');
+                                    @endphp
+
+                                    <!--begin::Datepicker-->
+                                    <input class="form-control ps-12" placeholder="Select a date" value="{{$date_in_60_days}}" placeholder="{{$date_in_60_days}}" id="form_masterdata_program_po_tanggal_estimasi" name="form_masterdata_program_po_tanggal_estimasi"/>
+                                    <!--end::Datepicker-->
+                                </div>
+                                <!--end::Input-->
+                            </div>
+                        </div>                        
 
                         <div class="col-md-12">
                             <div class="d-flex float-md-end">
@@ -434,9 +493,9 @@
     @endif
 
     <script>
-        var data_tr_program_progres_sr = null;
+        var data_tr_program_progres_pr = null;
     </script>
     
-    <script src="{{ URL::asset('js/pages/tr_progres_program_pr.js?version=') }}{{uniqid()}}"></script>
+    <script src="{{ URL::asset('js/pages/tr_progres_program_po.js?version=') }}{{uniqid()}}"></script>
 
 @endsection

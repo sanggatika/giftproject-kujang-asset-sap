@@ -13,15 +13,15 @@ function btn_tambahMasterdata()
     $('#modal-masterdata-program').modal('show');
 }
 
-form_masterdata_program_fundnumber.onchange = evt => {
+form_masterdata_program_pr_nomor.onchange = evt => {
     sync_masterdata();
 }
 
 function sync_masterdata()
 {
-    let form_masterdata_program_fundnumber = $("#form_masterdata_program_fundnumber").val();
+    let data_id = $("#form_masterdata_program_pr_nomor").val();
 
-    if(form_masterdata_program_fundnumber == "")
+    if(data_id == "")
     {
         Swal.fire({
             text: "Pastikan Anda Sudah Mengisi Fund Number / MMR ..!!",
@@ -36,9 +36,9 @@ function sync_masterdata()
     }
 
     $.ajax({
-        url: BaseURL + "/transaksi/progres/program/mr_sr/act_detail",
+        url: BaseURL + "/transaksi/progres/program/pr/act_detail",
         data: {
-            form_masterdata_program_fundnumber,
+            data_id,
         },
         method: "POST",
         dataType: "json",
@@ -51,30 +51,45 @@ function sync_masterdata()
         success: function (data) {
             KTApp.hidePageLoading();
             loadingEl.remove();
+
             console.log(data.data);
+            // return false;
+
             if(data.status == true)
             {                
-                $('#form_masterdata_program_uuid').val(data.data.uuid).prop('readonly', true);
+                $('#form_masterdata_program_pr_uuid').val(data.data.uuid).prop('readonly', true);
+                
+                $('#form_masterdata_program_jenis').val(data.data.m_program_jenis_c_c_k.uuid).change();                
+                $("#form_masterdata_program_pr_tanggal").flatpickr({
+                    defaultDate: [data.data.pr_tanggal]
+                });
+
                 $('#form_masterdata_program_nama').val(data.data.name);
-                $('#form_masterdata_program_anggaran').val(data.data.sr_nominal);
-
-                $('#form_masterdata_program_fundcenter').val(data.data.fund_center);
-                $('#form_masterdata_program_jenis').val(data.data.m_program_jenis_c_c_k.uuid).change();
                 $('#form_masterdata_program_lokasi').val(data.data.m_program_lokasi_c_c.uuid).change();
+                $('#form_masterdata_program_pr_nominal').val(data.data.pr_nominal); 
+                
+                $('#form_masterdata_program_po_anggaran').val(data.data.pr_nominal);  
+                $('#form_masterdata_program_po_vendor').val(data.data.pr_vendor);  
 
-                data_tr_program_progres_sr = data.data;
+                data_tr_program_progres_pr = data.data;
 
                 $('.dataContenFormPR').show();
             }else{  
-                $('#form_masterdata_program_uuid').val('').prop('readonly', true);
+                $('#form_masterdata_program_pr_uuid').val('').prop('readonly', true);
+                
+                $('#form_masterdata_program_jenis').val('-').change();                
+                $("#form_masterdata_program_pr_tanggal").flatpickr({
+                    defaultDate: ['2024-01-01']
+                });
+
                 $('#form_masterdata_program_nama').val('');
-                $('#form_masterdata_program_anggaran').val('');
-
-                $('#form_masterdata_program_fundcenter').val('');
-                $('#form_masterdata_program_jenis').val('-').change();
                 $('#form_masterdata_program_lokasi').val('-').change();
+                $('#form_masterdata_program_pr_nominal').val('');   
 
-                data_tr_program_progres_sr = null;
+                $('#form_masterdata_program_po_anggaran').val('');  
+                $('#form_masterdata_program_po_vendor').val('');
+
+                data_tr_program_progres_pr = null;
 
                 $('.dataContenFormPR').hide();
 
@@ -110,32 +125,20 @@ function sync_masterdata()
 
 function act_submitTambahData()
 {
-    let form_masterdata_program_fundnumber = $("#form_masterdata_program_fundnumber").val();
-    let form_masterdata_program_uuid = $("#form_masterdata_program_uuid").val();
-    let form_masterdata_program_pr_tanggal = $("#form_masterdata_program_pr_tanggal").val();
     let form_masterdata_program_pr_nomor = $("#form_masterdata_program_pr_nomor").val();
-    let form_masterdata_program_pr_vendor = $("#form_masterdata_program_pr_vendor").val();
-    let form_masterdata_program_pr_anggaran = $("#form_masterdata_program_pr_anggaran").val();
+    let form_masterdata_program_pr_uuid = $("#form_masterdata_program_pr_uuid").val();
+    let form_masterdata_program_po_tanggal = $("#form_masterdata_program_po_tanggal").val();
+    let form_masterdata_program_po_nomor = $("#form_masterdata_program_po_nomor").val();
+    let form_masterdata_program_po_anggaran = $("#form_masterdata_program_po_anggaran").val();
+    let form_masterdata_program_po_vendor = $("#form_masterdata_program_po_vendor").val();
+    let form_masterdata_program_po_otoritas = $("#form_masterdata_program_po_otoritas").val();
+    let form_masterdata_program_po_tanggal_estimasi = $("#form_masterdata_program_po_tanggal_estimasi").val();
 
     // validasi form
-    if(form_masterdata_program_fundnumber == "" || form_masterdata_program_pr_tanggal == "" || form_masterdata_program_pr_nomor == "" || form_masterdata_program_pr_vendor == "" || form_masterdata_program_pr_anggaran == "")
+    if(form_masterdata_program_pr_nomor == "" || form_masterdata_program_po_nomor == "")
     {
         Swal.fire({
             text: "Pastikan Anda Sudah Mengisi Semua Form Data..!!",
-            icon: "warning",
-            buttonsStyling: false,
-            confirmButtonText: "Ok, got it!",
-            customClass: {
-                confirmButton: "btn btn-primary"
-            }
-        });
-        return false;
-    }
-
-    if(form_masterdata_program_pr_anggaran > data_tr_program_progres_sr.sr_nominal)
-    {
-        Swal.fire({
-            text: "Anggaran PR Tidak Boleh Melebihi Batas Anggaran !!",
             icon: "warning",
             buttonsStyling: false,
             confirmButtonText: "Ok, got it!",
@@ -160,14 +163,16 @@ function act_submitTambahData()
     }).then(function (result) {
         if (result.value) {
             $.ajax({
-                url: BaseURL + "/transaksi/progres/program/pr/act_tambah",
+                url: BaseURL + "/transaksi/progres/program/po/act_tambah",
                 data: {
-                    form_masterdata_program_fundnumber,
-                    form_masterdata_program_uuid,
-                    form_masterdata_program_pr_tanggal,
                     form_masterdata_program_pr_nomor,
-                    form_masterdata_program_pr_vendor,
-                    form_masterdata_program_pr_anggaran
+                    form_masterdata_program_pr_uuid,
+                    form_masterdata_program_po_tanggal,
+                    form_masterdata_program_po_nomor,
+                    form_masterdata_program_po_anggaran,
+                    form_masterdata_program_po_vendor,
+                    form_masterdata_program_po_otoritas,
+                    form_masterdata_program_po_tanggal_estimasi
                 },
                 method: "POST",
                 dataType: "json",
@@ -290,7 +295,7 @@ function serverSideDatatables()
         searching:true,        
         pageLength: 10,
         ajax: {
-            url: BaseURL + "/transaksi/progres/program/pr/get_datatable",
+            url: BaseURL + "/transaksi/progres/program/po/get_datatable",
             type: "POST",
             data: {
                 form_filter_program:form_filter_program,
@@ -338,15 +343,11 @@ function serverSideDatatables()
             {data: 'fild_nominal', name: 'fild_nominal'},
             {data: 'fild_tanggal', name: 'fild_tanggal'},
             {data: 'fild_nomor', name: 'fild_nomor'},
+            {data: 'fild_tanggal_estimasi', name: 'fild_tanggal_estimasi'},
             {data: 'fild_nominal_fix', name: 'fild_nominal_fix'},
             {data: 'action', name: 'action', class:'text-center'}            
         ]
     });
-}
-
-function datatabelesreload()
-{
-	$('#tabel_master_data').DataTable().ajax.reload(null, false); //Reload Tanpa Reset Page Datatable
 }
 
 function act_btnUpdateData(data)
@@ -356,7 +357,7 @@ function act_btnUpdateData(data)
     let data_id = $(data).attr('data-id');
 
     $.ajax({
-        url: BaseURL + "/transaksi/progres/program/pr/act_detail",
+        url: BaseURL + "/transaksi/progres/program/po/act_detail",
         data: {
             data_id,
         },
@@ -374,27 +375,33 @@ function act_btnUpdateData(data)
 
             if(data.status == true)
             {
-                // console.log(data.data);
+                console.log(data.data);
                 $('#btn_syncMasterData').hide();
 
                 $('#btnTambahMasterdata').hide();
                 $('#btnUpdateMasterdata').show();
 
-                $('#form_masterdata_program_uuid').val(data.data.uuid).prop('readonly', true);
-                $('#form_masterdata_program_fundnumber').val(data.data.fund_number).prop( "disabled", true );
-                $('#form_masterdata_program_nama').val(data.data.name).prop( "disabled", true );
-                $('#form_masterdata_program_anggaran').val(data.data.nominal).prop( "disabled", true );
-
-                $('#form_masterdata_program_fundcenter').val(data.data.fund_center).prop( "disabled", true );
+                $('#form_masterdata_program_pr_nomor').val(data.data.tr_progres_program_p_r_one.pr_nomor).prop( "disabled", true );
                 $('#form_masterdata_program_jenis').val(data.data.m_program_jenis_c_c_k.uuid).change().prop('disabled', true);
-                $('#form_masterdata_program_lokasi').val(data.data.m_program_lokasi_c_c.uuid).change().prop('disabled', true);
-
                 $("#form_masterdata_program_pr_tanggal").flatpickr({
-                    defaultDate: [data.data.pr_tanggal]
+                    defaultDate: [data.data.tr_progres_program_p_r_one.pr_tanggal]
                 });
-                $('#form_masterdata_program_pr_nomor').val(data.data.pr_nomor);
-                $('#form_masterdata_program_pr_vendor').val(data.data.pr_vendor);
-                $('#form_masterdata_program_pr_anggaran').val(data.data.pr_nominal);
+
+                $('#form_masterdata_program_nama').val(data.data.name).prop( "disabled", true );
+                $('#form_masterdata_program_pr_uuid').val(data.data.tr_progres_program_p_r_one.uuid).prop('readonly', true);
+                $('#form_masterdata_program_lokasi').val(data.data.m_program_lokasi_c_c.uuid).change().prop('disabled', true);
+                $('#form_masterdata_program_pr_nominal').val(data.data.tr_progres_program_p_r_one.pr_nominal).prop( "disabled", true );
+
+                $("#form_masterdata_program_po_tanggal").flatpickr({
+                    defaultDate: [data.data.po_tanggal]
+                });
+                $('#form_masterdata_program_po_nomor').val(data.data.po_nomor);
+                $('#form_masterdata_program_po_anggaran').val(data.data.po_nominal);
+                $('#form_masterdata_program_po_vendor').val(data.data.po_vendor);
+                $('#form_masterdata_program_po_otoritas').val(data.data.po_otorisasi).change();
+                $("#form_masterdata_program_po_tanggal_estimasi").flatpickr({
+                    defaultDate: [data.data.po_tempo]
+                });
 
                 $('.dataContenFormPR').show();
 
@@ -430,8 +437,15 @@ function act_btnUpdateData(data)
     });
 }
 
+function datatabelesreload()
+{
+	$('#tabel_master_data').DataTable().ajax.reload(null, false); //Reload Tanpa Reset Page Datatable
+}
+
 $(document).ready(function() {
     serverSideDatatables();  
     
     $("#form_masterdata_program_pr_tanggal").flatpickr();
+    $("#form_masterdata_program_po_tanggal").flatpickr();
+    $("#form_masterdata_program_po_tanggal_estimasi").flatpickr();
 });
