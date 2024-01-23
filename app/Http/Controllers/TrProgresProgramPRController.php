@@ -57,11 +57,16 @@ class TrProgresProgramPRController extends Controller
             $form_filter_program_lokasi = $request->form_filter_program_lokasi;
             $form_filter_program_priority = $request->form_filter_program_priority;
 
-            $form_filter_program_fundnumber = $request->form_filter_program_fundnumber;
+            $form_filter_program_pr_nomor = $request->form_filter_program_pr_nomor;
+            $form_filter_program_pr_tanggal = $request->form_filter_program_pr_tanggal;
             $form_filter_program_min_anggaran = $request->form_filter_program_min_anggaran;
             $form_filter_program_max_anggaran = $request->form_filter_program_max_anggaran;
 
             $dataTrProgresProgramPR = trProgresProgramPR::whereNotNull('uuid');
+
+            $trProgresProgramPR = $dataTrProgresProgramPR->get();
+            $jumlahtrProgresProgramPR = $trProgresProgramPR->count();
+            $totaltrProgresProgramPRNominal = $trProgresProgramPR->sum('pr_nominal');
 
             // Filter Data
             if($form_filter_program != "")
@@ -86,9 +91,19 @@ class TrProgresProgramPRController extends Controller
                 $dataTrProgresProgramPR->where('priority', $request->form_filter_program_priority);
             }
 
-            if($form_filter_program_fundnumber != "")
+            if($form_filter_program_pr_nomor != "")
             {
-                $dataTrProgresProgramPR->where('fund_number', 'like', '%'.$form_filter_program_fundnumber.'%');
+                $dataTrProgresProgramPR->where('pr_nomor', 'like', '%'.$form_filter_program_pr_nomor.'%');
+            }
+
+            // Filter Data
+            if($form_filter_program_pr_tanggal != "")
+            {
+                $explode_filter_program_pr_tanggal = explode(' to ', $form_filter_program_pr_tanggal);
+                $form_filter_startdate = $explode_filter_program_pr_tanggal[0];
+                $form_filter_enddate = $explode_filter_program_pr_tanggal[1];
+
+                $dataTrProgresProgramPR->whereBetween('created_at', [$form_filter_startdate.' 00:00:01', $form_filter_enddate.' 23:59:59']);
             }
 
             if($form_filter_program_min_anggaran != "")
@@ -103,9 +118,28 @@ class TrProgresProgramPRController extends Controller
                 $dataTrProgresProgramPR->where('nominal', '<=', $maxAnggaran);
             }
 
+            $trProgresProgramPRSelesai = $dataTrProgresProgramPR->get();
+            $jumlahtrProgresProgramPRSelesai = $trProgresProgramPRSelesai->where('status', '!=', 1)->count();
+            $totaltrProgresProgramPRNominalSelesai = $trProgresProgramPRSelesai->where('status', '!=', 1)->sum('pr_nominal');
+
+            $persentasetrProgresProgramPRNominalSelesai = ($totaltrProgresProgramPRNominalSelesai / $totaltrProgresProgramPRNominal) * 100;
+
+            // Menampilkan Data Hanya Belum Realisasi
+            $dataTrProgresProgramPR->where('status', 1);
+
             $data = $dataTrProgresProgramPR->get();
 
+            $jumlahtrProgresProgramPRProses = $data->count();
+            $totaltrProgresProgramPRNominalProses = $data->sum('pr_nominal');
+
             return DataTables::of($data)
+            ->with('jumlahtrProgresProgramPR', number_format($jumlahtrProgresProgramPR,0,',','.'))
+            ->with('totaltrProgresProgramPRNominal', number_format($totaltrProgresProgramPRNominal,0,',','.'))
+            ->with('jumlahtrProgresProgramPRSelesai', number_format($jumlahtrProgresProgramPRSelesai,0,',','.'))
+            ->with('totaltrProgresProgramPRNominalSelesai', number_format($totaltrProgresProgramPRNominalSelesai,0,',','.'))
+            ->with('persentasetrProgresProgramPRNominalSelesai', number_format($persentasetrProgresProgramPRNominalSelesai,0,',','.'))
+            ->with('jumlahtrProgresProgramPRProses', number_format($jumlahtrProgresProgramPRProses,0,',','.'))
+            ->with('totaltrProgresProgramPRNominalProses', number_format($totaltrProgresProgramPRNominalProses,0,',','.'))
             ->addIndexColumn()
             ->addColumn('fund_number', function($row)
             {

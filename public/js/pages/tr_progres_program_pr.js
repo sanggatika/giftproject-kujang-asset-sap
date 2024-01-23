@@ -259,9 +259,20 @@ form_filter_program_priority.onchange = evt => {
     serverSideDatatables();
 }
 
-form_filter_program_fundnumber.onchange = evt => {
+form_filter_program_pr_nomor.onchange = evt => {
     serverSideDatatables();
 }
+
+$("#form_filter_program_pr_tanggal").flatpickr({
+    altInput: true,
+    altFormat: "F j, Y",
+    dateFormat: "Y-m-d",
+    mode: "range",
+    onClose: function(selectedDates, dateStr, instance) {
+        // Memanggil fungsi serverSideDatatables() saat rentang tanggal dipilih
+        serverSideDatatables();
+    }
+});
 
 form_filter_program_min_anggaran.onchange = evt => {
     serverSideDatatables();
@@ -278,7 +289,8 @@ function serverSideDatatables()
     let form_filter_program_lokasi = $("#form_filter_program_lokasi").val();
     let form_filter_program_priority = $("#form_filter_program_priority").val();
 
-    let form_filter_program_fundnumber = $("#form_filter_program_fundnumber").val();
+    let form_filter_program_pr_nomor = $("#form_filter_program_pr_nomor").val();
+    let form_filter_program_pr_tanggal = $("#form_filter_program_pr_tanggal").val();
     let form_filter_program_min_anggaran = $("#form_filter_program_min_anggaran").val();
     let form_filter_program_max_anggaran = $("#form_filter_program_max_anggaran").val();
 
@@ -297,7 +309,8 @@ function serverSideDatatables()
                 form_filter_program_jenis:form_filter_program_jenis,
                 form_filter_program_lokasi:form_filter_program_lokasi,
                 form_filter_program_priority:form_filter_program_priority,
-                form_filter_program_fundnumber:form_filter_program_fundnumber,
+                form_filter_program_pr_nomor:form_filter_program_pr_nomor,
+                form_filter_program_pr_tanggal:form_filter_program_pr_tanggal,
                 form_filter_program_min_anggaran:form_filter_program_min_anggaran,
                 form_filter_program_max_anggaran:form_filter_program_max_anggaran
             },
@@ -312,6 +325,11 @@ function serverSideDatatables()
                 // console.log(data);
                 KTApp.hidePageLoading();
                 loadingEl.remove(); 
+
+                $("#data_line2_program_total_pr").html(data.jumlahtrProgresProgramPR +" | "+data.totaltrProgresProgramPRNominal);
+                $("#data_line2_program_total_pr_progres").html(data.jumlahtrProgresProgramPRProses +" | "+data.totaltrProgresProgramPRNominalProses);
+                $("#data_line2_program_total_pr_selesai").html(data.jumlahtrProgresProgramPRSelesai +" | "+data.totaltrProgresProgramPRNominalSelesai);
+                $("#data_line2_program_progres").html(data.persentasetrProgresProgramPRNominalSelesai +" %");
 
                 return data.data;
             },
