@@ -58,16 +58,21 @@ class TrProgresProgramPOController extends Controller
             $form_filter_program_lokasi = $request->form_filter_program_lokasi;
             $form_filter_program_priority = $request->form_filter_program_priority;
 
-            $form_filter_program_fundnumber = $request->form_filter_program_fundnumber;
+            $form_filter_program_po_nomor = $request->form_filter_program_po_nomor;
+            $form_filter_program_po_tanggal = $request->form_filter_program_po_tanggal;
             $form_filter_program_min_anggaran = $request->form_filter_program_min_anggaran;
             $form_filter_program_max_anggaran = $request->form_filter_program_max_anggaran;
 
             $dataTrProgresProgramPO = trProgresProgramPO::whereNotNull('uuid');
 
+            $trProgresProgramPO = $dataTrProgresProgramPO->get();
+            $jumlahtrProgresProgramPO = $trProgresProgramPO->count();
+            $totaltrProgresProgramPONominal = $trProgresProgramPO->sum('po_nominal');
+
             // Filter Data
             if($form_filter_program != "")
             {
-                $dataTrProgresProgramPO->where('name', 'like', '%'.$form_filter_program.'%');
+                $dataTrProgresProgramPO->where('name', 'like', '%'.$form_filter_program.'%')->orWhere('fund_number',$form_filter_program);
             }
 
             if($form_filter_program_jenis != "-")
@@ -87,9 +92,19 @@ class TrProgresProgramPOController extends Controller
                 $dataTrProgresProgramPO->where('priority', $request->form_filter_program_priority);
             }
 
-            if($form_filter_program_fundnumber != "")
+            if($form_filter_program_po_nomor != "")
             {
-                $dataTrProgresProgramPO->where('fund_number', 'like', '%'.$form_filter_program_fundnumber.'%');
+                $dataTrProgresProgramPO->where('po_nomor', 'like', '%'.$form_filter_program_po_nomor.'%');
+            }
+
+            // Filter Data
+            if($form_filter_program_po_tanggal != "")
+            {
+                $explode_filter_program_go_tanggal = explode(' to ', $form_filter_program_po_tanggal);
+                $form_filter_startdate = $explode_filter_program_go_tanggal[0];
+                $form_filter_enddate = $explode_filter_program_go_tanggal[1];
+
+                $dataTrProgresProgramPO->whereBetween('created_at', [$form_filter_startdate.' 00:00:01', $form_filter_enddate.' 23:59:59']);
             }
 
             if($form_filter_program_min_anggaran != "")
@@ -104,10 +119,29 @@ class TrProgresProgramPOController extends Controller
                 $dataTrProgresProgramPO->where('nominal', '<=', $maxAnggaran);
             }
 
+            $trProgresProgramPOSelesai = $dataTrProgresProgramPO->get();
+            $jumlahtrProgresProgramPOSelesai = $trProgresProgramPOSelesai->where('status', '!=', 1)->count();
+            $totaltrProgresProgramPONominalSelesai = $trProgresProgramPOSelesai->where('status', '!=', 1)->sum('po_nominal');
+
+            $persentasetrProgresProgramPONominalSelesai = ($totaltrProgresProgramPONominalSelesai / $totaltrProgresProgramPONominal) * 100;
+
+            // Menampilkan Data Hanya Belum Realisasi
+            $dataTrProgresProgramPO->where('status', 1);
+
             $data = $dataTrProgresProgramPO->get();
+
+            $jumlahtrProgresProgramPOProses = $dataTrProgresProgramPO->count();
+            $totaltrProgresProgramPONominalProses = $dataTrProgresProgramPO->sum('po_nominal');
 
             return DataTables::of($data)
             ->addIndexColumn()
+            ->with('jumlahtrProgresProgramPO', number_format($jumlahtrProgresProgramPO,0,',','.'))
+            ->with('totaltrProgresProgramPONominal', number_format($totaltrProgresProgramPONominal,0,',','.'))
+            ->with('jumlahtrProgresProgramPOSelesai', number_format($jumlahtrProgresProgramPOSelesai,0,',','.'))
+            ->with('totaltrProgresProgramPONominalSelesai', number_format($totaltrProgresProgramPONominalSelesai,0,',','.'))
+            ->with('persentasetrProgresProgramPONominalSelesai', number_format($persentasetrProgresProgramPONominalSelesai,0,',','.'))
+            ->with('jumlahtrProgresProgramPOProses', number_format($jumlahtrProgresProgramPOProses,0,',','.'))
+            ->with('totaltrProgresProgramPONominalProses', number_format($totaltrProgresProgramPONominalProses,0,',','.'))
             ->addColumn('fund_number', function($row)
             {
                 $html = '

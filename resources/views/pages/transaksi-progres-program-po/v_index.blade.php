@@ -69,10 +69,10 @@
         <div class="row">
             <div class="col-12 col-lg-3 col-md-3">
                 <!--begin::Label-->
-                <label class="form-label fw-bold">Program : </label>
+                <label class="form-label fw-bold">Program / Fund Number : </label>
                 <!--end::Label-->
                 <!--begin::Input-->
-                <input type="text" name="form_filter_program" id="form_filter_program" class="form-control mb-2" placeholder="Nama Program"/>
+                <input type="text" name="form_filter_program" id="form_filter_program" class="form-control mb-2" placeholder="Nama Program / Fund Number"/>
                 <!--end::Input-->
             </div>
             <div class="col-12 col-lg-3 col-md-3">
@@ -116,10 +116,33 @@
             </div>
             <div class="col-12 col-lg-3 col-md-3">
                 <!--begin::Label-->
-                <label class="form-label fw-bold">Fund Number : </label>
+                <label class="form-label fw-bold">Nomor Purchase Order (PO) : </label>
                 <!--end::Label-->
                 <!--begin::Input-->
-                <input type="text" name="form_filter_program_fundnumber" id="form_filter_program_fundnumber" class="form-control mb-2" placeholder="Fund Number"/>
+                <input type="text" name="form_filter_program_po_nomor" id="form_filter_program_po_nomor" class="form-control mb-2" placeholder="Nomor Purchase Order (PO)"/>
+                <!--end::Input-->
+            </div>
+            <div class="col-12 col-lg-3 col-md-3">
+                <!--begin::Label-->
+                <label class="form-label fw-bold">Tanggal Purchase Order (PO) : </label>
+                <!--end::Label-->
+                
+                <!--begin::Input-->
+                <div class="position-relative d-flex align-items-center">
+                    <!--begin::Icon-->
+                    <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                        <span class="path3"></span>
+                        <span class="path4"></span>
+                        <span class="path5"></span>
+                        <span class="path6"></span>
+                    </i>
+                    <!--end::Icon-->
+                    <!--begin::Datepicker-->
+                    <input class="form-control ps-12" placeholder="Select a date" placeholder="Range Tanggal Purchase Order (PO)" id="form_filter_program_po_tanggal" name="form_filter_program_po_tanggal"/>
+                    <!--end::Datepicker-->
+                </div>
                 <!--end::Input-->
             </div>
             <div class="col-12 col-lg-3 col-md-3">
@@ -141,7 +164,235 @@
 
             <div class="col-12 col-lg-12 col-md-12">
 
-            </div>                       
+            </div>      
+            
+            <!--begin::Col-->
+            <div class="col-lg-3 mb-2">
+                <div class="mb-5">
+                    <div class="d-flex flex-stack">
+                        <div class="fw-bolder fs-4">Total Purchase Order (PO)
+                            <span class="fs-6 text-gray-400 ms-2"></span>
+                        </div>
+                        <!--begin::Menu-->
+                        <div>
+                            <button type="button"
+                                class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                        viewBox="0 0 24 24">
+                                        <g stroke="none" stroke-width="1" fill="none"
+                                            fill-rule="evenodd">
+                                            <rect x="5" y="5" width="5"
+                                                height="5" rx="1" fill="#000000"></rect>
+                                            <rect x="14" y="5" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="5" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="14" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </button>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <div class="h-3px w-100 bg-warning"></div>
+                </div>
+
+                <div class="card bg-light-warning shadow-sm card-xl-stretch">
+                    <div class="card-body p-5">                            
+                        <div class="d-flex justify-content-between mt-1">
+                            <div class="sales-info d-flex align-items-center">
+                                <i class="bi bi-bar-chart fs-1 me-2 text-primary"></i>
+                                <div class="sales-info-content">
+                                    <h6 class="mb-0">Purchase Order</h6>
+                                </div>
+                            </div>
+                            <h5 class="mb-0 fw-bold" id="data_line2_program_total_po">0</h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-lg-3 mb-2">
+                <div class="mb-5">
+                    <div class="d-flex flex-stack">
+                        <div class="fw-bolder fs-4">Purchase Order (PO) - Progres
+                            <span class="fs-6 text-gray-400 ms-2"></span>
+                        </div>
+                        <!--begin::Menu-->
+                        <div>
+                            <button type="button"
+                                class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                        viewBox="0 0 24 24">
+                                        <g stroke="none" stroke-width="1" fill="none"
+                                            fill-rule="evenodd">
+                                            <rect x="5" y="5" width="5"
+                                                height="5" rx="1" fill="#000000"></rect>
+                                            <rect x="14" y="5" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="5" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="14" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </button>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <div class="h-3px w-100 bg-warning"></div>
+                </div>
+
+                <div class="card bg-light-warning shadow-sm card-xl-stretch">
+                    <div class="card-body p-5">                            
+                        <div class="d-flex justify-content-between mt-1">
+                            <div class="sales-info d-flex align-items-center">
+                                <i class="bi bi-clipboard-pulse fs-1 me-2 text-primary"></i>
+                                <div class="sales-info-content">
+                                    <h6 class="mb-0">Progres</h6>
+                                </div>
+                            </div>
+                            <h5 class="mb-0 fw-bold" id="data_line2_program_total_po_progres">0</h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-lg-3 mb-2">
+                <div class="mb-5">
+                    <div class="d-flex flex-stack">
+                        <div class="fw-bolder fs-4">Good Receipt (GR) - Realisasi
+                            <span class="fs-6 text-gray-400 ms-2"></span>
+                        </div>
+                        <!--begin::Menu-->
+                        <div>
+                            <button type="button"
+                                class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                        viewBox="0 0 24 24">
+                                        <g stroke="none" stroke-width="1" fill="none"
+                                            fill-rule="evenodd">
+                                            <rect x="5" y="5" width="5"
+                                                height="5" rx="1" fill="#000000"></rect>
+                                            <rect x="14" y="5" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="5" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="14" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </button>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <div class="h-3px w-100 bg-warning"></div>
+                </div>
+
+                <div class="card bg-light-warning shadow-sm card-xl-stretch">
+                    <div class="card-body p-5">                            
+                        <div class="d-flex justify-content-between mt-1">
+                            <div class="sales-info d-flex align-items-center">
+                                <i class="bi bi-clipboard-check fs-1 me-2 text-primary"></i>
+                                <div class="sales-info-content">
+                                    <h6 class="mb-0">Realisasi</h6>
+                                </div>
+                            </div>
+                            <h5 class="mb-0 fw-bold" id="data_line2_program_total_po_selesai">0</h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Col-->
+
+            <!--begin::Col-->
+            <div class="col-lg-3 mb-2">
+                <div class="mb-5">
+                    <div class="d-flex flex-stack">
+                        <div class="fw-bolder fs-4">Data Progres (PO)
+                            <span class="fs-6 text-gray-400 ms-2"></span>
+                        </div>
+                        <!--begin::Menu-->
+                        <div>
+                            <button type="button"
+                                class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                <span class="svg-icon svg-icon-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                        viewBox="0 0 24 24">
+                                        <g stroke="none" stroke-width="1" fill="none"
+                                            fill-rule="evenodd">
+                                            <rect x="5" y="5" width="5"
+                                                height="5" rx="1" fill="#000000"></rect>
+                                            <rect x="14" y="5" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="5" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                            <rect x="14" y="14" width="5"
+                                                height="5" rx="1" fill="#000000" opacity="0.3">
+                                            </rect>
+                                        </g>
+                                    </svg>
+                                </span>
+                                <!--end::Svg Icon-->
+                            </button>
+                        </div>
+                        <!--end::Menu-->
+                    </div>
+                    <div class="h-3px w-100 bg-warning"></div>
+                </div>
+
+                <div class="card bg-light-warning shadow-sm card-xl-stretch">
+                    <div class="card-body p-5">                            
+                        <div class="d-flex justify-content-between mt-1">
+                            <div class="sales-info d-flex align-items-center">
+                                <i class="bi bi-layers fs-1 me-2 text-primary"></i>
+                                <div class="sales-info-content">
+                                    <h6 class="mb-0">Progres</h6>
+                                </div>
+                            </div>
+                            <h5 class="mb-0 fw-bold" id="data_line2_program_progres">0</h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!--end::Col-->
 
             <!--begin::Col-->
             <div class="col-12">
@@ -196,7 +447,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Data Form Progres Program - PR</h5>
+                <h5 class="modal-title">Data Form Progres Program - Purchase Order (PO)</h5>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
@@ -453,7 +704,7 @@
                         <div class="col-md-12">
                             <div class="d-flex float-md-end">
                                 <button type="button" class="btn btn-primary mt-2" id="btnTambahMasterdata" onclick="act_submitTambahData()">
-                                    <span class="indicator-label"><i class="bi bi-clipboard-plus fs-2 me-2"></i> Tambah Purchase Requisition (PR)</span>
+                                    <span class="indicator-label"><i class="bi bi-clipboard-plus fs-2 me-2"></i> Tambah Purchase Order (PO)</span>
                                 </button>
 
                                 <button type="button" class="btn btn-primary mt-2" id="btnUpdateMasterdata" onclick="act_sumbitUpdateData()">
