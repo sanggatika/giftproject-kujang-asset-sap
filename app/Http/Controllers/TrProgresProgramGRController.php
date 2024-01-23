@@ -296,17 +296,6 @@ class TrProgresProgramGRController extends Controller
                 return $this->onResult($status, $response_code, $message, $dataAPI);
             }
 
-            $total_pengajuan_gr = $request->form_masterdata_program_po_anggaran;
-
-            // Cek Data Dalam Database
-            $checkExistingTrProgramRealisasi =  trProgramRealisasi::where('id_program', $checkExistingTrProgresProgramPO->id_program)->first();
-            if(!$checkExistingTrProgramRealisasi)
-            {
-                $response_code = "RC400";
-                $message = "Realisasi Program Tidak Ada Dalam Database";
-                return $this->onResult($status, $response_code, $message, $dataAPI);
-            }
-
             // dd($checkExistingTrProgramRealisasi);
 
             $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -347,13 +336,13 @@ class TrProgresProgramGRController extends Controller
 
                 $AddTrProgramProgresGR->save();
 
-                $checkExistingTrProgramRealisasi->gr_tanggal = $AddTrProgramProgresGR->gr_tanggal;
-                $checkExistingTrProgramRealisasi->gr_nomor = $AddTrProgramProgresGR->gr_nomor;
-                $checkExistingTrProgramRealisasi->gr_nominal =  $total_pengajuan_gr;
-                $checkExistingTrProgramRealisasi->updated_at = Carbon::now();
-                $checkExistingTrProgramRealisasi->updated_by = Auth::user()->id;
+                // Purchase Order (PO) -> Good Receipt (GR)
 
-                $checkExistingTrProgramRealisasi->save();
+                $checkExistingTrProgresProgramPO->status =  2;
+                $checkExistingTrProgresProgramPO->updated_at = Carbon::now();
+                $checkExistingTrProgresProgramPO->updated_by = Auth::user()->id;
+
+                $checkExistingTrProgresProgramPO->save();
 
                 DB::commit();
 

@@ -131,8 +131,8 @@ class TrProgresProgramSRController extends Controller
             $jumlahFilterMsProgramSR = trProgresProgramSR::count();
             $totalFilterMsProgramNominalSR = trProgresProgramSR::sum('nominal');
 
-            $jumlahFilterMsProgramSRBelum = $jumlahFilterMsProgram - $jumlahFilterMsProgramSR;
-            $totalFilterMsProgramNominalSRBelum = $totalFilterMsProgramNominal - $totalFilterMsProgramNominalSR;
+            $jumlahFilterMsProgramSRBelum = $jumlahMsProgram - $jumlahFilterMsProgramSR;
+            $totalFilterMsProgramNominalSRBelum = $totalMsProgramNominal - $totalFilterMsProgramNominalSR;
 
             return DataTables::of($data)
             ->with('jumlahMsProgram', number_format($jumlahMsProgram,0,',','.'))
@@ -249,6 +249,7 @@ class TrProgresProgramSRController extends Controller
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnUpdateData(this)">Update Data</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnPurchaseRequisition(this)">Purchase Requisition (PR)</a></li>
                     </ul>
                 </div>
                 ';
@@ -379,49 +380,6 @@ class TrProgresProgramSRController extends Controller
                     $AddTrProgramProgresSR->created_by = Auth::user()->id;
 
                     $AddTrProgramProgresSR->save();
-                }
-
-                $checkExistingTrProgramRealisasi =  trProgramRealisasi::where('id_program', $checkExistingDataProgram->id)->first();
-
-                if($checkExistingTrProgramRealisasi)
-                {   
-                    $checkExistingTrProgramRealisasi->sr_tanggal = $request->form_masterdata_program_tanggal;
-                    $checkExistingTrProgramRealisasi->sr_nominal = $request->form_masterdata_program_anggaran_fix;
-                    $checkExistingTrProgramRealisasi->sr_nomor = $request->form_masterdata_program_nomor_mmr;
-                    $checkExistingTrProgramRealisasi->updated_at = Carbon::now();
-                    $checkExistingTrProgramRealisasi->updated_by = Auth::user()->id;
-
-                    $checkExistingTrProgramRealisasi->save();
-                }else{
-                    $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                    $nomor_registrasi = "TRREALISASI-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
-
-                    // Proses Simpan Data Kedalam Database      
-                    $AddTrProgramRealisasi = new trProgramRealisasi();
-
-                    $AddTrProgramRealisasi->uuid =  (string) Str::uuid();
-                    $AddTrProgramRealisasi->code =  $nomor_registrasi;
-                    $AddTrProgramRealisasi->id_program =  $checkExistingDataProgram->id;
-                    $AddTrProgramRealisasi->fund_number = $checkExistingDataProgram->fund_number;
-                    $AddTrProgramRealisasi->id_program_jenis_cck =  $checkExistingDataProgram->id_program_jenis_cck;
-                    $AddTrProgramRealisasi->name_program_jenis_cck =  $checkExistingDataProgram->name_program_jenis_cck;
-                    $AddTrProgramRealisasi->fund_center = $checkExistingDataProgram->fund_center;
-                    $AddTrProgramRealisasi->id_program_lokasi_cc =  $checkExistingDataProgram->id_program_lokasi_cc;
-                    $AddTrProgramRealisasi->name_program_lokasi_cc =  $checkExistingDataProgram->name_program_lokasi_cc;
-                    $AddTrProgramRealisasi->name = $checkExistingDataProgram->name;
-                    $AddTrProgramRealisasi->description = $checkExistingDataProgram->description;
-                    $AddTrProgramRealisasi->priority = $checkExistingDataProgram->priority;
-                    $AddTrProgramRealisasi->year = $checkExistingDataProgram->year;
-                    $AddTrProgramRealisasi->nominal = $checkExistingDataProgram->nominal;
-                    $AddTrProgramRealisasi->sr_tanggal = $request->form_masterdata_program_tanggal;
-                    $AddTrProgramRealisasi->sr_nominal = $request->form_masterdata_program_anggaran_fix;
-                    $AddTrProgramRealisasi->sr_nomor = $request->form_masterdata_program_nomor_mmr;
-                    $AddTrProgramRealisasi->status =  1;
-                    $AddTrProgramRealisasi->created_at = Carbon::now();
-                    $AddTrProgramRealisasi->updated_at = Carbon::now();
-                    $AddTrProgramRealisasi->created_by = Auth::user()->id;
-
-                    $AddTrProgramRealisasi->save();
                 }
 
                 DB::commit();

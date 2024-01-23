@@ -122,7 +122,11 @@ class TrProgresProgramPRController extends Controller
             $jumlahtrProgresProgramPRSelesai = $trProgresProgramPRSelesai->where('status', '!=', 1)->count();
             $totaltrProgresProgramPRNominalSelesai = $trProgresProgramPRSelesai->where('status', '!=', 1)->sum('pr_nominal');
 
-            $persentasetrProgresProgramPRNominalSelesai = ($totaltrProgresProgramPRNominalSelesai / $totaltrProgresProgramPRNominal) * 100;
+            $persentasetrProgresProgramPRNominalSelesai = 0;
+            if($totaltrProgresProgramPRNominalSelesai != 0)
+            {
+                $persentasetrProgresProgramPRNominalSelesai = ($totaltrProgresProgramPRNominalSelesai / $totaltrProgresProgramPRNominal) * 100;
+            }            
 
             // Menampilkan Data Hanya Belum Realisasi
             $dataTrProgresProgramPR->where('status', 1);
@@ -283,36 +287,10 @@ class TrProgresProgramPRController extends Controller
                 return $this->onResult($status, $response_code, $message, $dataAPI);
             }
 
-            $total_pengajuan_sr = 0;
-            if($checkExistingTrProgresProgramSR->trProgresProgramPR)
-            {
-                $interval_pengajuan = $checkExistingTrProgresProgramSR->trProgresProgramPR->sum('pr_nominal') + intval($request->form_masterdata_program_pr_anggaran);
-                // dd($interval_pengajuan);
-                if($interval_pengajuan > $checkExistingTrProgresProgramSR->sr_nominal)
-                {
-                    $response_code = "RC400";
-                    $message = "Pengajuan Purchase Requisition (PR) Melebihi Anggaran";
-                    return $this->onResult($status, $response_code, $message, $dataAPI);
-                }
-
-                $total_pengajuan_sr = $interval_pengajuan;
-            }
-            // dd($total_pengajuan_sr);
-
-            // Cek Data Dalam Database
-            $checkExistingTrProgramRealisasi =  trProgramRealisasi::where('id_program', $checkExistingTrProgresProgramSR->id_program)->first();
-            if(!$checkExistingTrProgramRealisasi)
-            {
-                $response_code = "RC400";
-                $message = "Realisasi Program Tidak Ada Dalam Database";
-                return $this->onResult($status, $response_code, $message, $dataAPI);
-            }
-
-            $tr_realisasi =  $checkExistingTrProgramRealisasi->tr_realisasi + 1;
-            // dd($tr_realisasi);
-
             $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $nomor_registrasi = "TRPROGPR-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
+
+            $tr_realisasi = 1 + trProgresProgramPR::where('fund_number', $checkExistingTrProgresProgramSR->fund_number)->count();
 
             // Validasi Ketika Gagal Melakukan Transaksi Data Akan Di Rollback
             DB::beginTransaction();
@@ -347,16 +325,6 @@ class TrProgresProgramPRController extends Controller
                 $AddTrProgramProgresPR->created_by = Auth::user()->id;
 
                 $AddTrProgramProgresPR->save();
-
-                $checkExistingTrProgramRealisasi->tr_realisasi = $AddTrProgramProgresPR->tr_realisasi;
-                $checkExistingTrProgramRealisasi->pr_tanggal = $AddTrProgramProgresPR->pr_tanggal;
-                $checkExistingTrProgramRealisasi->pr_nomor = $AddTrProgramProgresPR->pr_nomor;
-                $checkExistingTrProgramRealisasi->pr_nominal = $total_pengajuan_sr;
-                $checkExistingTrProgramRealisasi->pr_vendor = $AddTrProgramProgresPR->pr_vendor;
-                $checkExistingTrProgramRealisasi->updated_at = Carbon::now();
-                $checkExistingTrProgramRealisasi->updated_by = Auth::user()->id;
-
-                $checkExistingTrProgramRealisasi->save();
 
                 DB::commit();
 

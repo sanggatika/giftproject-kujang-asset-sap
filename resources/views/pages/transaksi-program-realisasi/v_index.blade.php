@@ -114,11 +114,14 @@
             </div>
             <div class="col-12 col-lg-3 col-md-3">
                 <!--begin::Label-->
-                <label class="form-label fw-bold">Status Program : </label>
+                <label class="form-label fw-bold">Status Progres : </label>
                 <!--end::Label-->
                 <!--begin::Input-->
                 <select class="form-select mb-2" name="form_filter_program_status" id="form_filter_program_status"  data-control="select2" data-placeholder="Select an option">
-                    <option value="-">-- Status Program -- </option>                       
+                    <option value="-">-- Status Progres -- </option>
+                    <option value="Purchase Requisition">Purchase Requisition (PR)</option>
+                    <option value="Purchase Order">Purchase Order (PO)</option>
+                    <option value="Good Receipt">Good Receipt (GR)</option>                       
                 </select>
                 <!--end::Input-->
             </div>
@@ -303,7 +306,7 @@
                                     <a href="#" class="text-primary fw-semibold fs-6 me-2">PR</a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
-                                    <b class="fw-bold fs-5">0</b>
+                                    <b class="fw-bold fs-5" id="data_totalTrProgresPR">0</b>
                                     <!--end::Action-->
                                 </div>
                                 <!--end::Item-->
@@ -319,7 +322,7 @@
                                     <a href="#" class="text-primary fw-semibold fs-6 me-2">PO</a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
-                                    <b class="fw-bold fs-5">0</b>
+                                    <b class="fw-bold fs-5" id="data_totalTrProgresPO">0</b>
                                     <!--end::Action-->
                                 </div>
                                 <!--end::Item-->
@@ -335,7 +338,7 @@
                                     <a href="#" class="text-primary fw-semibold fs-6 me-2">GR</a>
                                     <!--end::Section-->
                                     <!--begin::Action-->
-                                    <b class="fw-bold fs-5">0</b>
+                                    <b class="fw-bold fs-5" id="data_totalTrProgresGR">0</b>
                                     <!--end::Action-->
                                 </div>
                                 <!--end::Item-->
@@ -374,6 +377,7 @@
                                         <th class="text-center">PR</th>
                                         <th class="text-center">PO</th>
                                         <th class="text-center">Realisasi</th>
+                                        <th class="text-center">&nbsp; % &nbsp;</th>
                                         <th class="text-center">Actions</th>
                                     </tr>
                                     <!--end::Table row-->

@@ -59,7 +59,7 @@ class TrProgramRealisasiController extends Controller
             $form_filter_program_min_anggaran = $request->form_filter_program_min_anggaran;
             $form_filter_program_max_anggaran = $request->form_filter_program_max_anggaran;
 
-            $dataMsProgram = mProgram::whereNotNull('uuid');
+            $dataMsProgram = mProgram::with('trProgresProgramSR','trProgresProgramPRMany','trProgresProgramPOMany', 'trProgresProgramGRMany')->whereNotNull('uuid');
 
             $msProgram = $dataMsProgram->get();
             $jumlahMsProgram = $msProgram->count();
@@ -110,11 +110,18 @@ class TrProgramRealisasiController extends Controller
             $jumlahFilterMsProgram = $data->count();
             $totalFilterMsProgramNominal = $data->sum('nominal');
 
+            $totalTrProgresPR = $data->pluck('trProgresProgramPRMany')->flatten()->where('status', 1)->sum('pr_nominal');
+            $totalTrProgresPO = $data->pluck('trProgresProgramPOMany')->flatten()->where('status', 1)->sum('po_nominal');
+            $totalTrProgresGR = $data->pluck('trProgresProgramGRMany')->flatten()->sum('gr_nominal');
+
             return DataTables::of($data)
             ->with('jumlahMsProgram', number_format($jumlahMsProgram,0,',','.'))
             ->with('totalMsProgramNominal', number_format($totalMsProgramNominal,0,',','.'))
             ->with('jumlahFilterMsProgram', number_format($jumlahFilterMsProgram,0,',','.'))
             ->with('totalFilterMsProgramNominal', number_format($totalFilterMsProgramNominal,0,',','.'))
+            ->with('totalTrProgresPR', number_format($totalTrProgresPR,0,',','.'))
+            ->with('totalTrProgresPO', number_format($totalTrProgresPO,0,',','.'))
+            ->with('totalTrProgresGR', number_format($totalTrProgresGR,0,',','.'))
             ->addIndexColumn()
             ->addColumn('fund_number', function($row)
             {
@@ -157,10 +164,16 @@ class TrProgramRealisasiController extends Controller
             })
             ->addColumn('fild_mr', function($row)
             {
+                $nominal_sr = 0;
+                if($row->trProgresProgramSR)
+                {
+                    $nominal_sr = $row->trProgresProgramSR->sr_nominal;
+                }
+                
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-end">
-                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> - </a>
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($nominal_sr,0,',','.').'</a>
                 </div>
                 <!--begin::User details-->
                 ';
@@ -169,10 +182,16 @@ class TrProgramRealisasiController extends Controller
             })
             ->addColumn('fild_pr', function($row)
             {
+                $nominal_pr = 0;
+                if($row->trProgresProgramPRMany)
+                {
+                    $nominal_pr = $row->trProgresProgramPRMany->where('status', 1)->sum('pr_nominal');
+                }
+
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-end">
-                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> - </a>
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($nominal_pr,0,',','.').'</a>
                 </div>
                 <!--begin::User details-->
                 ';
@@ -181,10 +200,16 @@ class TrProgramRealisasiController extends Controller
             })
             ->addColumn('fild_po', function($row)
             {
+                $nominal_po = 0;
+                if($row->trProgresProgramPOMany)
+                {
+                    $nominal_po = $row->trProgresProgramPOMany->where('status', 1)->sum('po_nominal');
+                }
+
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-end">
-                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> - </a>
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($nominal_po,0,',','.').'</a>
                 </div>
                 <!--begin::User details-->
                 ';
@@ -193,10 +218,36 @@ class TrProgramRealisasiController extends Controller
             })
             ->addColumn('fild_gr', function($row)
             {
+                $nominal_gr = 0;
+                if($row->trProgresProgramGRMany)
+                {
+                    $nominal_gr = $row->trProgresProgramGRMany->where('status', 1)->sum('gr_nominal');
+                }
+
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-end">
-                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> - </a>
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($nominal_gr,0,',','.').'</a>
+                </div>
+                <!--begin::User details-->
+                ';
+
+                return $html;
+            })
+            ->addColumn('fild_persentase', function($row)
+            {
+                $nominal_gr = 0;
+                if($row->trProgresProgramGRMany)
+                {
+                    $nominal_gr = $row->trProgresProgramGRMany->where('status', 1)->sum('gr_nominal');
+                }
+
+                $persentase_realisasi = ( $nominal_gr / $row->nominal ) * 100;
+
+                $html = '
+                <!--begin::User details-->
+                <div class="d-flex flex-column text-end">
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($persentase_realisasi,2,',','.').' % </a>
                 </div>
                 <!--begin::User details-->
                 ';
@@ -224,7 +275,7 @@ class TrProgramRealisasiController extends Controller
 
                 return $html;
             })
-            ->rawColumns(['fund_number', 'fild_name', 'fild_nominal', 'fild_mr', 'fild_pr', 'fild_po', 'fild_gr', 'action'])
+            ->rawColumns(['fund_number', 'fild_name', 'fild_nominal', 'fild_mr', 'fild_pr', 'fild_po', 'fild_gr', 'fild_persentase', 'action'])
             ->make(true);
         }
         return $this->onResult($status, $response_code, $message, $dataAPI);

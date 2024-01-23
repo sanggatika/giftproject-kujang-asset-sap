@@ -80,6 +80,10 @@ function serverSideDatatables()
                 $("#data_line2_program_total").html(data.jumlahMsProgram +" | "+data.totalMsProgramNominal);
                 $("#data_line2_program_total_filter").html(data.jumlahFilterMsProgram +" | "+data.totalFilterMsProgramNominal);
 
+                $("#data_totalTrProgresPR").html(data.totalTrProgresPR);
+                $("#data_totalTrProgresPO").html(data.totalTrProgresPO);
+                $("#data_totalTrProgresGR").html(data.totalTrProgresGR);
+
                 return data.data;
             },
             error: function ()
@@ -107,6 +111,7 @@ function serverSideDatatables()
             {data: 'fild_pr', name: 'fild_pr'},
             {data: 'fild_po', name: 'fild_po'},
             {data: 'fild_gr', name: 'fild_gr'},
+            {data: 'fild_persentase', name: 'fild_persentase'},
             {data: 'action', name: 'action', class:'text-center'}            
         ]
     });

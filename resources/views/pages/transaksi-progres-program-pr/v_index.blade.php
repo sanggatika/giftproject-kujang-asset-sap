@@ -341,7 +341,7 @@
             <div class="col-lg-3 mb-2">
                 <div class="mb-5">
                     <div class="d-flex flex-stack">
-                        <div class="fw-bolder fs-4">Data Progres (PO)
+                        <div class="fw-bolder fs-4">Data Progres (PR)
                             <span class="fs-6 text-gray-400 ms-2"></span>
                         </div>
                         <!--begin::Menu-->
@@ -446,7 +446,7 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Data Form Progres Program - PR</h5>
+                <h5 class="modal-title">Data Form Progres Program - Purchase Requisition (PR)</h5>
 
                 <!--begin::Close-->
                 <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">

@@ -29,4 +29,19 @@ class mProgram extends Model
     {
         return $this->hasOne(trProgresProgramSR::class, 'id_program', 'id');
     }
+
+    public function trProgresProgramPRMany()
+    {
+        return $this->hasMany(trProgresProgramPR::class, 'id_program', 'id');
+    }
+
+    public function trProgresProgramPOMany()
+    {
+        return $this->hasMany(trProgresProgramPO::class, 'id_program', 'id');
+    }
+
+    public function trProgresProgramGRMany()
+    {
+        return $this->hasMany(trProgresProgramGR::class, 'id_program', 'id');
+    }
 }
