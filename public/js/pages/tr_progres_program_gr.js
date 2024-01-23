@@ -262,9 +262,20 @@ form_filter_program_priority.onchange = evt => {
     serverSideDatatables();
 }
 
-form_filter_program_fundnumber.onchange = evt => {
+form_filter_program_gr_nomor.onchange = evt => {
     serverSideDatatables();
 }
+
+$("#form_filter_program_gr_tanggal").flatpickr({
+    altInput: true,
+    altFormat: "F j, Y",
+    dateFormat: "Y-m-d",
+    mode: "range",
+    onClose: function(selectedDates, dateStr, instance) {
+        // Memanggil fungsi serverSideDatatables() saat rentang tanggal dipilih
+        serverSideDatatables();
+    }
+});
 
 form_filter_program_min_anggaran.onchange = evt => {
     serverSideDatatables();
@@ -281,7 +292,8 @@ function serverSideDatatables()
     let form_filter_program_lokasi = $("#form_filter_program_lokasi").val();
     let form_filter_program_priority = $("#form_filter_program_priority").val();
 
-    let form_filter_program_fundnumber = $("#form_filter_program_fundnumber").val();
+    let form_filter_program_gr_nomor = $("#form_filter_program_gr_nomor").val();
+    let form_filter_program_gr_tanggal = $("#form_filter_program_gr_tanggal").val();
     let form_filter_program_min_anggaran = $("#form_filter_program_min_anggaran").val();
     let form_filter_program_max_anggaran = $("#form_filter_program_max_anggaran").val();
 
@@ -300,7 +312,8 @@ function serverSideDatatables()
                 form_filter_program_jenis:form_filter_program_jenis,
                 form_filter_program_lokasi:form_filter_program_lokasi,
                 form_filter_program_priority:form_filter_program_priority,
-                form_filter_program_fundnumber:form_filter_program_fundnumber,
+                form_filter_program_gr_nomor:form_filter_program_gr_nomor,
+                form_filter_program_gr_tanggal:form_filter_program_gr_tanggal,
                 form_filter_program_min_anggaran:form_filter_program_min_anggaran,
                 form_filter_program_max_anggaran:form_filter_program_max_anggaran
             },
@@ -312,9 +325,17 @@ function serverSideDatatables()
                 KTApp.showPageLoading();
             },
             dataSrc: function (data) {
-                // console.log(data);
+                console.log(data);
                 KTApp.hidePageLoading();
                 loadingEl.remove(); 
+
+                $("#data_line2_program_total").html(data.jumlahMsProgram +" | "+data.totalMsProgramNominal);
+                $("#data_line2_program_total_realisasi").html(data.totalFilterProgresProgramRealisasi);
+                $("#data_line2_program_total_realisasi_sisa").html(data.totalFilterProgresProgramRealisasiSisa);
+
+                let angka_persentase_realisasi = data.persentaseFilterProgresProgramRealisasi;
+                let pembulatan_angka_persentase_realisasi = angka_persentase_realisasi.toFixed(3);
+                $("#data_line2_program_progres").html(data.jumlahFilterProgresProgramRealisasi + " GR | " + pembulatan_angka_persentase_realisasi + " %");
 
                 return data.data;
             },

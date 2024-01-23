@@ -59,16 +59,21 @@ class TrProgresProgramGRController extends Controller
             $form_filter_program_lokasi = $request->form_filter_program_lokasi;
             $form_filter_program_priority = $request->form_filter_program_priority;
 
-            $form_filter_program_fundnumber = $request->form_filter_program_fundnumber;
+            $form_filter_program_gr_nomor = $request->form_filter_program_gr_nomor;
             $form_filter_program_min_anggaran = $request->form_filter_program_min_anggaran;
             $form_filter_program_max_anggaran = $request->form_filter_program_max_anggaran;
 
+            $form_filter_program_gr_tanggal = $request->form_filter_program_gr_tanggal;            
+
             $dataTrProgresProgramGR = trProgresProgramGR::with('trProgresProgramPR', 'trProgresProgramPO')->whereNotNull('uuid');
+
+            $jumlahMsProgram = mProgram::whereNotNull('uuid')->count();
+            $totalMsProgramNominal = mProgram::whereNotNull('uuid')->sum('nominal');
 
             // Filter Data
             if($form_filter_program != "")
             {
-                $dataTrProgresProgramGR->where('name', 'like', '%'.$form_filter_program.'%');
+                $dataTrProgresProgramGR->where('name', 'like', '%'.$form_filter_program.'%')->orWhere('fund_number',$form_filter_program);
             }
 
             if($form_filter_program_jenis != "-")
@@ -88,9 +93,19 @@ class TrProgresProgramGRController extends Controller
                 $dataTrProgresProgramGR->where('priority', $request->form_filter_program_priority);
             }
 
-            if($form_filter_program_fundnumber != "")
+            if($form_filter_program_gr_nomor != "")
             {
-                $dataTrProgresProgramGR->where('fund_number', 'like', '%'.$form_filter_program_fundnumber.'%');
+                $dataTrProgresProgramGR->where('gr_nomor', $form_filter_program_gr_nomor);
+            }
+
+            // Filter Data
+            if($form_filter_program_gr_tanggal != "")
+            {
+                $explode_filter_program_gr_tanggal = explode(' to ', $form_filter_program_gr_tanggal);
+                $form_filter_startdate = $explode_filter_program_gr_tanggal[0];
+                $form_filter_enddate = $explode_filter_program_gr_tanggal[1];
+
+                $dataTrProgresProgramGR->whereBetween('created_at', [$form_filter_startdate.' 00:00:01', $form_filter_enddate.' 23:59:59']);
             }
 
             if($form_filter_program_min_anggaran != "")
@@ -106,8 +121,20 @@ class TrProgresProgramGRController extends Controller
             }
 
             $data = $dataTrProgresProgramGR->get();
+            $jumlahFilterProgresProgramRealisasi = $data->count();
+            $totalFilterProgresProgramRealisasi = $data->sum('gr_nominal');
+            $totalFilterProgresProgramRealisasiSisa = $totalMsProgramNominal - $totalFilterProgresProgramRealisasi;
+            $persentaseFilterProgresProgramRealisasi = ($totalFilterProgresProgramRealisasi / $totalMsProgramNominal) * 100;
+            
+            // dd($totalFilterProgresProgramRealisasi);
 
             return DataTables::of($data)
+            ->with('jumlahMsProgram', number_format($jumlahMsProgram,0,',','.'))
+            ->with('totalMsProgramNominal', number_format($totalMsProgramNominal,0,',','.'))
+            ->with('jumlahFilterProgresProgramRealisasi', number_format($jumlahFilterProgresProgramRealisasi,0,',','.'))
+            ->with('totalFilterProgresProgramRealisasi', number_format($totalFilterProgresProgramRealisasi,0,',','.'))
+            ->with('totalFilterProgresProgramRealisasiSisa', number_format($totalFilterProgresProgramRealisasiSisa,0,',','.'))
+            ->with('persentaseFilterProgresProgramRealisasi', $persentaseFilterProgresProgramRealisasi)
             ->addIndexColumn()
             ->addColumn('fund_number', function($row)
             {
