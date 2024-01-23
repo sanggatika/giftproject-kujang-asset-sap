@@ -17,7 +17,7 @@ form_filter_program_priority.onchange = evt => {
     serverSideDatatables();
 }
 
-form_filter_program_fundnumber.onchange = evt => {
+form_filter_program_sr_nomor.onchange = evt => {
     serverSideDatatables();
 }
 
@@ -40,7 +40,7 @@ function serverSideDatatables()
     let form_filter_program_lokasi = $("#form_filter_program_lokasi").val();
     let form_filter_program_priority = $("#form_filter_program_priority").val();
 
-    let form_filter_program_fundnumber = $("#form_filter_program_fundnumber").val();
+    let form_filter_program_sr_nomor = $("#form_filter_program_sr_nomor").val();
     let form_filter_program_status = $("#form_filter_program_status").val();
     let form_filter_program_min_anggaran = $("#form_filter_program_min_anggaran").val();
     let form_filter_program_max_anggaran = $("#form_filter_program_max_anggaran").val();
@@ -60,7 +60,7 @@ function serverSideDatatables()
                 form_filter_program_jenis:form_filter_program_jenis,
                 form_filter_program_lokasi:form_filter_program_lokasi,
                 form_filter_program_priority:form_filter_program_priority,
-                form_filter_program_fundnumber:form_filter_program_fundnumber,
+                form_filter_program_sr_nomor:form_filter_program_sr_nomor,
                 form_filter_program_status:form_filter_program_status,
                 form_filter_program_min_anggaran:form_filter_program_min_anggaran,
                 form_filter_program_max_anggaran:form_filter_program_max_anggaran
@@ -79,6 +79,9 @@ function serverSideDatatables()
 
                 $("#data_line2_program_total").html(data.jumlahMsProgram +" | "+data.totalMsProgramNominal);
                 $("#data_line2_program_total_filter").html(data.jumlahFilterMsProgram +" | "+data.totalFilterMsProgramNominal);
+
+                $("#data_line2_program_total_sr_sudah").html(data.jumlahFilterMsProgramSR +" | "+data.totalFilterMsProgramNominalSR);
+                $("#data_line2_program_total_sr_belum").html(data.jumlahFilterMsProgramSRBelum +" | "+data.totalFilterMsProgramNominalSRBelum);
 
                 return data.data;
             },

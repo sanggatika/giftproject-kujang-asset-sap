@@ -56,7 +56,7 @@ class TrProgresProgramSRController extends Controller
             $form_filter_program_lokasi = $request->form_filter_program_lokasi;
             $form_filter_program_priority = $request->form_filter_program_priority;
 
-            $form_filter_program_fundnumber = $request->form_filter_program_fundnumber;
+            $form_filter_program_sr_nomor = $request->form_filter_program_sr_nomor;
             $form_filter_program_status = $request->form_filter_program_status;
             $form_filter_program_min_anggaran = $request->form_filter_program_min_anggaran;
             $form_filter_program_max_anggaran = $request->form_filter_program_max_anggaran;
@@ -70,7 +70,7 @@ class TrProgresProgramSRController extends Controller
             // Filter Data
             if($form_filter_program != "")
             {
-                $dataMsProgram->where('name', 'like', '%'.$form_filter_program.'%');
+                $dataMsProgram->where('name', 'like', '%'.$form_filter_program.'%')->orWhere('fund_number',$form_filter_program);;
             }
 
             if($form_filter_program_jenis != "-")
@@ -90,9 +90,25 @@ class TrProgresProgramSRController extends Controller
                 $dataMsProgram->where('priority', $request->form_filter_program_priority);
             }
 
-            if($form_filter_program_fundnumber != "")
+            if($form_filter_program_sr_nomor != "")
             {
-                $dataMsProgram->where('fund_number', 'like', '%'.$form_filter_program_fundnumber.'%');
+                $data_filter = $form_filter_program_sr_nomor;
+                $dataMsProgram->whereHas('trProgresProgramSR', function ($query) use ($data_filter) {
+                    $query->where('sr_nomor', $data_filter);
+                });
+            }
+
+            if($form_filter_program_status != "-")
+            {
+                if($form_filter_program_status == "sudah update")
+                {
+                    $dataMsProgram->has('trProgresProgramSR');
+                }
+
+                if($form_filter_program_status == "belum update")
+                {
+                    $dataMsProgram->doesntHave('trProgresProgramSR');
+                }
             }
 
             if($form_filter_program_min_anggaran != "")
@@ -112,11 +128,21 @@ class TrProgresProgramSRController extends Controller
             $jumlahFilterMsProgram = $data->count();
             $totalFilterMsProgramNominal = $data->sum('nominal');
 
+            $jumlahFilterMsProgramSR = trProgresProgramSR::count();
+            $totalFilterMsProgramNominalSR = trProgresProgramSR::sum('nominal');
+
+            $jumlahFilterMsProgramSRBelum = $jumlahFilterMsProgram - $jumlahFilterMsProgramSR;
+            $totalFilterMsProgramNominalSRBelum = $totalFilterMsProgramNominal - $totalFilterMsProgramNominalSR;
+
             return DataTables::of($data)
             ->with('jumlahMsProgram', number_format($jumlahMsProgram,0,',','.'))
             ->with('totalMsProgramNominal', number_format($totalMsProgramNominal,0,',','.'))
             ->with('jumlahFilterMsProgram', number_format($jumlahFilterMsProgram,0,',','.'))
             ->with('totalFilterMsProgramNominal', number_format($totalFilterMsProgramNominal,0,',','.'))
+            ->with('jumlahFilterMsProgramSR', number_format($jumlahFilterMsProgramSR,0,',','.'))
+            ->with('totalFilterMsProgramNominalSR', number_format($totalFilterMsProgramNominalSR,0,',','.'))
+            ->with('jumlahFilterMsProgramSRBelum', number_format($jumlahFilterMsProgramSRBelum,0,',','.'))
+            ->with('totalFilterMsProgramNominalSRBelum', number_format($totalFilterMsProgramNominalSRBelum,0,',','.'))
             ->addIndexColumn()
             ->addColumn('fund_number', function($row)
             {

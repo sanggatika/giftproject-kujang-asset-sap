@@ -71,7 +71,7 @@ class TrProgresProgramPRController extends Controller
             // Filter Data
             if($form_filter_program != "")
             {
-                $dataTrProgresProgramPR->where('name', 'like', '%'.$form_filter_program.'%');
+                $dataTrProgresProgramPR->where('name', 'like', '%'.$form_filter_program.'%')->orWhere('fund_number',$form_filter_program);;
             }
 
             if($form_filter_program_jenis != "-")
