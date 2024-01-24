@@ -22,6 +22,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\mProgramJenisCCK;
 use App\Models\mProgramLokasiCC;
 use App\Models\mProgram;
+use App\Models\trProgresProgramSR;
+use App\Models\trProgresProgramPR;
+use App\Models\trProgresProgramPO;
+use App\Models\trProgresProgramGR;
 
 class DashboardController extends Controller
 {
@@ -63,6 +67,25 @@ class DashboardController extends Controller
         $model['ms_program'] = mProgram::with('mProgramJenisCCK', 'mProgramLokasiCC')->get();
 
         return view('pages.dashboard.v_program_anggaran', ['model' => $model]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function page_realisasiDashboard(Request $request)
+    {
+        $model['route'] = 'Dashboard Realisasi Program';
+        
+        // data
+        $model['ms_program'] = mProgram::with('trProgresProgramSR','trProgresProgramPRMany','trProgresProgramPOMany', 'trProgresProgramGRMany')->get();
+        $model['tr_progres_sr'] = trProgresProgramSR::get();
+        $model['tr_progres_pr'] = trProgresProgramPR::get();
+        $model['tr_progres_po'] = trProgresProgramPO::get();
+        $model['tr_progres_gr'] = trProgresProgramGR::get();
+
+        return view('pages.dashboard.v_program_realisasi', ['model' => $model]);
     }
 
     private static function onResult($status, $response_code, $message, $data)
