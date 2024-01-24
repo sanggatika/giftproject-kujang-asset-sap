@@ -36,7 +36,7 @@ class DashboardController extends Controller
      */
     public function page_admDashboard(Request $request)
     {
-        return redirect()->route('dash.program_anggaran');
+        return redirect()->route('dash.progres_realisasi');
         $model['route'] = 'Dashboard Admin';
         
         return view('pages.dashboard.v_index', ['model' => $model]);
