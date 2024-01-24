@@ -53,8 +53,8 @@
                         <span id="kt_landing_hero_text">GIFTPROJECT.ID</span>
                     </span>
                 </h1>
-                <h1 class="text-white lh-base fw-bold fs-1x fs-lg-2x">
-                    APP KUJANG ASSET SAP 
+                <h1 class="text-white lh-base fw-bold fs-1x fs-lg-2x" style="background: linear-gradient(to right, #12CE5D 0%, #FFD80C 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">
+                    - MANAGEMENT PROJECT CONTROL INFORMATIO SYSTEM -
                 </h1>
 
                 <img src="{{ asset('images/kujang-asset-beranda.png') }}" class="img-fluid" style="max-height: 350px;" alt="bupati_logo">

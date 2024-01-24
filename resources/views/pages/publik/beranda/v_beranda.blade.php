@@ -25,13 +25,13 @@
             <div class="card shadow-sm">
     
                 <div class="card-body text-center">
-                    <h3 class="fs-2hx text-primary fw-bold">Tentang Aplikasi</h3>
+                    <h3 class="fs-2hx text-primary fw-bold">ABOUT APPLICATION</h3>
                     <div class="separator separator-dotted separator-content border-success my-5">
                         <i class="bi bi-check-square text-success fs-2"></i>
                     </div>
                     <br>
                     <div class="fs-5 text-muted fw-bold">
-                        Aset Inventori adalah sebuah sistem manajemen yang dirancang untuk membantu perusahaan atau organisasi dalam mengelola aset mereka, khususnya yang terkait dengan pembelian, stok, monitoring stok, penjualan, dan pelaporan keuangan. Aplikasi ini memberikan solusi terpadu untuk efisiensi dan transparansi dalam pengelolaan aset perusahaan. untuk meningkatkan efisiensi, mengurangi kesalahan, dan memberikan visibilitas yang baik terhadap aset perusahaan secara keseluruhan. Dengan fitur-fitur antara lain:
+                        Project Control Information System (PCIS) is a software application designed to facilitate the efficient management and control of projects. It serves as a centralized platform for planning, monitoring, and executing project activities. The system helps project managers, team members, and stakeholders collaborate, track progress, and make informed decisions throughout the project lifecycle.
                     </div>
     
                     <div class="row mt-10"> 
@@ -48,7 +48,7 @@
                                         <!--begin::Text-->
                                         <div class="mb-5">
                                             <div class="d-flex flex-stack">
-                                                <div class="fw-bolder fs-4">Pembelian
+                                                <div class="fw-bolder fs-4">Task and Resource Management
                                                     <span class="fs-6 text-gray-400 ms-2"></span>
                                                 </div>
                                                 <!--begin::Menu-->
@@ -85,7 +85,7 @@
                                         </div>
                                         <!--end::Text-->
                                         <!--begin::Description-->
-                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Aplikasi ini memungkinkan pengguna untuk mencatat setiap transaksi pembelian aset atau barang. Menyimpan data lengkap mengenai pemasok</span>
+                                        <span class="text-gray-400 fw-semibold d-block fs-6"> This aspect of project management involves planning, assigning, tracking, and optimizing tasks and resources to achieve project objectives</span>
                                         <!--end::Description=-->
                                     </div>
                                     <!--end::Section-->
@@ -102,14 +102,14 @@
                                 <!--begin::Wrapper-->
                                 <div class="d-flex align-items-center me-3 text-start">
                                     <!--begin::Logo-->
-                                    <span class="indicator-label"><i class="bi bi-calculator fs-2hx me-5 text-primary"></i></span>
+                                    <span class="indicator-label"><i class="bi bi-boxes fs-2hx me-5 text-primary"></i></span>
                                     <!--end::Logo-->
                                     <!--begin::Section-->
                                     <div class="flex-grow-1" style="text-align: justify;">
                                         <!--begin::Text-->
                                         <div class="mb-5">
                                             <div class="d-flex flex-stack">
-                                                <div class="fw-bolder fs-4">Monitoring Stok
+                                                <div class="fw-bolder fs-4">Progress Tracking
                                                     <span class="fs-6 text-gray-400 ms-2"></span>
                                                 </div>
                                                 <!--begin::Menu-->
@@ -146,7 +146,7 @@
                                         </div>
                                         <!--end::Text-->
                                         <!--begin::Description-->
-                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Merekam setiap pergerakan stok, baik itu penerimaan dari pembelian atau pengeluaran karena penjualan Monitoring Stok Real-time memudahkan pencarian dan analisis.</span>
+                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Progress Tracking is a vital aspect of project management that involves monitoring and assessing the advancement of tasks and milestones within a project.</span>
                                         <!--end::Description=-->
                                     </div>
                                     <!--end::Section-->
@@ -163,14 +163,14 @@
                                 <!--begin::Wrapper-->
                                 <div class="d-flex align-items-center me-3 text-start">
                                     <!--begin::Logo-->
-                                    <span class="indicator-label"><i class="bi bi-qr-code-scan fs-2hx me-5 text-primary"></i></span>
+                                    <span class="indicator-label"><i class="bi bi-bar-chart fs-2hx me-5 text-primary"></i></span>
                                     <!--end::Logo-->
                                     <!--begin::Section-->
                                     <div class="flex-grow-1" style="text-align: justify;">
                                         <!--begin::Text-->
                                         <div class="mb-5">
                                             <div class="d-flex flex-stack">
-                                                <div class="fw-bolder fs-4">Penjualan
+                                                <div class="fw-bolder fs-4">Reporting and Analytics
                                                     <span class="fs-6 text-gray-400 ms-2"></span>
                                                 </div>
                                                 <!--begin::Menu-->
@@ -207,68 +207,7 @@
                                         </div>
                                         <!--end::Text-->
                                         <!--begin::Description-->
-                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Mencatat setiap transaksi penjualan yang melibatkan aset atau barang Melacak informasi pelanggan, riwayat transaksi, dan preferensi.</span>
-                                        <!--end::Description=-->
-                                    </div>
-                                    <!--end::Section-->
-                                </div>
-                                <!--end::Wrapper-->
-                            </div>
-                            <div class="separator separator-dashed my-3"></div>
-                        </div>
-                        <!--end::Col-->
-    
-                        <!--begin::Col-->
-                        <div class="col-lg-4 mb-2">
-                            <div class="d-flex flex-stack">
-                                <!--begin::Wrapper-->
-                                <div class="d-flex align-items-center me-3 text-start">
-                                    <!--begin::Logo-->
-                                    <span class="indicator-label"><i class="bi bi-bar-chart-fill fs-2hx me-5 text-primary"></i></span>
-                                    <!--end::Logo-->
-                                    <!--begin::Section-->
-                                    <div class="flex-grow-1" style="text-align: justify;">
-                                        <!--begin::Text-->
-                                        <div class="mb-5">
-                                            <div class="d-flex flex-stack">
-                                                <div class="fw-bolder fs-4">Laporan Keuangan
-                                                    <span class="fs-6 text-gray-400 ms-2"></span>
-                                                </div>
-                                                <!--begin::Menu-->
-                                                <div>
-                                                    <button type="button"
-                                                        class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
-                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
-                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
-                                                        <span class="svg-icon svg-icon-2">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
-                                                                viewBox="0 0 24 24">
-                                                                <g stroke="none" stroke-width="1" fill="none"
-                                                                    fill-rule="evenodd">
-                                                                    <rect x="5" y="5" width="5"
-                                                                        height="5" rx="1" fill="#000000"></rect>
-                                                                    <rect x="14" y="5" width="5"
-                                                                        height="5" rx="1" fill="#000000" opacity="0.3">
-                                                                    </rect>
-                                                                    <rect x="5" y="14" width="5"
-                                                                        height="5" rx="1" fill="#000000" opacity="0.3">
-                                                                    </rect>
-                                                                    <rect x="14" y="14" width="5"
-                                                                        height="5" rx="1" fill="#000000" opacity="0.3">
-                                                                    </rect>
-                                                                </g>
-                                                            </svg>
-                                                        </span>
-                                                        <!--end::Svg Icon-->
-                                                    </button>
-                                                </div>
-                                                <!--end::Menu-->
-                                            </div>
-                                            <div class="h-3px w-100 bg-warning"></div>
-                                        </div>
-                                        <!--end::Text-->
-                                        <!--begin::Description-->
-                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Menyajikan laporan keuangan yang merinci pendapatan, biaya, laba bersih, dan lainnya. Membantu pengguna dalam menganalisis profitabilitas.</span>
+                                        <span class="text-gray-400 fw-semibold d-block fs-6"> involves regularly updating and monitoring the status of individual tasks. status of their assigned tasks, providing real-time insights into project progression.</span>
                                         <!--end::Description=-->
                                     </div>
                                     <!--end::Section-->
@@ -292,7 +231,7 @@
                                         <!--begin::Text-->
                                         <div class="mb-5">
                                             <div class="d-flex flex-stack">
-                                                <div class="fw-bolder fs-4">Keamanan dan Hak Akses
+                                                <div class="fw-bolder fs-4">Security and Access Control
                                                     <span class="fs-6 text-gray-400 ms-2"></span>
                                                 </div>
                                                 <!--begin::Menu-->
@@ -329,7 +268,68 @@
                                         </div>
                                         <!--end::Text-->
                                         <!--begin::Description-->
-                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Memastikan bahwa setiap pengguna memiliki tingkat akses yang sesuai dengan tanggung jawabnya. Menjaga keamanan data dengan menerapkan enkripsi</span>
+                                        <span class="text-gray-400 fw-semibold d-block fs-6"> ensuring that only authorized users have access to specific resources and that sensitive information is protected. Security and Access Control</span>
+                                        <!--end::Description=-->
+                                    </div>
+                                    <!--end::Section-->
+                                </div>
+                                <!--end::Wrapper-->
+                            </div>
+                            <div class="separator separator-dashed my-3"></div>
+                        </div>
+                        <!--end::Col-->
+    
+                        <!--begin::Col-->
+                        <div class="col-lg-4 mb-2">
+                            <div class="d-flex flex-stack">
+                                <!--begin::Wrapper-->
+                                <div class="d-flex align-items-center me-3 text-start">
+                                    <!--begin::Logo-->
+                                    <span class="indicator-label"><i class="bi bi-grid-1x2 fs-2hx me-5 text-primary"></i></span>
+                                    <!--end::Logo-->
+                                    <!--begin::Section-->
+                                    <div class="flex-grow-1" style="text-align: justify;">
+                                        <!--begin::Text-->
+                                        <div class="mb-5">
+                                            <div class="d-flex flex-stack">
+                                                <div class="fw-bolder fs-4">Mobile Accessibility
+                                                    <span class="fs-6 text-gray-400 ms-2"></span>
+                                                </div>
+                                                <!--begin::Menu-->
+                                                <div>
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                        <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                                        <span class="svg-icon svg-icon-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                                viewBox="0 0 24 24">
+                                                                <g stroke="none" stroke-width="1" fill="none"
+                                                                    fill-rule="evenodd">
+                                                                    <rect x="5" y="5" width="5"
+                                                                        height="5" rx="1" fill="#000000"></rect>
+                                                                    <rect x="14" y="5" width="5"
+                                                                        height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                    </rect>
+                                                                    <rect x="5" y="14" width="5"
+                                                                        height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                    </rect>
+                                                                    <rect x="14" y="14" width="5"
+                                                                        height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                    </rect>
+                                                                </g>
+                                                            </svg>
+                                                        </span>
+                                                        <!--end::Svg Icon-->
+                                                    </button>
+                                                </div>
+                                                <!--end::Menu-->
+                                            </div>
+                                            <div class="h-3px w-100 bg-warning"></div>
+                                        </div>
+                                        <!--end::Text-->
+                                        <!--begin::Description-->
+                                        <span class="text-gray-400 fw-semibold d-block fs-6"> Design and implementation of digital products, services, or applications to ensure that they are usable and inclusive for accessed through mobile devices</span>
                                         <!--end::Description=-->
                                     </div>
                                     <!--end::Section-->
@@ -353,7 +353,7 @@
                                         <!--begin::Text-->
                                         <div class="mb-5">
                                             <div class="d-flex flex-stack">
-                                                <div class="fw-bolder fs-4">Antarmuka Pengguna yang Ramah
+                                                <div class="fw-bolder fs-4">Scalability
                                                     <span class="fs-6 text-gray-400 ms-2"></span>
                                                 </div>
                                                 <!--begin::Menu-->
@@ -390,7 +390,7 @@
                                         </div>
                                         <!--end::Text-->
                                         <!--begin::Description-->
-                                        <span class="text-gray-400 fw-semibold d-block fs-6">Menyediakan antarmuka yang mudah digunakan agar pengguna dapat dengan cepat mengakses informasi dan menjalankan fungsi yang diperlukan.</span>
+                                        <span class="text-gray-400 fw-semibold d-block fs-6">Scale to accommodate projects of varying sizes and complexities. System streamlines project management processes, enhances communication, and contributes</span>
                                         <!--end::Description=-->
                                     </div>
                                     <!--end::Section-->
