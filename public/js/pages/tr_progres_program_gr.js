@@ -421,6 +421,7 @@ function act_btnUpdateData(data)
                 $("#form_masterdata_program_gr_tanggal").flatpickr({
                     defaultDate: [data.data.gr_tanggal]
                 });
+                $('#form_masterdata_program_gr_uuid').val(data.data.uuid).prop('readonly', true);
                 $('#form_masterdata_program_gr_nomor').val(data.data.gr_nomor);
                 $('#form_masterdata_program_gr_anggaran').val(data.data.gr_nominal);
 
@@ -446,6 +447,128 @@ function act_btnUpdateData(data)
 
             Swal.fire({
                 text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    });
+}
+
+function act_sumbitUpdateData()
+{    
+    let form_masterdata_program_po_nomor = $("#form_masterdata_program_po_nomor").val();
+    let form_masterdata_program_po_uuid = $("#form_masterdata_program_po_uuid").val();
+
+    let form_masterdata_program_gr_uuid = $("#form_masterdata_program_gr_uuid").val();
+    let form_masterdata_program_gr_tanggal = $("#form_masterdata_program_gr_tanggal").val();
+    let form_masterdata_program_gr_nomor = $("#form_masterdata_program_gr_nomor").val();
+    let form_masterdata_program_gr_anggaran = $("#form_masterdata_program_gr_anggaran").val();
+
+    // validasi form
+    if(form_masterdata_program_gr_uuid == "" || form_masterdata_program_gr_tanggal == "" || form_masterdata_program_gr_nomor == "" || form_masterdata_program_gr_anggaran == "")
+    {
+        Swal.fire({
+            text: "Pastikan Anda Sudah Mengisi Semua Form Data..!!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    Swal.fire({
+        title: 'Yakin Update Data ?',
+        text: "Pastikan Anda Sudah Mengecek Kembali Data Yang Akan Dikirim..",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Submit!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                url: BaseURL + "/transaksi/progres/program/gr/act_update",
+                data: {
+                    form_masterdata_program_po_nomor,
+                    form_masterdata_program_po_uuid,
+                    form_masterdata_program_gr_uuid,
+                    form_masterdata_program_gr_tanggal,
+                    form_masterdata_program_gr_nomor,
+                    form_masterdata_program_gr_anggaran
+                },
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function () {    
+                    KTApp.showPageLoading();                    
+                },
+                success: function (data) {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+ 
+                    if(data.status == true)
+                    {
+                        Swal.fire({
+                            title: 'Update Success !',
+                            text: data.message,
+                            icon: "success",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Oke',
+                            allowOutsideClick: false,
+                            closeOnClickOutside: false,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.reload();
+                                return false;
+                            }                    
+                        })
+                    }else{
+                        Swal.fire({
+                            text: data.message,
+                            icon: "warning",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        return false;
+                    }            
+                },
+                error: function () {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+
+                    Swal.fire({
+                        text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                    return false;
+                },
+            });
+        }else{
+            Swal.fire({
+                text: "Pastikan Anda Sudah Mengisi Form Required.. !!",
                 icon: "warning",
                 buttonsStyling: false,
                 confirmButtonText: "Ok, got it!",

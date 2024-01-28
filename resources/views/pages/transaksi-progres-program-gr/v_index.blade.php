@@ -637,6 +637,7 @@
                                             <i class="bi bi-grid fs-1"></i>
                                         </span>
                                         <input type="text" class="form-control" name="form_masterdata_program_gr_nomor" id="form_masterdata_program_gr_nomor" placeholder="Nomor Good Receipt (GR)" aria-label="Nomor Good Receipt (GR)" value="" aria-describedby="basic-addon1"/>
+                                        <input type="hidden" class="form-control" name="form_masterdata_program_gr_uuid" id="form_masterdata_program_gr_uuid" aria-label="Nomor Good Receipt (GR)" value="" aria-describedby="basic-addon1"/>
                                     </div>
                                     <!--end::Input group-->        
                                 </div>
