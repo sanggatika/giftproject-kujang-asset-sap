@@ -54,6 +54,8 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     Route::get('/dash/transaksi', [DashboardController::class, 'page_transaksiDashboard'])->name('dash.transaksi');
     Route::get('/dash/program_anggaran', [DashboardController::class, 'page_programDashboard'])->name('dash.program_anggaran');
     Route::get('/dash/progres_realisasi', [DashboardController::class, 'page_realisasiDashboard'])->name('dash.progres_realisasi');
+    Route::get('/dash/prognosa', [DashboardController::class, 'page_prognosaDashboard'])->name('dash.prognosa');
+    Route::get('/dash/prognosa/{filter_tanggal}', [DashboardController::class, 'page_prognosaDashboard'])->name('dash.prognosa');
 
     // Management Menu
     Route::get('/management/menu', [ManagementMenuController::class, 'page_indexManagementMenu'])->name('management.menu');

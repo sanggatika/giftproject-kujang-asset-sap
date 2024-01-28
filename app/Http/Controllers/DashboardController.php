@@ -88,6 +88,34 @@ class DashboardController extends Controller
         return view('pages.dashboard.v_program_realisasi', ['model' => $model]);
     }
 
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function page_prognosaDashboard(Request $request, $filter_tanggal = null)
+    {
+        $model['route'] = 'Dashboard Realisasi Program';
+        
+        $model['tanggal_cut_off'] = '2024-12-31';
+
+        // data
+        $model['ms_program'] = mProgram::with('trProgresProgramSR','trProgresProgramPRMany','trProgresProgramPOMany', 'trProgresProgramGRMany')->get();
+        $model['tr_progres_sr'] = trProgresProgramSR::where('status',1)->get();        
+        $model['tr_progres_pr'] = trProgresProgramPR::where('status',1)->get();
+        $model['tr_progres_po'] = trProgresProgramPO::where('status',1)->get();
+        $model['tr_progres_gr'] = trProgresProgramGR::where('status',1)->get();
+        if($filter_tanggal != null)
+        {
+            $model['tr_progres_pr'] = $model['tr_progres_pr']->where('pr_tanggal', '<', Carbon::parse($filter_tanggal)->subDays(224));
+            $model['tr_progres_po'] = $model['tr_progres_po']->where('po_tanggal', '<', Carbon::parse($filter_tanggal)->subDays(182));
+
+            $model['tanggal_cut_off'] = $filter_tanggal;
+        }
+
+        return view('pages.dashboard.v_program_prognosa', ['model' => $model]);
+    }
+
     private static function onResult($status, $response_code, $message, $data)
     {
         $model['status'] = $status;

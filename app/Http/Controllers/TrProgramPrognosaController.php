@@ -122,8 +122,8 @@ class TrProgramPrognosaController extends Controller
             $totalFilterMsProgramNominal = $data->sum('nominal');
             
             // $data_tr_pr = $data_tr_pr->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(100));
-            $totalTrPrognosaPR = $data->pluck('trProgresProgramPRMany')->flatten()->where('status', 1)->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(100))->sum('pr_nominal');
-            $totalTrPrognosaPO = $data->pluck('trProgresProgramPOMany')->flatten()->where('status', 1)->where('po_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(60))->sum('po_nominal');
+            $totalTrPrognosaPR = $data->pluck('trProgresProgramPRMany')->flatten()->where('status', 1)->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(224))->sum('pr_nominal');
+            $totalTrPrognosaPO = $data->pluck('trProgresProgramPOMany')->flatten()->where('status', 1)->where('po_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(182))->sum('po_nominal');
             $totalTrPrognosaGR = $data->pluck('trProgresProgramGRMany')->flatten()->sum('gr_nominal');
 
             $totalMsProgramPrognosa = $totalTrPrognosaPR + $totalTrPrognosaPO + $totalTrPrognosaGR;
@@ -232,7 +232,7 @@ class TrProgramPrognosaController extends Controller
 
                     if($form_filter_tanggal_cutoff)
                     {
-                        $data_tr_pr = $data_tr_pr->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(100));
+                        $data_tr_pr = $data_tr_pr->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(224));
                     }                 
 
                     $nominal_pr = $data_tr_pr->sum('pr_nominal');
@@ -245,7 +245,7 @@ class TrProgramPrognosaController extends Controller
 
                     if($form_filter_tanggal_cutoff)
                     {
-                        $data_tr_po = $data_tr_po->where('po_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(60));
+                        $data_tr_po = $data_tr_po->where('po_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(182));
                     }                 
 
                     $nominal_po = $data_tr_po->sum('pr_nominal');
@@ -281,7 +281,7 @@ class TrProgramPrognosaController extends Controller
 
                     if($form_filter_tanggal_cutoff)
                     {
-                        $data_tr_pr = $data_tr_pr->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(100));
+                        $data_tr_pr = $data_tr_pr->where('pr_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(224));
                     }                 
 
                     $nominal_pr = $data_tr_pr->sum('pr_nominal');
@@ -294,7 +294,7 @@ class TrProgramPrognosaController extends Controller
 
                     if($form_filter_tanggal_cutoff)
                     {
-                        $data_tr_po = $data_tr_po->where('po_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(60));
+                        $data_tr_po = $data_tr_po->where('po_tanggal', '<', Carbon::parse($form_filter_tanggal_cutoff)->subDays(182));
                     }                 
 
                     $nominal_po = $data_tr_po->sum('pr_nominal');
