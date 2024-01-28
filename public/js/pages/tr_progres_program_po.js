@@ -415,6 +415,7 @@ function act_btnUpdateData(data)
                 $('#form_masterdata_program_lokasi').val(data.data.m_program_lokasi_c_c.uuid).change().prop('disabled', true);
                 $('#form_masterdata_program_pr_nominal').val(data.data.tr_progres_program_p_r_one.pr_nominal).prop( "disabled", true );
 
+                $('#form_masterdata_program_po_uuid').val(data.data.uuid).prop('readonly', true);
                 $("#form_masterdata_program_po_tanggal").flatpickr({
                     defaultDate: [data.data.po_tanggal]
                 });
@@ -448,6 +449,133 @@ function act_btnUpdateData(data)
 
             Swal.fire({
                 text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    });
+}
+
+function act_sumbitUpdateData()
+{    
+    let form_masterdata_program_pr_nomor = $("#form_masterdata_program_pr_nomor").val();
+    let form_masterdata_program_pr_uuid = $("#form_masterdata_program_pr_uuid").val();
+    let form_masterdata_program_po_uuid = $("#form_masterdata_program_po_uuid").val();
+    let form_masterdata_program_po_nomor = $("#form_masterdata_program_po_nomor").val();
+    let form_masterdata_program_po_anggaran = $("#form_masterdata_program_po_anggaran").val();
+    let form_masterdata_program_po_vendor = $("#form_masterdata_program_po_vendor").val();
+    let form_masterdata_program_po_otoritas = $("#form_masterdata_program_po_otoritas").val();
+    let form_masterdata_program_po_tanggal = $("#form_masterdata_program_po_tanggal").val();
+    let form_masterdata_program_po_tanggal_estimasi = $("#form_masterdata_program_po_tanggal_estimasi").val();
+
+    // validasi form
+    if(form_masterdata_program_po_uuid == "" || form_masterdata_program_po_nomor == "" || form_masterdata_program_po_anggaran == "" || form_masterdata_program_po_tanggal == "")
+    {
+        Swal.fire({
+            text: "Pastikan Anda Sudah Mengisi Semua Form Data..!!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    Swal.fire({
+        title: 'Yakin Update Data ?',
+        text: "Pastikan Anda Sudah Mengecek Kembali Data Yang Akan Dikirim..",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Submit!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                url: BaseURL + "/transaksi/progres/program/po/act_update",
+                data: {
+                    form_masterdata_program_pr_nomor,
+                    form_masterdata_program_pr_uuid,
+                    form_masterdata_program_po_uuid,
+                    form_masterdata_program_po_nomor,
+                    form_masterdata_program_po_anggaran,
+                    form_masterdata_program_po_vendor,
+                    form_masterdata_program_po_otoritas,
+                    form_masterdata_program_po_tanggal,
+                    form_masterdata_program_po_tanggal_estimasi
+                },
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function () {    
+                    KTApp.showPageLoading();                    
+                },
+                success: function (data) {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+ 
+                    if(data.status == true)
+                    {
+                        Swal.fire({
+                            title: 'Update Success !',
+                            text: data.message,
+                            icon: "success",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Oke',
+                            allowOutsideClick: false,
+                            closeOnClickOutside: false,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.reload();
+                                return false;
+                            }                    
+                        })
+                    }else{
+                        Swal.fire({
+                            text: data.message,
+                            icon: "warning",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        return false;
+                    }            
+                },
+                error: function () {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+
+                    Swal.fire({
+                        text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                    return false;
+                },
+            });
+        }else{
+            Swal.fire({
+                text: "Pastikan Anda Sudah Mengisi Form Required.. !!",
                 icon: "warning",
                 buttonsStyling: false,
                 confirmButtonText: "Ok, got it!",

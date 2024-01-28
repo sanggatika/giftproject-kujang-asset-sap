@@ -611,6 +611,7 @@
                                             <i class="bi bi-grid fs-1"></i>
                                         </span>
                                         <input type="text" class="form-control" name="form_masterdata_program_po_nomor" id="form_masterdata_program_po_nomor" placeholder="Nomor Purchase Order (PO)" aria-label="Nomor Purchase Order (PO)" value="" aria-describedby="basic-addon1"/>
+                                        <input type="hidden" class="form-control" name="form_masterdata_program_po_uuid" id="form_masterdata_program_po_uuid" aria-label="Nomor Purchase Order (PO)" value="" aria-describedby="basic-addon1"/>
                                     </div>
                                     <!--end::Input group-->        
                                 </div>

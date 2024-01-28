@@ -112,6 +112,7 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     Route::post('/transaksi/progres/program/po/get_datatable', [TrProgresProgramPOController::class, 'get_datatableTrProgresProgramPO'])->name('transaksi.progres.program.po.get_datatable');
     Route::post('/transaksi/progres/program/po/act_tambah', [TrProgresProgramPOController::class, 'act_tambahTrProgresProgramPO'])->name('transaksi.progres.program.po.act_tambah');
     Route::post('/transaksi/progres/program/po/act_detail', [TrProgresProgramPOController::class, 'act_detailTrProgresProgramPO'])->name('transaksi.progres.program.po.act_detail');
+    Route::post('/transaksi/progres/program/po/act_update', [TrProgresProgramPOController::class, 'act_updateTrProgresProgramPO'])->name('transaksi.progres.program.po.act_update');
 
     // Transaksi Progres Program GR
     Route::get('/transaksi/progres/program/gr', [TrProgresProgramGRController::class, 'page_indexTrProgresProgramGR'])->name('transaksi.progres.program.gr');
