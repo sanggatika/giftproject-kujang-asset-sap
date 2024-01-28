@@ -287,6 +287,8 @@ class TrProgresProgramPRController extends Controller
                 return $this->onResult($status, $response_code, $message, $dataAPI);
             }
 
+            // dd($checkExistingTrProgresProgramSR);
+
             $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
             $nomor_registrasi = "TRPROGPR-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
 

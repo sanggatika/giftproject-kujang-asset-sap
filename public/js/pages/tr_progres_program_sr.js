@@ -321,8 +321,234 @@ function act_sumbitUpdateData()
     });
 }
 
+function act_btnPurchaseRequisition(data)
+{
+    let data_id = $(data).attr('data-id');
+    let data_sr = $(data).attr('data-sr');
+    let data_rrm = $(data).attr('data-rrm');
+
+    let form_masterdata_program_fundnumber = data_rrm;
+
+    if(form_masterdata_program_fundnumber == "")
+    {
+        Swal.fire({
+            text: "Pastikan Anda Sudah Mengisi Fund Number / MMR ..!!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    $.ajax({
+        url: BaseURL + "/transaksi/progres/program/mr_sr/act_detail",
+        data: {
+            form_masterdata_program_fundnumber,
+        },
+        method: "POST",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function () {    
+            KTApp.showPageLoading();                    
+        },
+        success: function (data) {
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+            console.log(data.data);
+            if(data.status == true)
+            {       
+                $('#form_masterdata_program_sr_nomor').val(data.data.sr_nomor);         
+                $('#form_masterdata_program_sr_uuid').val(data.data.uuid).prop('readonly', true);
+                $('#form_masterdata_program_sr_nama').val(data.data.name);
+                $('#form_masterdata_program_sr_anggaran').val(data.data.sr_nominal);
+
+                $('#form_masterdata_program_sr_fundcenter').val(data.data.fund_center);
+                $('#form_masterdata_program_sr_jenis').val(data.data.m_program_jenis_c_c_k.uuid).change();
+                $('#form_masterdata_program_sr_lokasi').val(data.data.m_program_lokasi_c_c.uuid).change();
+
+                data_tr_program_progres_sr = data.data;
+
+                $('.dataContenFormPR').show();
+
+                $('#modal-tambah-pr').modal('show');
+            }else{  
+                data_tr_program_progres_sr = null;
+
+                Swal.fire({
+                    text: data.message,
+                    icon: "warning",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+                return false;
+            }
+        },
+        error: function () {
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+
+            Swal.fire({
+                text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    });    
+}
+
+function act_submitTambahDataPR()
+{
+    let form_masterdata_program_fundnumber = $("#form_masterdata_program_sr_nomor").val();
+    let form_masterdata_program_uuid = $("#form_masterdata_program_sr_uuid").val();
+    let form_masterdata_program_pr_tanggal = $("#form_masterdata_program_pr_tanggal").val();
+    let form_masterdata_program_pr_nomor = $("#form_masterdata_program_pr_nomor").val();
+    let form_masterdata_program_pr_vendor = $("#form_masterdata_program_pr_vendor").val();
+    let form_masterdata_program_pr_anggaran = $("#form_masterdata_program_pr_anggaran").val();
+
+    // validasi form
+    if(form_masterdata_program_fundnumber == "" || form_masterdata_program_pr_tanggal == "" || form_masterdata_program_pr_nomor == "" || form_masterdata_program_pr_vendor == "" || form_masterdata_program_pr_anggaran == "")
+    {
+        Swal.fire({
+            text: "Pastikan Anda Sudah Mengisi Semua Form Data..!!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    if(form_masterdata_program_pr_anggaran > data_tr_program_progres_sr.sr_nominal)
+    {
+        Swal.fire({
+            text: "Anggaran PR Tidak Boleh Melebihi Batas Anggaran !!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    Swal.fire({
+        title: 'Yakin Menambah Data - Purchase Requisition (PR) ?',
+        text: "Pastikan Anda Sudah Mengecek Kembali Data Yang Akan Dikirim..",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Submit!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                url: BaseURL + "/transaksi/progres/program/pr/act_tambah",
+                data: {
+                    form_masterdata_program_fundnumber,
+                    form_masterdata_program_uuid,
+                    form_masterdata_program_pr_tanggal,
+                    form_masterdata_program_pr_nomor,
+                    form_masterdata_program_pr_vendor,
+                    form_masterdata_program_pr_anggaran
+                },
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function () {    
+                    KTApp.showPageLoading();                    
+                },
+                success: function (data) {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+ 
+                    if(data.status == true)
+                    {
+                        Swal.fire({
+                            title: 'Insert Success !',
+                            text: data.message,
+                            icon: "success",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Oke',
+                            allowOutsideClick: false,
+                            closeOnClickOutside: false,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                // location.reload();
+                                window.location.replace(BaseURL + "/transaksi/progres/program/pr");
+
+                                return false;
+                            }                    
+                        })
+                    }else{
+                        Swal.fire({
+                            text: data.message,
+                            icon: "warning",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        return false;
+                    }            
+                },
+                error: function () {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+
+                    Swal.fire({
+                        text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                    return false;
+                },
+            });
+        }else{
+            Swal.fire({
+                text: "Pastikan Anda Sudah Mengisi Form Required.. !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    });
+}
+
 $(document).ready(function() {
     serverSideDatatables();  
-    
+
     $("#form_masterdata_program_tanggal").flatpickr();
+    $("#form_masterdata_program_pr_tanggal").flatpickr();
 });

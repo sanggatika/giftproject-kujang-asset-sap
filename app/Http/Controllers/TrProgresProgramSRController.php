@@ -243,13 +243,19 @@ class TrProgresProgramSRController extends Controller
                     $dataStaus = 'aktivasi';
                 }
 
+                $btnPurchaseRequisition = "";
+                if($row->trProgresProgramSR)
+                {
+                    $btnPurchaseRequisition = '<li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" data-sr="'.$row->trProgresProgramSR->uuid.'" data-rrm="'.$row->trProgresProgramSR->sr_nomor.'" onclick="act_btnPurchaseRequisition(this)">Purchase Requisition (PR)</a></li>';
+                }
+
                 $html = '<div class="dropdown">
                     <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     Action
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnUpdateData(this)">Update Data</a></li>
-                        <li><a class="dropdown-item d-none" href="#" data-id="'.$row->uuid.'" onclick="act_btnPurchaseRequisition(this)">Purchase Requisition (PR)</a></li>
+                        '.$btnPurchaseRequisition.'
                     </ul>
                 </div>
                 ';
