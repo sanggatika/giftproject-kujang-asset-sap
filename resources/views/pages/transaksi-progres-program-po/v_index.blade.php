@@ -725,6 +725,244 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-tambah-gr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" data-bs-focus="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Data Form Progres Program - Good Receipt (GR) - Realisasi</h5>
+
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="svg-icon svg-icon-2x"></span>
+                </div>
+                <!--end::Close-->
+            </div>
+
+            <div class="modal-body">
+                <form id="form-masterdata-progra" class="form" action="#" method="POST" enctype="multipart/form-data" autocomplete="off">
+                    <div class="row">
+                        <div class="col-md-12 mb-10 mt-5">
+                            <div class="separator separator-dotted separator-content border-success my-2">
+                                <img src="{{ asset('images/pupuk-indonesia-hitam.png') }}" style="max-height: 75px;" class="img-fluid" alt="logo-pssi">
+                            </div>
+                        </div>  
+                        <div class="col-md-6">
+                            <div class="form-group mb-1">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Nomor Purchase Order (PO) :</label>
+                                <!--end::Label-->
+        
+                                <!--begin::Input group-->                                
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="input-group mb-2">
+                                            <span class="input-group-text" id="basic-addon1">
+                                                <i class="bi bi-stickies fs-1"></i>
+                                            </span>
+                                            <input type="text" class="form-control" name="form_masterdata_program_po_nomor_gr" id="form_masterdata_program_po_nomor_gr" placeholder="Nomor Purchase Order (PO)" aria-label="Nomor Purchase Order (PO)" value="" aria-describedby="basic-addon1"/>
+                                        </div>                                            
+                                    </div>
+                                    <div class="col-md-4">
+                                    </div>
+                                </div>  
+                                <!--end::Input group-->        
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Program Jenis CCK : </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <select class="form-select mb-2" name="form_masterdata_program_po_jenis_gr" id="form_masterdata_program_po_jenis_gr"  data-control="select2" data-placeholder="Select an option" data-dropdown-parent="#modal-tambah-gr" disabled>
+                                    <option value="-">-- Program Jenis CCK -- </option> 
+                                    @foreach ($model['ms_program_jenis_cck'] as $program_jenis_cck)
+                                        <option value="{{$program_jenis_cck->uuid}}">{{$program_jenis_cck->name}}</option>
+                                    @endforeach                             
+                                </select>
+                                <!--end::Input-->
+                            </div>  
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="required fs-6 fw-bold mb-2">Tanggal PO</label>
+                                        <!--begin::Input-->
+                                        <div class="position-relative d-flex align-items-center">
+                                            <!--begin::Icon-->
+                                            <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                                <span class="path6"></span>
+                                            </i>
+                                            <!--end::Icon-->
+                                            <!--begin::Datepicker-->
+                                            <input class="form-control ps-12" placeholder="Select a date" value="{{date('Y-m-d')}}" placeholder="{{date('Y-m-d')}}" id="form_masterdata_program_po_tanggal_gr" name="form_masterdata_program_po_tanggal_gr" disabled/>
+                                            <!--end::Datepicker-->
+                                        </div>
+                                        <!--end::Input-->
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group mb-3">
+                                        <label class="required fs-6 fw-bold mb-2">Tanggal Estimasi</label>
+                                        <!--begin::Input-->
+                                        <div class="position-relative d-flex align-items-center">
+                                            <!--begin::Icon-->
+                                            <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                                <span class="path3"></span>
+                                                <span class="path4"></span>
+                                                <span class="path5"></span>
+                                                <span class="path6"></span>
+                                            </i>
+                                            <!--end::Icon-->
+                                            <!--begin::Datepicker-->
+                                            <input class="form-control ps-12" placeholder="Select a date" value="{{date('Y-m-d')}}" placeholder="{{date('Y-m-d')}}" id="form_masterdata_program_po_tanggal_estimasi_gr" name="form_masterdata_program_po_tanggal_estimasi_gr" disabled/>
+                                            <!--end::Datepicker-->
+                                        </div>
+                                        <!--end::Input-->
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                        </div>  
+                        
+                        <div class="col-md-6">
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Nama Program :</label>
+                                <!--end::Label-->
+        
+                                <!--begin::Input group-->
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <i class="bi bi-boxes fs-1"></i>
+                                    </span>
+                                    <input type="text" class="form-control" name="form_masterdata_program_po_nama_gr" id="form_masterdata_program_po_nama_gr" placeholder="Nama Program" aria-label="Nama Program" value="" aria-describedby="basic-addon1" disabled/>
+                                    <input type="hidden" class="form-control" name="form_masterdata_program_po_uuid_gr" id="form_masterdata_program_po_uuid_gr" value="" aria-describedby="basic-addon1"/>
+                                </div>
+                                <!--end::Input group-->        
+                            </div>                               
+                            
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Program Lokasi CC : </label>
+                                <!--end::Label-->
+                                <!--begin::Input-->
+                                <select class="form-select mb-2" name="form_masterdata_program_po_lokasi_gr" id="form_masterdata_program_po_lokasi_gr"  data-control="select2" data-placeholder="Select an option" data-dropdown-parent="#modal-tambah-gr" disabled>
+                                    <option value="-">-- Program Lokasi CC -- </option> 
+                                    @foreach ($model['ms_program_lokasi_cc'] as $program_lokasi_cc)
+                                        <option value="{{$program_lokasi_cc->uuid}}">{{$program_lokasi_cc->name}}</option>
+                                    @endforeach                             
+                                </select>
+                                <!--end::Input-->
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Anggaran Purchase Order (PO)</label>
+                                <!--end::Label-->
+
+                                <!--begin::Input group-->
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text fw-bold" id="basic-addon1">
+                                        Rp.
+                                    </span>
+                                    <input type="number" class="form-control" name="form_masterdata_program_po_nominal_gr" id="form_masterdata_program_po_nominal_gr" placeholder="Anggaran Purchase Order (PO)" aria-label="Anggaran Purchase Order (PO)" value="" aria-describedby="basic-addon1" disabled/>
+                                </div>
+                                <!--end::Input group-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <hr>
+                        </div>
+
+                        <div class="col-md-4 dataContenFormPR">
+                            <div class="form-group mb-3">
+                                <label class="required fs-6 fw-bold mb-2">Tanggal Good Receipt (GR)</label>
+                                <!--begin::Input-->
+                                <div class="position-relative d-flex align-items-center">
+                                    <!--begin::Icon-->
+                                    <i class="ki-duotone ki-calendar-8 fs-1 position-absolute mx-4">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                        <span class="path4"></span>
+                                        <span class="path5"></span>
+                                        <span class="path6"></span>
+                                    </i>
+                                    <!--end::Icon-->
+                                    <!--begin::Datepicker-->
+                                    <input class="form-control ps-12" placeholder="Select a date" value="{{date('Y-m-d')}}" placeholder="{{date('Y-m-d')}}" id="form_masterdata_program_gr_tanggal" name="form_masterdata_program_gr_tanggal"/>
+                                    <!--end::Datepicker-->
+                                </div>
+                                <!--end::Input-->
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 dataContenFormPR">
+                            <div class="form-group mb-3">
+                                <div class="form-group mb-3">
+                                    <!--begin::Label-->
+                                    <label class="form-label fw-bold">Nomor Good Receipt (GR) :</label>
+                                    <!--end::Label-->
+            
+                                    <!--begin::Input group-->
+                                    <div class="input-group mb-2">
+                                        <span class="input-group-text" id="basic-addon1">
+                                            <i class="bi bi-grid fs-1"></i>
+                                        </span>
+                                        <input type="text" class="form-control" name="form_masterdata_program_gr_nomor" id="form_masterdata_program_gr_nomor" placeholder="Nomor Good Receipt (GR)" aria-label="Nomor Good Receipt (GR)" value="" aria-describedby="basic-addon1"/>
+                                        <input type="hidden" class="form-control" name="form_masterdata_program_gr_uuid" id="form_masterdata_program_gr_uuid" aria-label="Nomor Good Receipt (GR)" value="" aria-describedby="basic-addon1"/>
+                                    </div>
+                                    <!--end::Input group-->        
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 dataContenFormPR">
+                            <div class="form-group mb-3">
+                                <!--begin::Label-->
+                                <label class="form-label fw-bold">Anggaran Good Receipt (GR):</label>
+                                <!--end::Label-->
+
+                                <!--begin::Input group-->
+                                <div class="input-group mb-2">
+                                    <span class="input-group-text fw-bold" id="basic-addon1">
+                                        Rp.
+                                    </span>
+                                    <input type="number" class="form-control" name="form_masterdata_program_gr_anggaran" id="form_masterdata_program_gr_anggaran" placeholder="Anggaran Good Receipt (GR)" aria-label="Anggaran Good Receipt (GR)" value="" aria-describedby="basic-addon1"/>
+                                </div>
+                                <!--end::Input group-->
+                            </div>
+                        </div>
+                                               
+
+                        <div class="col-md-12">
+                            <div class="d-flex float-md-end">
+                                <button type="button" class="btn btn-primary mt-2" id="btnTambahMasterdata" onclick="act_submitTambahDataGR()">
+                                    <span class="indicator-label"><i class="bi bi-clipboard-plus fs-2 me-2"></i> Tambah Good Receipt (GR)</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </form>                
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 
 @section('page-script')
@@ -746,6 +984,7 @@
 
     <script>
         var data_tr_program_progres_pr = null;
+        var data_tr_program_progres_po = null;
     </script>
     
     <script src="{{ URL::asset('js/pages/tr_progres_program_po.js?version=') }}{{uniqid()}}"></script>
