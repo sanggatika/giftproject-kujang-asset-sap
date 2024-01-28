@@ -54,7 +54,7 @@
                     </span>
                 </h1>
                 <h1 class="text-white lh-base fw-bold fs-1x fs-lg-2x" style="background: linear-gradient(to right, #12CE5D 0%, #FFD80C 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;">
-                    - MANAGEMENT PROJECT CONTROL INFORMATIO SYSTEM -
+                    - MANAGEMENT PROJECT CONTROL -
                 </h1>
 
                 <img src="{{ asset('images/kujang-asset-beranda.png') }}" class="img-fluid" style="max-height: 350px;" alt="bupati_logo">

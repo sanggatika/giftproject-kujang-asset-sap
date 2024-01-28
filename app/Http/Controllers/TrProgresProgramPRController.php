@@ -384,6 +384,72 @@ class TrProgresProgramPRController extends Controller
         }
         return $this->onResult($status, $response_code, $message, $dataAPI);
     }
+
+    public function act_updateTrProgresProgramPR(Request $request)
+    {
+        $status = false;
+        $response_code = 'RC400';
+        $message = 'Data Gagal Disimpan Terjadi Gangguan..';
+        $dataAPI = null;
+
+        if ($request->ajax()) {  
+            // dd($request->all());          
+            $validator = Validator::make($request->all(), [
+                'form_masterdata_program_uuid' => 'required',
+                'form_masterdata_program_fundnumber' => 'required',
+                'form_masterdata_program_pr_tanggal' => 'required',
+                'form_masterdata_program_pr_nomor' => 'required',
+                'form_masterdata_program_pr_anggaran' => 'required'
+            ]);
+
+            // Ketika data kiriman tidak sesuai
+            if ($validator->fails())
+            {
+                $response_code = "RC400";
+                $message = "Form Tidak Tervalidasi Dengan Sistem";
+                return $this->onResult($status, $response_code, $message, $dataAPI);
+            }
+
+            // Cek Data Dalam Database
+            $checkExistingDataTrProgresProgramPR =  trProgresProgramPR::with('mProgramJenisCCK', 'mProgramLokasiCC')->where('uuid', $request->form_masterdata_program_uuid)->first();
+
+            if(!$checkExistingDataTrProgresProgramPR)
+            {
+                $response_code = "RC400";
+                $message = "Data Tidak Ada Dalam Sistem";
+                return $this->onResult($status, $response_code, $message, $dataAPI);
+            }
+
+            // Validasi Ketika Gagal Melakukan Transaksi Data Akan Di Rollback
+            DB::beginTransaction();
+            try {
+                $checkExistingDataTrProgresProgramPR->pr_tanggal = $request->form_masterdata_program_pr_tanggal;
+                $checkExistingDataTrProgresProgramPR->pr_nomor = $request->form_masterdata_program_pr_nomor;
+                $checkExistingDataTrProgresProgramPR->pr_nominal = $request->form_masterdata_program_pr_anggaran;
+                $checkExistingDataTrProgresProgramPR->pr_vendor = $request->form_masterdata_program_pr_vendor;
+                $checkExistingDataTrProgresProgramPR->updated_at = Carbon::now();
+                $checkExistingDataTrProgresProgramPR->updated_by = Auth::user()->id;
+
+                $checkExistingDataTrProgresProgramPR->save();
+
+                DB::commit();
+
+                $status = true;
+                $response_code = "RC200";
+                $message = "Anda Berhasil Update Program Anggaran !!";
+
+                return $this->onResult($status, $response_code, $message, $dataAPI);                
+            } catch (\Throwable $error) {
+                DB::rollback();
+                Log::critical($error);
+
+                $response_code = "RC400";
+                $message = "Anda Gagal Menambahkan Data Kedalam Sistem !!" .$error;
+                return $this->onResult($status, $response_code, $message, $dataAPI);
+            }
+        }
+        return $this->onResult($status, $response_code, $message, $dataAPI);
+    }
     
     private static function onResult($status, $response_code, $message, $data)
     {
