@@ -651,7 +651,55 @@
                 </div>
             </div>
             <!--end::Col-->
-            
+            @foreach ($model['ms_program']->groupBy('id_program_lokasi_cc') as $program_lokasi)
+            <div class="col-lg-4 mb-5">
+                <div class="card shadow-sm bg-light-info bg-hover-light">
+                    <div class="card-body p-3">
+                        <div class="table-responsive m-0">
+                            <!--begin::Table-->
+                            <table class="table table-striped table-hover align-middle table-row-dashed fs-6 m-0">
+                                <!--begin::Table body-->
+                                <tbody class="text-gray-600 fw-bold">                                    
+                                    <tr>
+                                        <td class="text-start">
+                                            <div class="d-flex flex-column">
+                                                <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder fs-5">{{ $program_lokasi[0]->name_program_lokasi_cc }}</a>
+                                                <small>{{ $program_lokasi[0]->fund_center }}</small>
+                                                <hr class="my-1">
+                                            </div>
+                                        </td>
+                                        <td class="text-start">
+                                            @php
+                                                $realisasi_program_lokasi = $model['tr_progres_gr']->where('name_program_lokasi_cc', $program_lokasi[0]->name_program_lokasi_cc)->sum('gr_nominal');
+                                            @endphp
+                                            <div class="d-flex flex-column text-end">
+                                                <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($realisasi_program_lokasi,0,',','.')  }}</a>
+                                                <small>{{ number_format($program_lokasi->sum('nominal'),0,',','.') }}</small>
+                                                <hr class="my-1">
+                                            </div>
+                                        </td>
+                                        <td class="text-start">
+                                            @php
+                                                $persentase_realisasi_program_lokasi = 0;
+                                                if($realisasi_program_lokasi != 0)
+                                                {
+                                                    $persentase_realisasi_program_lokasi = ($realisasi_program_lokasi / $program_lokasi->sum('nominal')) * 100;
+                                                }
+                                            @endphp
+                                            <div class="d-flex flex-column text-end">
+                                                <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentase_realisasi_program_lokasi,2,',','.')  }} % &nbsp;</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <!--end::Table body-->
+                            </table>
+                            <!--end::Table-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
 
         </div>
     </div>
