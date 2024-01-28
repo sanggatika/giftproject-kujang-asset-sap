@@ -569,8 +569,233 @@ function act_sumbitUpdateData()
     });
 }
 
+function act_btnPurchaseOrder(data)
+{
+    let data_pr = $(data).attr('data-pr');
+
+    let data_id = data_pr;
+
+    if(data_id == "")
+    {
+        Swal.fire({
+            text: "Pastikan Anda Sudah Mengisi Fund Number / MMR ..!!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    $.ajax({
+        url: BaseURL + "/transaksi/progres/program/pr/act_detail",
+        data: {
+            data_id,
+        },
+        method: "POST",
+        dataType: "json",
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        beforeSend: function () {    
+            KTApp.showPageLoading();                    
+        },
+        success: function (data) {
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+
+            console.log(data.data);
+            // return false;
+
+            if(data.status == true)
+            {          
+                $('#form_masterdata_program_pr_nomor_po').val(data.data.pr_nomor).prop('readonly', true);      
+                $('#form_masterdata_program_pr_uuid_po').val(data.data.uuid).prop('readonly', true);
+                
+                $('#form_masterdata_program_pr_jenis_po').val(data.data.m_program_jenis_c_c_k.uuid).change();                
+                $("#form_masterdata_program_pr_tanggal_po").flatpickr({
+                    defaultDate: [data.data.pr_tanggal]
+                });
+
+                $('#form_masterdata_program_pr_nama_po').val(data.data.name);
+                $('#form_masterdata_program_pr_lokasi_po').val(data.data.m_program_lokasi_c_c.uuid).change();
+                $('#form_masterdata_program_pr_nominal_po').val(data.data.pr_nominal); 
+                
+                $('#form_masterdata_program_po_anggaran').val(data.data.pr_nominal);  
+                $('#form_masterdata_program_po_vendor').val(data.data.pr_vendor);  
+
+                data_tr_program_progres_pr = data.data;
+
+                $('.dataContenFormPR').show();
+                $('#modal-tambah-po').modal('show');
+            }else{  
+                data_tr_program_progres_pr = null;
+
+                $('.dataContenFormPR').hide();
+
+                Swal.fire({
+                    text: data.message,
+                    icon: "warning",
+                    buttonsStyling: false,
+                    confirmButtonText: "Ok, got it!",
+                    customClass: {
+                        confirmButton: "btn btn-primary"
+                    }
+                });
+                return false;
+            }
+        },
+        error: function () {
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+
+            Swal.fire({
+                text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    });    
+}
+
+function act_submitTambahDataPO()
+{
+    let form_masterdata_program_pr_nomor = $("#form_masterdata_program_pr_nomor_po").val();
+    let form_masterdata_program_pr_uuid = $("#form_masterdata_program_pr_uuid_po").val();
+    let form_masterdata_program_po_tanggal = $("#form_masterdata_program_po_tanggal").val();
+    let form_masterdata_program_po_nomor = $("#form_masterdata_program_po_nomor").val();
+    let form_masterdata_program_po_anggaran = $("#form_masterdata_program_po_anggaran").val();
+    let form_masterdata_program_po_vendor = $("#form_masterdata_program_po_vendor").val();
+    let form_masterdata_program_po_otoritas = $("#form_masterdata_program_po_otoritas").val();
+    let form_masterdata_program_po_tanggal_estimasi = $("#form_masterdata_program_po_tanggal_estimasi").val();
+
+    // validasi form
+    if(form_masterdata_program_pr_nomor == "" || form_masterdata_program_po_nomor == "")
+    {
+        Swal.fire({
+            text: "Pastikan Anda Sudah Mengisi Semua Form Data..!!",
+            icon: "warning",
+            buttonsStyling: false,
+            confirmButtonText: "Ok, got it!",
+            customClass: {
+                confirmButton: "btn btn-primary"
+            }
+        });
+        return false;
+    }
+
+    Swal.fire({
+        title: 'Yakin Menambah Data - Purchase Order (PO)?',
+        text: "Pastikan Anda Sudah Mengecek Kembali Data Yang Akan Dikirim..",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Submit!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            $.ajax({
+                url: BaseURL + "/transaksi/progres/program/po/act_tambah",
+                data: {
+                    form_masterdata_program_pr_nomor,
+                    form_masterdata_program_pr_uuid,
+                    form_masterdata_program_po_tanggal,
+                    form_masterdata_program_po_nomor,
+                    form_masterdata_program_po_anggaran,
+                    form_masterdata_program_po_vendor,
+                    form_masterdata_program_po_otoritas,
+                    form_masterdata_program_po_tanggal_estimasi
+                },
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function () {    
+                    KTApp.showPageLoading();                    
+                },
+                success: function (data) {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+ 
+                    if(data.status == true)
+                    {
+                        Swal.fire({
+                            title: 'Insert Success !',
+                            text: data.message,
+                            icon: "success",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Oke',
+                            allowOutsideClick: false,
+                            closeOnClickOutside: false,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                // location.reload();
+                                window.location.replace(BaseURL + "/transaksi/progres/program/po");
+                                return false;
+                            }                    
+                        })
+                    }else{
+                        Swal.fire({
+                            text: data.message,
+                            icon: "warning",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        return false;
+                    }            
+                },
+                error: function () {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+
+                    Swal.fire({
+                        text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                    return false;
+                },
+            });
+        }else{
+            Swal.fire({
+                text: "Pastikan Anda Sudah Mengisi Form Required.. !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
+    });
+}
+
 $(document).ready(function() {
     serverSideDatatables();  
     
     $("#form_masterdata_program_pr_tanggal").flatpickr();
+
+    $("#form_masterdata_program_po_tanggal").flatpickr();
+    $("#form_masterdata_program_po_tanggal_estimasi").flatpickr();
 });

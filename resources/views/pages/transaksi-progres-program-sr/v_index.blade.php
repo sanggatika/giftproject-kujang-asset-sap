@@ -855,7 +855,7 @@
     </script>
     @endif
     <script>
-        let data_tr_program_progres_sr = null;
+        var data_tr_program_progres_sr = null;
     </script>
     <script src="{{ URL::asset('js/pages/tr_progres_program_sr.js?version=') }}{{uniqid()}}"></script>
 

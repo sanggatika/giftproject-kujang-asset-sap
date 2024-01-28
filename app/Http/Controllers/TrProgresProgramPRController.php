@@ -238,7 +238,7 @@ class TrProgresProgramPRController extends Controller
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" onclick="act_btnUpdateData(this)">Update Data</a></li>
-                        <li><a class="dropdown-item d-none" href="#" data-id="'.$row->uuid.'" onclick="act_btnPurchaseOrder(this)">Purchase Order (PO)</a></li>
+                        <li><a class="dropdown-item" href="#" data-id="'.$row->uuid.'" data-pr="'.$row->pr_nomor.'" onclick="act_btnPurchaseOrder(this)">Purchase Order (PO)</a></li>
                     </ul>
                 </div>
                 ';
