@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class mProgramJenisCCK extends Model
+class mProgramBagianCC extends Model
 {
     use HasFactory;
 
-    protected $table = 'm_program_jenis_cck';
+    protected $table = 'm_program_bagian_cc';
     protected $primaryKey = 'id';
 
     const CREATED_AT = 'created_at';

@@ -15,15 +15,22 @@ class mProgram extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-    public function mProgramJenisCCK()
+    public function mProgramAccount()
     {
-        return $this->hasOne(mProgramJenisCCK::class, 'id', 'id_program_jenis_cck');
+        return $this->hasOne(mProgramAccount::class, 'id', 'id_program_account');
     }
 
-    public function mProgramLokasiCC()
+    public function mProgramDepartementCCK()
     {
-        return $this->hasOne(mProgramLokasiCC::class, 'id', 'id_program_lokasi_cc');
+        return $this->hasOne(mProgramDepartementCCK::class, 'id', 'id_program_departement_cck');
     }
+
+    public function mProgramBagianCC()
+    {
+        return $this->hasOne(mProgramBagianCC::class, 'id', 'id_program_bagian_cc');
+    }
+
+    
 
     public function trProgresProgramSR()
     {

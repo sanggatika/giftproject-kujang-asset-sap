@@ -90,6 +90,7 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     Route::get('/masterdata/program', [MasterdataProgramController::class, 'page_indexMasterdataProgram'])->name('masterdata.program');
     Route::post('/masterdata/program/get_datatable', [MasterdataProgramController::class, 'get_datatableMasterdataProgram'])->name('masterdata.program.get_datatable');
     Route::post('/masterdata/program/act_tambah', [MasterdataProgramController::class, 'act_tambahMasterdataProgram'])->name('masterdata.program.act_tambah');
+    Route::post('/masterdata/program/act_upload', [MasterdataProgramController::class, 'act_uploadMasterdataProgram'])->name('masterdata.program.act_upload');
     Route::post('/masterdata/program/act_detail', [MasterdataProgramController::class, 'act_detailMasterdataProgram'])->name('masterdata.program.act_detail');
     Route::post('/masterdata/program/act_update', [MasterdataProgramController::class, 'act_updateMasterdataProgram'])->name('masterdata.program.act_update');
 
