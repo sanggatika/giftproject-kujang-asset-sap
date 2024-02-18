@@ -5,20 +5,14 @@ namespace App\Imports;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
-use Maatwebsite\Excel\Concerns\WithValidation;
-use Illuminate\Validation\Rule;
 
-
-class FormatImportRealisasiClass implements WithValidation
+class FormatImportRealisasiClass implements ToCollection
 {
-    public function rules(): array
+    /**
+    * @param Collection $collection
+    */
+    public function collection(Collection $collection)
     {
-        return [
-            '0' => ['string'],
-            '1' => ['string'],
-            '2' => ['string'],
-            '3' => ['string'],
-            '4' => ['string'],
-        ];
+        //
     }
 }

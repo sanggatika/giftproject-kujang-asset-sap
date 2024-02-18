@@ -30,6 +30,19 @@ class mProgram extends Model
         return $this->hasOne(mProgramBagianCC::class, 'id', 'id_program_bagian_cc');
     }
 
+    public function tmpProgramProgresImportMany()
+    {
+        return $this->hasMany(tmpProgramProgresImport::class, 'id_program', 'id');
+    }
+
+    public function tmpProgramProgresImportLast()
+    {
+        return $this->hasOne(tmpProgramProgresImport::class, 'id_program', 'id')->where('count_import', function($query) {
+            $query->selectRaw('MAX(count_import)')
+                  ->from('tmp_program_progres_import');
+        });
+    }
+
     
 
     public function trProgresProgramSR()

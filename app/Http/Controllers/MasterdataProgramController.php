@@ -476,77 +476,76 @@ class MasterdataProgramController extends Controller
                 
                 if ($index >= 1)
                 {
-                    if($row[4] != '-')
+                    if ($row[0] != null)
                     {
-                        // dd($row);
-
                         // Cek Data Dalam Database
                         $checkExistingDataProgramAccount =  mProgramAccount::where('code', $row[12])->first();
                         $checkExistingDataProgramDepartemen =  mProgramDepartementCCK::where('name', $row[8])->first();
                         $checkExistingDataProgramBagian =  mProgramBagianCC::where('name', $row[46])->first();
 
-                        if(isset($checkExistingDataProgramAccount) && isset($checkExistingDataProgramDepartemen) && isset($checkExistingDataProgramBagian))
-                        {
-                            $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                            $nomor_registrasi = "PROGRAM-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
+                        $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                        $nomor_registrasi = "PROGRAM-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
 
-                            $array_priority = ["high","medium","low"];
-                            $randomIndex = array_rand($array_priority);
-                            $rand_priority = $array_priority[$randomIndex];
+                        $array_priority = ["high","medium","low"];
+                        $randomIndex = array_rand($array_priority);
+                        $rand_priority = $array_priority[$randomIndex];
 
-                            // Validasi Ketika Gagal Melakukan Transaksi Data Akan Di Rollback
-                            DB::beginTransaction();
+                        // Validasi Ketika Gagal Melakukan Transaksi Data Akan Di Rollback
+                        DB::beginTransaction();
 
-                            try {
-                                // Proses Simpan Data Kedalam Database      
-                                $AddMasterProgram = new mProgram();
+                        try {
+                            // Proses Simpan Data Kedalam Database      
+                            $AddMasterProgram = new mProgram();
 
-                                $AddMasterProgram->uuid =  (string) Str::uuid();
-                                $AddMasterProgram->code =  $nomor_registrasi;
-                                $AddMasterProgram->fund_number = $row[13];
-                                $AddMasterProgram->cost_center = $row[11];
-                                $AddMasterProgram->fund_center = null;
-                                $AddMasterProgram->id_program_account = $checkExistingDataProgramAccount->id;
-                                $AddMasterProgram->name_program_account = $checkExistingDataProgramAccount->name;
-                                $AddMasterProgram->id_program_departement_cck =  $checkExistingDataProgramDepartemen->id;
-                                $AddMasterProgram->name_program_departement_cck =  $checkExistingDataProgramDepartemen->name;
-                                $AddMasterProgram->id_program_bagian_cc =  $checkExistingDataProgramBagian->id;
-                                $AddMasterProgram->name_program_bagian_cc =  $checkExistingDataProgramBagian->name;
-                                $AddMasterProgram->direktorat = $row[9];
-                                $AddMasterProgram->kompartemen = $row[10];
-                                $AddMasterProgram->name = $row[1];
-                                $AddMasterProgram->description = $row[1];
-                                $AddMasterProgram->priority = $rand_priority;
-                                $AddMasterProgram->year = date('Y');
-                                
-                                $nominal = 0;
-                                if(strstr($row[4], '.'))
-                                {
-                                    $tmp_nominal = preg_replace(".", "", $row[4]);
-                                    $nominal = $tmp_nominal."00000";
-                                }else{
-                                    $nominal = $row[4]."000000";
-                                }
-                                $AddMasterProgram->nominal = $nominal;
-
-                                $AddMasterProgram->kriteria_program = $row[6];
-                                $AddMasterProgram->kriteria_pengadaan = $row[39];
-                                $AddMasterProgram->type_pengadaan = $row[16];
-                                $AddMasterProgram->lokasi_pengadaan = $row[18];
-                                $AddMasterProgram->status =  1;
-                                $AddMasterProgram->created_at = Carbon::now();
-                                $AddMasterProgram->updated_at = Carbon::now();
-                                $AddMasterProgram->created_by = Auth::user()->id;
-
-                                $AddMasterProgram->save();
-
-                                DB::commit();               
-                            } catch (\Throwable $error) {
-                                DB::rollback();
-                                Log::critical($error);
+                            $AddMasterProgram->uuid =  (string) Str::uuid();
+                            $AddMasterProgram->code =  $nomor_registrasi;
+                            $AddMasterProgram->fund_number = $row[13];
+                            $AddMasterProgram->cost_center = $row[11];
+                            $AddMasterProgram->fund_center = $row[0];
+                            $AddMasterProgram->id_program_account = @$checkExistingDataProgramAccount->id;
+                            $AddMasterProgram->name_program_account = @$checkExistingDataProgramAccount->name;
+                            $AddMasterProgram->id_program_departement_cck =  @$checkExistingDataProgramDepartemen->id;
+                            $AddMasterProgram->name_program_departement_cck =  @$checkExistingDataProgramDepartemen->name;
+                            $AddMasterProgram->id_program_bagian_cc =  @$checkExistingDataProgramBagian->id;
+                            $AddMasterProgram->name_program_bagian_cc =  @$checkExistingDataProgramBagian->name;
+                            $AddMasterProgram->direktorat = $row[9];
+                            $AddMasterProgram->kompartemen = $row[10];
+                            $AddMasterProgram->name = $row[1];
+                            $AddMasterProgram->description = $row[1];
+                            $AddMasterProgram->priority = $rand_priority;
+                            $AddMasterProgram->year = date('Y');
+                            
+                            $nominal = 0;
+                            // if(strstr($row[4], '.'))
+                            // {
+                            //     $tmp_nominal = preg_replace(".", "", $row[4]);
+                            //     $nominal = $tmp_nominal."00000";
+                            // }else{
+                            //     $nominal = $row[4]."000000";
+                            // }
+                            if($row[4])
+                            {
+                                $nominal = $row[4] * 1000000;
                             }
-                        }                        
-                    }
+                            $AddMasterProgram->nominal = $nominal;
+
+                            $AddMasterProgram->kriteria_program = $row[6];
+                            $AddMasterProgram->kriteria_pengadaan = $row[39];
+                            $AddMasterProgram->type_pengadaan = $row[16];
+                            $AddMasterProgram->lokasi_pengadaan = $row[18];
+                            $AddMasterProgram->status =  1;
+                            $AddMasterProgram->created_at = Carbon::now();
+                            $AddMasterProgram->updated_at = Carbon::now();
+                            $AddMasterProgram->created_by = Auth::user()->id;
+
+                            $AddMasterProgram->save();
+
+                            DB::commit();               
+                        } catch (\Throwable $error) {
+                            DB::rollback();
+                            Log::critical($error);
+                        }
+                    }                    
                 }                
             }            
 

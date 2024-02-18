@@ -23,6 +23,7 @@ use App\Http\Controllers\TrProgresProgramPOController;
 use App\Http\Controllers\TrProgresProgramGRController;
 use App\Http\Controllers\TrProgramRealisasiController;
 use App\Http\Controllers\TrProgramPrognosaController;
+use App\Http\Controllers\TrProgresImportController;
 
 // Development
 use App\Http\Controllers\DevelopmentController;
@@ -128,6 +129,11 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     // Transaksi Program Prognosa
     Route::get('/transaksi/program/prognosa', [TrProgramPrognosaController::class, 'page_indexTrProgramPrognosa'])->name('transaksi.program.prognosa');
     Route::post('/transaksi/program/prognosa/get_datatable', [TrProgramPrognosaController::class, 'get_datatableTrProgramPrognosa'])->name('transaksi.program.prognosa.get_datatable');
+
+    // Transaksi Progres Import
+    Route::get('/transaksi/progres/import', [TrProgresImportController::class, 'page_indexTrProgresImport'])->name('transaksi.progres.import');
+    Route::post('/transaksi/progres/import/act_upload', [TrProgresImportController::class, 'act_uploadTrProgresImport'])->name('transaksi.progres.import.act_upload');
+    Route::post('/transaksi/progres/import/get_datatable', [TrProgresImportController::class, 'get_datatableTrProgresImport'])->name('transaksi.progres.import.get_datatable');
 });
 
 Route::group(['middleware' => ['guest', 'log.access']], function () {
