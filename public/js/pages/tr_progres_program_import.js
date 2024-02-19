@@ -305,6 +305,26 @@ function serverSideDatatables()
                 $("#data_account_program_jml_gr").html(data.jumlahFilterMsProgramAccountGR);
                 $("#data_account_program_nilai_gr").html(data.totalFilterMsProgramNominalAccountGR);
 
+                $("#data_account_program_persentase_jml").html(data.jumlahFilterMsProgramPersentaseAccount + " %");
+                $("#data_account_program_persentase_nilai").html(data.totalFilterMsProgramNominalPersentaseAccount + " %");
+                $("#data_account_program_persentase_jml_user").html(data.jumlahFilterMsProgramPersentaseAccountUser + " %");
+                $("#data_account_program_persentase_nilai_user").html(data.totalFilterMsProgramNominalPersentaseAccountUser + " %");
+                $("#data_account_program_persentase_jml_mir").html(data.jumlahFilterMsProgramPersentaseAccountMIR + " %");
+                $("#data_account_program_persentase_nilai_mir").html(data.totalFilterMsProgramNominalPersentaseAccountMIR + " %");
+                $("#data_account_program_persentase_jml_sr").html(data.jumlahFilterMsProgramPersentaseAccountSR + " %");
+                $("#data_account_program_persentase_nilai_sr").html(data.totalFilterMsProgramNominalPersentaseAccountSR + " %");
+                $("#data_account_program_persentase_jml_pr").html(data.jumlahFilterMsProgramPersentaseAccountPR + " %");
+                $("#data_account_program_persentase_nilai_pr").html(data.totalFilterMsProgramNominalPersentaseAccountPR + " %");
+                $("#data_account_program_persentase_jml_po").html(data.jumlahFilterMsProgramPersentaseAccountPO + " %");
+                $("#data_account_program_persentase_nilai_po").html(data.totalFilterMsProgramNominalPersentaseAccountPO + " %");
+                $("#data_account_program_persentase_jml_gr").html(data.jumlahFilterMsProgramPersentaseAccountGR + " %");
+                $("#data_account_program_persentase_nilai_gr").html(data.totalFilterMsProgramNominalPersentaseAccountGR + " %");
+
+                if(data.status_cut_off_set > 0)
+                {
+                    $('.cardDataCutOff').show();
+                }
+
                 return data.data;
             },
             error: function ()
@@ -331,10 +351,108 @@ function serverSideDatatables()
             {data: 'fild_departement', name: 'fild_departement'},
             {data: 'fild_direktorat', name: 'fild_direktorat'},
             {data: 'fild_account', name: 'fild_account'},
-            {data: 'fild_priority', name: 'fild_priority'},
+            {data: 'fild_progres', name: 'fild_progres'},
             {data: 'fild_nominal', name: 'fild_nominal'},
-            {data: 'action', name: 'action'}            
+            {data: 'fild_nominal_commit', name: 'fild_nominal_commit'},
+            {data: 'fild_nominal_sisa', name: 'fild_nominal_sisa'},
+            // {data: 'action', name: 'action'}            
         ]
+    });
+}
+
+function btn_cutoffProgresProgram()
+{
+    Swal.fire({
+        title: 'Yakin Cut Off Data ?',
+        text: "Pastikan Anda Sudah Mengecek Kembali Data Yang Akan Dikirim..",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Submit!',
+        customClass: {
+          confirmButton: 'btn btn-primary',
+          cancelButton: 'btn btn-outline-danger ml-1'
+        },
+        buttonsStyling: false
+    }).then(function (result) {
+        if (result.value) {
+            KTApp.showPageLoading();
+
+            $.ajax({
+                url: BaseURL + "/transaksi/progres/import/cut_off_data",
+                data: {
+                    
+                },
+                method: "POST",
+                dataType: "json",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (data) {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+ 
+                    if(data.status == true)
+                    {
+                        Swal.fire({
+                            title: 'Update Success !',
+                            text: data.message,
+                            icon: "success",
+                            showDenyButton: false,
+                            showCancelButton: false,
+                            confirmButtonText: 'Oke',
+                            allowOutsideClick: false,
+                            closeOnClickOutside: false,
+                        }).then((result) => {
+                            /* Read more about isConfirmed, isDenied below */
+                            if (result.isConfirmed) {
+                                location.reload();
+                                return false;
+                            }                    
+                        })
+                    }else{
+                        Swal.fire({
+                            text: data.message,
+                            icon: "warning",
+                            buttonsStyling: false,
+                            confirmButtonText: "Ok, got it!",
+                            customClass: {
+                                confirmButton: "btn btn-primary"
+                            }
+                        });
+                        return false;
+                    }            
+                },
+                error: function () {
+                    KTApp.hidePageLoading();
+                    loadingEl.remove();
+
+                    Swal.fire({
+                        text: "Data Tidak Terkirim, Hubungi Administrator !!",
+                        icon: "warning",
+                        buttonsStyling: false,
+                        confirmButtonText: "Ok, got it!",
+                        customClass: {
+                            confirmButton: "btn btn-primary"
+                        }
+                    });
+                    return false;
+                },
+            });
+        }else{
+            KTApp.hidePageLoading();
+            loadingEl.remove();
+
+            Swal.fire({
+                text: "Pastikan Anda Sudah Mengisi Form Required.. !!",
+                icon: "warning",
+                buttonsStyling: false,
+                confirmButtonText: "Ok, got it!",
+                customClass: {
+                    confirmButton: "btn btn-primary"
+                }
+            });
+            return false;
+        }
     });
 }
 

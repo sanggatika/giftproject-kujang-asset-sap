@@ -27,6 +27,7 @@ use App\Models\mProgramDepartementCCK;
 use App\Models\mProgramBagianCC;
 use App\Models\mProgram;
 use App\Models\tmpProgramProgresImport;
+use App\Models\trProgresProgram;
 
 class TrProgresImportController extends Controller
 {
@@ -341,6 +342,11 @@ class TrProgresImportController extends Controller
 
             $data = $dataMsProgram->get();
 
+            $status_cut_off = $data->filter(function ($program) {
+                return optional($program->tmpProgramProgresImportLast)->status_cut_off == 0;
+            });
+            $status_cut_off_set = $status_cut_off->count();
+
             $jumlahFilterMsProgram = $data->count();
             $totalFilterMsProgramNominal = $data->sum('nominal');
 
@@ -637,8 +643,7 @@ class TrProgresImportController extends Controller
             });
 
             // Total GL Account
-            $jumlahFilterMsProgramAccount = $jumlahFilterMsProgramAccountPabrik + $jumlahFilterMsProgramAccountA2B + $jumlahFilterMsProgramAccountPeralatan + $jumlahFilterMsProgramAccountBangunan + $jumlahFilterMsProgramAccountAsetTBWJD + $jumlahFilterMsProgramAccountSCP;
-            
+            $jumlahFilterMsProgramAccount = $jumlahFilterMsProgramAccountPabrik + $jumlahFilterMsProgramAccountA2B + $jumlahFilterMsProgramAccountPeralatan + $jumlahFilterMsProgramAccountBangunan + $jumlahFilterMsProgramAccountAsetTBWJD + $jumlahFilterMsProgramAccountSCP;            
             $totalFilterMsProgramNominalAccount = $totalFilterMsProgramNominalAccountPabrik + $totalFilterMsProgramNominalAccountA2B + $totalFilterMsProgramNominalAccountPeralatan + $totalFilterMsProgramNominalAccountBangunan + $totalFilterMsProgramNominalAccountAsetTBWJD + $totalFilterMsProgramNominalAccountSCP;
 
             $jumlahFilterMsProgramAccountUser = $jumlahFilterMsProgramAccountPabrikUser + $jumlahFilterMsProgramAccountA2BUser + $jumlahFilterMsProgramAccountPeralatanUser + + $jumlahFilterMsProgramAccountBangunanUser + $jumlahFilterMsProgramAccountAsetTBWJDUser + $jumlahFilterMsProgramAccountSCPUser;
@@ -659,7 +664,82 @@ class TrProgresImportController extends Controller
             $jumlahFilterMsProgramAccountGR = $jumlahFilterMsProgramAccountPabrikGR + $jumlahFilterMsProgramAccountA2BGR + $jumlahFilterMsProgramAccountPeralatanGR + $jumlahFilterMsProgramAccountBangunanGR + $jumlahFilterMsProgramAccountAsetTBWJDGR + $jumlahFilterMsProgramAccountSCPGR;
             $totalFilterMsProgramNominalAccountGR = $totalFilterMsProgramNominalAccountPabrikGR + $totalFilterMsProgramNominalAccountA2BGR + $totalFilterMsProgramNominalAccountPeralatanGR + $totalFilterMsProgramNominalAccountBangunanGR + $totalFilterMsProgramNominalAccountAsetTBWJDGR + $totalFilterMsProgramNominalAccountSCPGR;
 
+            // Persentase GL Account
+            $jumlahFilterMsProgramPersentaseAccount = 0;   
+            if($jumlahFilterMsProgramAccount != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccount = ( $jumlahFilterMsProgramAccount / $jumlahFilterMsProgramAccount) * 100;
+            }        
+            $totalFilterMsProgramNominalPersentaseAccount = 0;
+            if($totalFilterMsProgramNominalAccount != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccount = ( $totalFilterMsProgramNominalAccount / $totalFilterMsProgramNominalAccount) * 100;
+            }
+            $jumlahFilterMsProgramPersentaseAccountUser = 0;            
+            if($jumlahFilterMsProgramAccountUser != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccountUser = ( $jumlahFilterMsProgramAccountUser / $jumlahFilterMsProgramAccount) * 100;
+            }
+            // dd($jumlahFilterMsProgramPersentaseAccountUser);
+            $totalFilterMsProgramNominalPersentaseAccountUser = 0;
+            if($totalFilterMsProgramNominalAccountUser != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccountUser = ( $totalFilterMsProgramNominalAccountUser / $totalFilterMsProgramNominalAccount) * 100;
+            }
+            $jumlahFilterMsProgramPersentaseAccountMIR = 0;
+            if($jumlahFilterMsProgramAccountMIR != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccountMIR = ( $jumlahFilterMsProgramAccountMIR / $jumlahFilterMsProgramAccount) * 100;
+            }
+            $totalFilterMsProgramNominalPersentaseAccountMIR = 0;
+            if($totalFilterMsProgramNominalAccountMIR != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccountMIR = ( $totalFilterMsProgramNominalAccountMIR / $totalFilterMsProgramNominalAccount) * 100;
+            }
+            $jumlahFilterMsProgramPersentaseAccountSR = 0;
+            if($jumlahFilterMsProgramAccountSR != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccountSR = ( $jumlahFilterMsProgramAccountSR / $jumlahFilterMsProgramAccount) * 100;
+            }
+            $totalFilterMsProgramNominalPersentaseAccountSR = 0;
+            if($totalFilterMsProgramNominalAccountSR != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccountSR = ( $totalFilterMsProgramNominalAccountSR / $totalFilterMsProgramNominalAccount) * 100;
+            }
+            $jumlahFilterMsProgramPersentaseAccountPR = 0;
+            if($jumlahFilterMsProgramAccountPR != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccountPR = ( $jumlahFilterMsProgramAccountPR / $jumlahFilterMsProgramAccount) * 100;
+            }
+            $totalFilterMsProgramNominalPersentaseAccountPR = 0;
+            if($totalFilterMsProgramNominalAccountPR != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccountPR = ( $totalFilterMsProgramNominalAccountPR / $totalFilterMsProgramNominalAccount) * 100;
+            }
+            $jumlahFilterMsProgramPersentaseAccountPO = 0;
+            if($jumlahFilterMsProgramAccountPO != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccountPO = ( $jumlahFilterMsProgramAccountPO / $jumlahFilterMsProgramAccount) * 100;
+            }
+            $totalFilterMsProgramNominalPersentaseAccountPO = 0;
+            if($totalFilterMsProgramNominalAccountPO != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccountPO = ( $totalFilterMsProgramNominalAccountPO / $totalFilterMsProgramNominalAccount) * 100;
+            }
+            $jumlahFilterMsProgramPersentaseAccountGR = 0;
+            if($jumlahFilterMsProgramAccountGR != 0)
+            {
+                $jumlahFilterMsProgramPersentaseAccountGR = ( $jumlahFilterMsProgramAccountGR / $jumlahFilterMsProgramAccount) * 100;
+            }
+            $totalFilterMsProgramNominalPersentaseAccountGR = 0;
+            if($totalFilterMsProgramNominalAccountGR != 0)
+            {
+                $totalFilterMsProgramNominalPersentaseAccountGR = ( $totalFilterMsProgramNominalAccountGR / $totalFilterMsProgramNominalAccount) * 100;
+            }
+
             return DataTables::of($data)
+            ->with('status_cut_off_set', $status_cut_off_set)
+
             ->with('jumlahMsProgram', number_format($jumlahMsProgram,0,',','.'))
             ->with('totalMsProgramNominal', number_format($totalMsProgramNominal,0,',','.'))
             ->with('jumlahFilterMsProgram', number_format($jumlahFilterMsProgram,0,',','.'))
@@ -773,6 +853,21 @@ class TrProgresImportController extends Controller
             ->with('totalFilterMsProgramNominalAccountPO', number_format($totalFilterMsProgramNominalAccountPO,0,',','.'))
             ->with('jumlahFilterMsProgramAccountGR', number_format($jumlahFilterMsProgramAccountGR,0,',','.'))
             ->with('totalFilterMsProgramNominalAccountGR', number_format($totalFilterMsProgramNominalAccountGR,0,',','.'))
+
+            ->with('jumlahFilterMsProgramPersentaseAccount', number_format($jumlahFilterMsProgramPersentaseAccount,2,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccount', number_format($totalFilterMsProgramNominalPersentaseAccount,2,',','.'))
+            ->with('jumlahFilterMsProgramPersentaseAccountUser', number_format((int)$jumlahFilterMsProgramPersentaseAccountUser,0,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccountUser', number_format($totalFilterMsProgramNominalPersentaseAccountUser,2,',','.'))
+            ->with('jumlahFilterMsProgramPersentaseAccountMIR', number_format($jumlahFilterMsProgramPersentaseAccountMIR,2,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccountMIR', number_format($totalFilterMsProgramNominalPersentaseAccountMIR,2,',','.'))
+            ->with('jumlahFilterMsProgramPersentaseAccountSR', number_format($jumlahFilterMsProgramPersentaseAccountSR,2,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccountSR', number_format($totalFilterMsProgramNominalPersentaseAccountSR,2,',','.'))
+            ->with('jumlahFilterMsProgramPersentaseAccountPR', number_format($jumlahFilterMsProgramPersentaseAccountPR,2,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccountPR', number_format($totalFilterMsProgramNominalPersentaseAccountPR,2,',','.'))
+            ->with('jumlahFilterMsProgramPersentaseAccountPO', number_format($jumlahFilterMsProgramPersentaseAccountPO,2,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccountPO', number_format($totalFilterMsProgramNominalPersentaseAccountPO,2,',','.'))
+            ->with('jumlahFilterMsProgramPersentaseAccountGR', number_format($jumlahFilterMsProgramPersentaseAccountGR,2,',','.'))
+            ->with('totalFilterMsProgramNominalPersentaseAccountGR', number_format($totalFilterMsProgramNominalPersentaseAccountGR,2,',','.'))
             
             ->addIndexColumn()
             ->addColumn('fund_number', function($row)
@@ -849,18 +944,20 @@ class TrProgresImportController extends Controller
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-start">
                     <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.$row->name_program_account.'</a>
+                    <small>'.strtoupper($row->priority).'</small>
+                    <hr>
                 </div>
                 <!--begin::User details-->
                 ';
 
                 return $html;
             })
-            ->addColumn('fild_priority', function($row)
+            ->addColumn('fild_progres', function($row)
             {
                 $html = '
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-start">
-                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.strtoupper($row->priority).'</a>
+                    <span class="badge badge-light-primary flex-shrink-0 align-self-center fs-7">'.strtoupper($row->tmpProgramProgresImportLast->status_progres).'</span>
                 </div>
                 <!--begin::User details-->
                 ';
@@ -873,6 +970,70 @@ class TrProgresImportController extends Controller
                 <!--begin::User details-->
                 <div class="d-flex flex-column text-end">
                     <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($row->nominal,0,',','.').'</a>
+                </div>
+                <!--begin::User details-->
+                ';
+
+                return $html;
+            })
+            ->addColumn('fild_nominal_commit', function($row)
+            {
+                $nominal_anggaran = $row->nominal;
+
+                $nominal_commit = 0;
+                if($row->tmpProgramProgresImportLast)
+                {
+                    if($row->tmpProgramProgresImportLast->nominal_pengajuan)
+                    {
+                        $nominal_commit = $row->tmpProgramProgresImportLast->nominal_pengajuan;
+                    }
+                }
+                
+                $persentase_commit = 0;
+                if($nominal_commit != 0)
+                {
+                    $persentase_commit = ( $nominal_commit / $nominal_anggaran) * 100;
+                }
+                
+
+                $html = '
+                <!--begin::User details-->
+                <div class="d-flex flex-column text-end">
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($nominal_commit,0,',','.').'</a>
+                    <small>'.number_format($persentase_commit,2,',','.').' %</small>
+                    <hr>
+                </div>
+                <!--begin::User details-->
+                ';
+
+                return $html;
+            })
+            ->addColumn('fild_nominal_sisa', function($row)
+            {
+                $nominal_anggaran = $row->nominal;
+                
+                $nominal_commit = 0;
+                if($row->tmpProgramProgresImportLast)
+                {
+                    if($row->tmpProgramProgresImportLast->nominal_pengajuan)
+                    {
+                        $nominal_commit = $row->tmpProgramProgresImportLast->nominal_pengajuan;
+                    }
+                }
+
+                $nominal_sisa = $nominal_anggaran - $nominal_commit;
+                $persentase_sisa = 0;
+                if($nominal_commit != 0)
+                {
+                    $persentase_sisa = ( $nominal_sisa / $nominal_anggaran) * 100;
+                }                
+
+                $html = '
+                <!--begin::User details-->
+                <div class="d-flex flex-column text-end">
+                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold">'.number_format($nominal_sisa,0,',','.').'</a>
+                    <small>'.number_format($persentase_sisa,2,',','.').' %</small>
+                    <hr>
                 </div>
                 <!--begin::User details-->
                 ';
@@ -912,8 +1073,164 @@ class TrProgresImportController extends Controller
 
                 return $html;
             })
-            ->rawColumns(['fund_number', 'fild_name', 'fild_kriteria', 'fild_departement', 'fild_direktorat', 'fild_account', 'fild_priority', 'fild_nominal', 'action'])
+            ->rawColumns(['fund_number', 'fild_name', 'fild_kriteria', 'fild_departement', 'fild_direktorat', 'fild_account', 'fild_progres', 'fild_nominal', 'fild_nominal_commit', 'fild_nominal_sisa', 'action'])
             ->make(true);
+        }
+        return $this->onResult($status, $response_code, $message, $dataAPI);
+    }
+
+    public function act_cutoffdataTrProgresImport(Request $request)
+    {
+        $status = false;
+        $response_code = 'RC400';
+        $message = 'Data Gagal Disimpan Terjadi Gangguan..';
+        $dataAPI = null;
+
+        if ($request->ajax()) {  
+            // dd($request->all());          
+            $dataMsProgram = mProgram::with('tmpProgramProgresImportLast')->whereNotNull('uuid')->where('status', 1)->get();
+
+            if($dataMsProgram)
+            {
+                foreach ($dataMsProgram as $msProgram) {
+                    $checkExistingDataTmpProgramProgres =  tmpProgramProgresImport::where('uuid', $msProgram->tmpProgramProgresImportLast->uuid)->first();
+                    if($checkExistingDataTmpProgramProgres)
+                    {
+                        DB::beginTransaction();
+                        try {
+                            // Proses Simpan Data Kedalam Database      
+                            $checkExistingDataTmpProgramProgres->status_cut_off = 1;            
+                            $checkExistingDataTmpProgramProgres->save();
+                            
+                            $permitted_chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                            $nomor_registrasi = "PROGRES-PROGRAM-".random_int(10, 99).date('m').date('d')."-".substr(str_shuffle($permitted_chars), 0, 4)."-".time();
+
+                            $AddTrProgresProgram = new trProgresProgram();
+
+                            $AddTrProgresProgram->uuid =  (string) Str::uuid();
+                            $AddTrProgresProgram->code =  $nomor_registrasi;
+                            $AddTrProgresProgram->id_program =  $msProgram->id;
+                            $AddTrProgresProgram->name_program =  $msProgram->name;
+                            $AddTrProgresProgram->id_program_account =  $msProgram->id_program_account;
+                            $AddTrProgresProgram->name_program_account =  $msProgram->name_program_account;
+                            $AddTrProgresProgram->id_program_departement_cck =  $msProgram->id_program_departement_cck;
+                            $AddTrProgresProgram->name_program_departement_cck =  $msProgram->name_program_departement_cck;
+                            $AddTrProgresProgram->id_program_bagian_cc =  $msProgram->id_program_bagian_cc;
+                            $AddTrProgresProgram->name_program_bagian_cc =  $msProgram->name_program_bagian_cc;
+                            
+                            $AddTrProgresProgram->status_progres =  $checkExistingDataTmpProgramProgres->status_progres;
+                            $AddTrProgresProgram->type_pengadaan =  $checkExistingDataTmpProgramProgres->type_pengadaan;
+                            $AddTrProgresProgram->lokasi_pengadaan =  $checkExistingDataTmpProgramProgres->lokasi_pengadaan;
+                            $AddTrProgresProgram->nominal_anggaran =   $checkExistingDataTmpProgramProgres->nominal_anggaran;
+                            $AddTrProgresProgram->nominal_pengajuan =  $checkExistingDataTmpProgramProgres->nominal_pengajuan;
+                            $AddTrProgresProgram->nominal_sisa =  $checkExistingDataTmpProgramProgres->nominal_sisa;
+
+                            $status_mir_sr = 0;
+                            $status_pr = 0;
+                            $status_po = 0;
+                            $status_gr = 0;
+                            switch ($checkExistingDataTmpProgramProgres->status_progres) {
+                                case "USER":
+                                        $status_mir_sr = 0;
+                                        $status_pr = 0;
+                                        $status_po = 0;
+                                        $status_gr = 0;
+                                    break;
+                                case "MIR":
+                                    $status_mir_sr = 1;
+                                    $status_pr = 0;
+                                    $status_po = 0;
+                                    $status_gr = 0;
+                                    break;
+                                case "SR":
+                                    $status_mir_sr = 1;
+                                    $status_pr = 0;
+                                    $status_po = 0;
+                                    $status_gr = 0;
+                                    break;
+                                case "PR":
+                                    $status_mir_sr = 2;
+                                    $status_pr = 1;
+                                    $status_po = 0;
+                                    $status_gr = 0;
+                                    break;
+                                case "PO":
+                                    $status_mir_sr = 2;
+                                    $status_pr = 2;
+                                    $status_po = 1;
+                                    $status_gr = 0;
+                                    break;
+                                case "GR":
+                                    $status_mir_sr = 2;
+                                    $status_pr = 2;
+                                    $status_po = 2;
+                                    $status_gr = 1;
+                                    break;
+                                default:
+                                    $status_mir_sr = 0;
+                                    $status_pr = 0;
+                                    $status_po = 0;
+                                    $status_gr = 0;
+                            }
+
+                            $AddTrProgresProgram->no_mir_sr =  $checkExistingDataTmpProgramProgres->no_mir_sr;
+                            $AddTrProgresProgram->date_mir_sr =  $checkExistingDataTmpProgramProgres->date_mir_sr;
+                            $AddTrProgresProgram->status_mir_sr =  $status_mir_sr;
+
+                            $AddTrProgresProgram->no_pr =  $checkExistingDataTmpProgramProgres->no_pr;
+                            $AddTrProgresProgram->date_pr =  $checkExistingDataTmpProgramProgres->date_pr;
+                            $AddTrProgresProgram->status_pr =  $status_pr;
+
+                            $AddTrProgresProgram->no_po =  $checkExistingDataTmpProgramProgres->no_po;
+                            $AddTrProgresProgram->date_po =  $checkExistingDataTmpProgramProgres->date_po;
+                            $AddTrProgresProgram->date_po_estimasi =  $checkExistingDataTmpProgramProgres->date_po_estimasi;
+                            $AddTrProgresProgram->status_po =  $status_po;
+
+                            $AddTrProgresProgram->no_gr =  $checkExistingDataTmpProgramProgres->no_gr;
+                            $AddTrProgresProgram->date_gr =  $checkExistingDataTmpProgramProgres->date_gr;
+                            $AddTrProgresProgram->status_gr =  $status_gr;
+
+                            $AddTrProgresProgram->count_import =  $checkExistingDataTmpProgramProgres->count_import;
+                            $AddTrProgresProgram->status_cut_off =  1;
+                            $AddTrProgresProgram->date_cut_off =  Carbon::now();
+                            $AddTrProgresProgram->status =  1;
+                            $AddTrProgresProgram->created_at = Carbon::now();
+                            $AddTrProgresProgram->updated_at = Carbon::now();
+                            $AddTrProgresProgram->created_by = Auth::user()->id;
+
+                            $AddTrProgresProgram->save();
+
+                            DB::commit();
+            
+                            // $status = true;
+                            // $response_code = "RC200";
+                            // $message = "Anda Berhasil Update Program Anggaran !!";
+            
+                            // return $this->onResult($status, $response_code, $message, $dataAPI);                
+                        } catch (\Throwable $error) {
+                            DB::rollback();
+                            Log::critical($error);
+            
+                            $response_code = "RC400";
+                            $message = "Anda Gagal Menambahkan Data Kedalam Sistem !!" .$error;
+                            return $this->onResult($status, $response_code, $message, $dataAPI);
+                        }
+                    }
+                }
+
+                $status = true;
+                $response_code = "RC200";
+                $message = "Anda Berhasil Update Cut Off Progres Program Anggaran !!";
+
+                return $this->onResult($status, $response_code, $message, $dataAPI); 
+            }
+
+            $status = true;
+            $response_code = 'RC200';
+            $message = 'Data Berhasil Di Simpan, Terimakasih';           
+
+            return $this->onResult($status, $response_code, $message, $dataAPI); 
+
         }
         return $this->onResult($status, $response_code, $message, $dataAPI);
     }

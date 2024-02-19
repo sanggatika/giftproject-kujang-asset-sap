@@ -134,6 +134,7 @@ Route::group(['middleware' => ['auth', 'log.access']], function () {
     Route::get('/transaksi/progres/import', [TrProgresImportController::class, 'page_indexTrProgresImport'])->name('transaksi.progres.import');
     Route::post('/transaksi/progres/import/act_upload', [TrProgresImportController::class, 'act_uploadTrProgresImport'])->name('transaksi.progres.import.act_upload');
     Route::post('/transaksi/progres/import/get_datatable', [TrProgresImportController::class, 'get_datatableTrProgresImport'])->name('transaksi.progres.import.get_datatable');
+    Route::post('/transaksi/progres/import/cut_off_data', [TrProgresImportController::class, 'act_cutoffdataTrProgresImport'])->name('transaksi.progres.import.cut_off_data');
 });
 
 Route::group(['middleware' => ['guest', 'log.access']], function () {
