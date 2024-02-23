@@ -5,7 +5,7 @@
         <!--begin::Logo image-->
         <a href="index.html">
             <img alt="Logo" src="{{ asset('images/pupuk-indonesia-putih.png') }}" class="h-80px app-sidebar-logo-default" />
-            <img alt="Logo" src="{{ asset('images/pupuk-indonesia-title.png') }}" class="h-50px app-sidebar-logo-minimize" />
+            <img alt="Logo" src="{{ asset('images/pupuk-indonesia-title.png') }}" class="h-50px app-sidebar-logo-minimize" style="margin-left: -10px;" />
         </a>
         <!--end::Logo image-->
         <!--begin::Sidebar toggle-->
@@ -53,7 +53,7 @@
                 <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
                     
                     <!--begin::Section-->
-                    <div class="d-flex mb-5">
+                    <div class="d-flex mb-5 @if (Route::currentRouteName() == 'dash.progres_realisasi') d-none @endif">
                         <!--begin::Info-->
                         <div class="flex-grow-1 me-2">
                             <!--begin::Username-->

@@ -5,15 +5,15 @@ const formatNumber = (number)=>{
     return number.toLocaleString('id-ID');
 }
 
-function line2_diagram_progres_realisasi()
+function line2_diagram_program_investasi_year()
 {
     var options = {        
         chart: {
             type: 'donut',
         },        
         colors: ['#99a7f9', '#f0f02f'],
-        labels: ['Progres Realisasi', 'Sisa Anggaran'],
-        series: [total_progres_realisasi, total_program_anggaran_sisa],
+        labels: ['Single Year', 'Multi Year'],
+        series: [jumlahMsProgramSingleYear, jumlahMsProgramMultiYear],
         stroke: {
             width: 0,
             lineCap: "round"
@@ -45,7 +45,7 @@ function line2_diagram_progres_realisasi()
                     labels: {
                         show: !0,
                         name: {
-                            fontSize: "0.938rem",
+                            fontSize: "0.5rem",
                             offsetY: 20
                         },
                         value: {
@@ -60,7 +60,7 @@ function line2_diagram_progres_realisasi()
                         },
                         total: {
                             show: !0,
-                            label: "Total Anggaran",
+                            label: "PROGRAM INVESTASI",
                             formatter: function(o) {
                                 return o.globals.seriesTotals.reduce(function(o, e) {
                                     var data_jumlah = parseInt(o) + parseInt(e);
@@ -74,37 +74,123 @@ function line2_diagram_progres_realisasi()
         },
     };
 
-    document.getElementById('line2_diagram_progres_realisasi').innerHTML = '';
-    var chart = new ApexCharts(document.querySelector("#line2_diagram_progres_realisasi"), options);
+    document.getElementById('line2_diagram_program_investasi_year').innerHTML = '';
+    var chart = new ApexCharts(document.querySelector("#line2_diagram_program_investasi_year"), options);
+    chart.render();
+}
+
+function line2_chart_program_investasi_year()
+{
+    var options = {
+        series: [{
+        data: [jumlahMsProgramSingleYear, jumlahMsProgramMultiYear]
+      }],
+        chart: {
+        type: 'bar',
+        height: 150
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 4,
+          horizontal: true,
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        categories: ['SINGLEYEAR', 'MULTIYEARS'],
+      }
+    };
+
+    document.getElementById('line2_chart_program_investasi_year').innerHTML = '';
+    var chart = new ApexCharts(document.querySelector("#line2_chart_program_investasi_year"), options);
+    chart.render();
+}
+
+function line2_chart_program_investasi_singleyear()
+{
+    var options = {
+        series: [{
+        name: 'PROGRAM',
+        data: [jumlahMsProgramSingleyearAccountUser, jumlahMsProgramSingleyearAccountMIR, jumlahMsProgramSingleyearAccountSR, jumlahMsProgramSingleyearAccountPR, jumlahMsProgramSingleyearAccountPO, jumlahMsProgramSingleyearAccountGR]
+      }],
+        annotations: {
+        points: [{
+          x: 'Bananas',
+          seriesIndex: 0,
+          label: {
+            borderColor: '#775DD0',
+            offsetY: 0,
+            style: {
+              color: '#fff',
+              background: '#775DD0',
+            },
+            text: 'Bananas are good',
+          }
+        }]
+      },
+      chart: {
+        height: 330,
+        type: 'bar',
+      },
+      plotOptions: {
+        bar: {
+          borderRadius: 10,
+          columnWidth: '50%',
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 2
+      },
+      
+      grid: {
+        row: {
+          colors: ['#fff', '#f2f2f2']
+        }
+      },
+      xaxis: {
+        labels: {
+          rotate: -45
+        },
+        categories: ['USER', 'MIR', 'SR', 'PR', 'PO', 'GR'],
+        tickPlacement: 'on'
+      },
+      yaxis: {
+        title: {
+          text: 'PROGRAM SINGLEYEAR',
+        },
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shade: 'light',
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100]
+        },
+      }
+    };
+
+    document.getElementById('line2_chart_program_investasi_singleyear').innerHTML = '';
+    var chart = new ApexCharts(document.querySelector("#line2_chart_program_investasi_singleyear"), options);
     chart.render();
 }
 
 $(document).ready(function() {
-    line2_diagram_progres_realisasi();
+    line2_diagram_program_investasi_year();
+    line2_chart_program_investasi_year();
+    line2_chart_program_investasi_singleyear();
 
-    $("#tabel_master_tr_realisasi").DataTable({
-        pageLength: 5,
-        ordering: false,
-        responsive: true,
-        "language": {
-            "lengthMenu": "Show _MENU_",
-        },
-        "dom":
-            "<'row'" +
-            "<'col-sm-6 d-flex align-items-center justify-conten-start'l>" +
-            "<'col-sm-6 d-flex align-items-center justify-content-end'f>" +
-            ">" +
-    
-            "<'table-responsive'tr>" +
-    
-            "<'row'" +
-            "<'col-sm-12 col-md-5 d-flex align-items-center justify-content-center justify-content-md-start'i>" +
-            "<'col-sm-12 col-md-7 d-flex align-items-center justify-content-center justify-content-md-end'p>" +
-            ">"
-    });
-
-    $("#tabel_master_data_program_jenis").DataTable({
-        pageLength: 5,
+    $("#tabel_progres_program_singleyear_departement").DataTable({
+        pageLength: 6,
         ordering: false,
         "language": {
             "lengthMenu": "Show _MENU_",

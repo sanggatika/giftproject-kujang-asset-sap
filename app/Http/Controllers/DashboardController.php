@@ -74,7 +74,24 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function page_realisasiDashboard(Request $request)
+    public function page_realisasiDashboard(Request $request, $filter_tanggal = null)
+    {
+        $model['route'] = 'Dashboard Realisasi Program';
+        
+        $model['tanggal_cut_off'] = '2024-12-31';
+        
+        // data
+        $model['ms_program'] = mProgram::with('trProgresProgramLast')->get();
+
+        return view('pages.dashboard.v_program_realisasi', ['model' => $model]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function page_realisasiDashboardBackup(Request $request)
     {
         $model['route'] = 'Dashboard Realisasi Program';
         

@@ -43,6 +43,19 @@ class mProgram extends Model
         });
     }
 
+    public function trProgresProgramMany()
+    {
+        return $this->hasMany(trProgresProgram::class, 'id_program', 'id');
+    }
+
+    public function trProgresProgramLast()
+    {
+        return $this->hasOne(trProgresProgram::class, 'id_program', 'id')->where('count_import', function($query) {
+            $query->selectRaw('MAX(count_import)')
+                  ->from('tr_program_progres');
+        });
+    }
+
     
 
     public function trProgresProgramSR()
