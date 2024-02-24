@@ -772,6 +772,21 @@
         $persentaseNominalMsProgramMultiyearAccountGR = ( $nominalMsProgramMultiyearAccountGR / $nominalMsProgramMultiyearAccount) * 100;
     }
 
+    // Gabungan Single dan Multi
+    $jumlahMsProgramAccountPabrik =  $jumlahMsProgramSingleyearAccountPabrik +  $jumlahMsProgramMultiyearAccountPabrik;
+    $nominalMsProgramAccountPabrik = $nominalMsProgramSingleyearAccountPabrik + $nominalMsProgramMultiyearAccountPabrik;
+    $jumlahMsProgramAccountA2B =  $jumlahMsProgramSingleyearAccountA2B +  $jumlahMsProgramMultiyearAccountA2B;
+    $nominalMsProgramAccountA2B = $nominalMsProgramSingleyearAccountA2B + $nominalMsProgramMultiyearAccountA2B;
+    $jumlahMsProgramAccountPeralatan =  $jumlahMsProgramSingleyearAccountPeralatan +  $jumlahMsProgramMultiyearAccountPeralatan;
+    $nominalMsProgramAccountPeralatan = $nominalMsProgramSingleyearAccountPeralatan + $nominalMsProgramMultiyearAccountPeralatan;
+    $jumlahMsProgramAccountBangunan =  $jumlahMsProgramSingleyearAccountBangunan +  $jumlahMsProgramMultiyearAccountBangunan;
+    $nominalMsProgramAccountBangunan = $nominalMsProgramSingleyearAccountBangunan + $nominalMsProgramMultiyearAccountBangunan;
+    $jumlahMsProgramAccountAsetTBWJD =  $jumlahMsProgramSingleyearAccountAsetTBWJD +  $jumlahMsProgramMultiyearAccountAsetTBWJD;
+    $nominalMsProgramAccountAsetTBWJD = $nominalMsProgramSingleyearAccountAsetTBWJD + $nominalMsProgramMultiyearAccountAsetTBWJD;
+    $jumlahMsProgramAccountSCP =  $jumlahMsProgramSingleyearAccountSCP +  $jumlahMsProgramMultiyearAccountSCP;
+    $nominalMsProgramAccountSCP = $nominalMsProgramSingleyearAccountSCP + $nominalMsProgramMultiyearAccountSCP;
+
+
     // PROSES PENGADAAN INVESTASI RUTIN 2024-2025
     // PROSES PENGADAAN INVESTASI RUTIN 2024-2025 - ANPER
     $prosesPengadanInvestasiANPER = $model['ms_program']->where('lokasi_pengadaan','ANPER');
@@ -820,6 +835,9 @@
         return optional($program->tmpProgramProgresImportLast)->nominal_pengajuan ?? 0;
     });
 
+    $sisaJumlahProsesPengadanInvestasiANPER = $jumlahProsesPengadanInvestasiANPER - $jumlahProsesPengadanInvestasiANPERGR;
+    $sisaNominalProsesPengadanInvestasiANPER =  $nominalProsesPengadanInvestasiANPER - $nominalProsesPengadanInvestasiANPERGR;
+
     // PROSES PENGADAAN INVESTASI RUTIN 2024-2025 - PI
     $prosesPengadanInvestasiPI = $model['ms_program']->where('lokasi_pengadaan','PIHC');
     $jumlahProsesPengadanInvestasiPI =  $prosesPengadanInvestasiPI->count();
@@ -866,6 +884,9 @@
     $nominalProsesPengadanInvestasiPIGR = $dataProsesPengadanInvestasiPIGR->sum(function ($program) {
         return optional($program->tmpProgramProgresImportLast)->nominal_pengajuan ?? 0;
     });
+
+    $sisaJumlahProsesPengadanInvestasiPI = $jumlahProsesPengadanInvestasiPI - $jumlahProsesPengadanInvestasiPIGR;
+    $sisaNominalProsesPengadanInvestasiPI =  $nominalProsesPengadanInvestasiPI - $nominalProsesPengadanInvestasiPIGR;
 
     $jumlahProsesPengadanInvestasi = $jumlahProsesPengadanInvestasiANPER + $jumlahProsesPengadanInvestasiPI;
     $nominalProsesPengadanInvestasi = $nominalProsesPengadanInvestasiANPER + $nominalProsesPengadanInvestasiPI;
@@ -1245,6 +1266,277 @@
                                 <!--begin::Item-->
                                 <div class="carousel-item">
                                     
+                                    <div class="table-responsive" style="margin-top: -20px;">
+                                        <!--begin::Table-->
+                                        <table class="table table-striped table-hover align-middle table-row-dashed fs-7" id="tabel_line2_proses_account">
+                                            <!--begin::Table head-->
+                                            <thead class="bg-light-info">
+                                                <!--begin::Table row-->
+                                                <tr class="text-center text-dark fw-bolder text-uppercase gs-0">                                
+                                                    <th>No.</th>
+                                                    <th>GL ACCOUNT</th>
+                                                    <th>Jumlah</th>
+                                                    <th>Anggaran</th>
+                                                    <th>&nbsp;%&nbsp;</th>
+                                                </tr>
+                                                <!--end::Table row-->
+                                            </thead>
+                                            <!--end::Table head-->
+                                            <!--begin::Table body-->
+                                            <tbody class="text-gray-600 fw-bold">
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="position-relative py-2">
+                                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                            <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">1</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">PABRIK</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahMsProgramAccountPabrik,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalMsProgramAccountPabrik,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            @php
+                                                                $persentaseNominalMsProgramAccountPabrik = 0;
+                                                                if($nominalMsProgramAccountPabrik != 0)
+                                                                {
+                                                                    $persentaseNominalMsProgramAccountPabrik = ($nominalMsProgramAccountPabrik / $totalMsProgramNominal) * 100;
+                                                                }
+                                                            @endphp
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalMsProgramAccountPabrik,2,',','.')  }} % &nbsp;</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="position-relative py-2">
+                                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                            <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">2</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">A2B</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahMsProgramAccountA2B,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalMsProgramAccountA2B,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            @php
+                                                                $persentaseNominalMsProgramAccountA2B = 0;
+                                                                if($nominalMsProgramAccountA2B != 0)
+                                                                {
+                                                                    $persentaseNominalMsProgramAccountA2B = ($nominalMsProgramAccountA2B / $totalMsProgramNominal) * 100;
+                                                                }
+                                                            @endphp
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalMsProgramAccountA2B,2,',','.')  }} % &nbsp;</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="position-relative py-2">
+                                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                            <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">3</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">PERALATAN</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahMsProgramAccountPeralatan,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalMsProgramAccountPeralatan,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            @php
+                                                                $persentaseNominalMsProgramAccountPeralatan = 0;
+                                                                if($nominalMsProgramAccountPeralatan != 0)
+                                                                {
+                                                                    $persentaseNominalMsProgramAccountPeralatan = ($nominalMsProgramAccountPeralatan / $totalMsProgramNominal) * 100;
+                                                                }
+                                                            @endphp
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalMsProgramAccountPeralatan,2,',','.')  }} % &nbsp;</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="position-relative py-2">
+                                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                            <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">4</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">BANGUNAN</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahMsProgramAccountBangunan,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalMsProgramAccountBangunan,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            @php
+                                                                $persentaseNominalMsProgramAccountBangunan = 0;
+                                                                if($nominalMsProgramAccountBangunan != 0)
+                                                                {
+                                                                    $persentaseNominalMsProgramAccountBangunan = ($nominalMsProgramAccountBangunan / $totalMsProgramNominal) * 100;
+                                                                }
+                                                            @endphp
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalMsProgramAccountBangunan,2,',','.')  }} % &nbsp;</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="position-relative py-2">
+                                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                            <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">5</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">ASETT'BWJD</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahMsProgramAccountAsetTBWJD,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalMsProgramAccountAsetTBWJD,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            @php
+                                                                $persentaseNominalMsProgramAccountAsetTBWJD = 0;
+                                                                if($nominalMsProgramAccountAsetTBWJD != 0)
+                                                                {
+                                                                    $persentaseNominalMsProgramAccountAsetTBWJD = ($nominalMsProgramAccountAsetTBWJD / $totalMsProgramNominal) * 100;
+                                                                }
+                                                            @endphp
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalMsProgramAccountAsetTBWJD,2,',','.')  }} % &nbsp;</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="position-relative py-2">
+                                                            <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                            <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">6</a>
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-start">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">SCP</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahMsProgramAccountSCP,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-end">
+                                                        <div class="d-flex flex-column">
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalMsProgramAccountSCP,0,',','.')  }}</a>
+                                                            <hr class="my-1">
+                                                        </div>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <div class="d-flex flex-column">
+                                                            @php
+                                                                $persentaseNominalMsProgramAccountSCP = 0;
+                                                                if($nominalMsProgramAccountSCP != 0)
+                                                                {
+                                                                    $persentaseNominalMsProgramAccountSCP = ($nominalMsProgramAccountSCP / $totalMsProgramNominal) * 100;
+                                                                }
+                                                            @endphp
+                                                            <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalMsProgramAccountSCP,2,',','.')  }} % &nbsp;</a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                
+                                            </tbody>
+                                            <!--end::Table body-->
+                                            <tfoot class="bg-light-info">
+                                                <!--begin::Table row-->
+                                                <tr class="text-center text-dark fw-bolder text-uppercase gs-0"> 
+                                                    <th colspan="2">Total</th>
+                                                    <th>{{ number_format($jumlahMsProgram,0,',','.')  }}</th>
+                                                    <th class="text-end">{{ number_format($totalMsProgramNominal,0,',','.')  }}</th>
+                                                    <th></th>
+                                                </tr>
+                                                <!--end::Table row-->
+                                            </tfoot>
+                                        </table>
+                                        <!--end::Table-->
+                                    </div>
+
+                                    <div id="line2_diagram_program_account"></div>
+
+                                </div>
+                                <!--end::Item-->
+                        
+                                <!--begin::Item-->
+                                <div class="carousel-item">
+                                    
                                     <div id="line2_diagram_proses_pengadaan" style="margin-top: -20px;"></div>
 
                                     <div class="table-responsive mt-2">
@@ -1359,12 +1651,6 @@
 
                                     <div id="line2_chart_proses_pengadaan"></div>
 
-                                </div>
-                                <!--end::Item-->
-                        
-                                <!--begin::Item-->
-                                <div class="carousel-item">
-                                    ...
                                 </div>
                                 <!--end::Item-->
                             </div>
@@ -2640,6 +2926,7 @@
                         
                                 <!--begin::Item-->
                                 <div class="carousel-item">
+                                    
                                     <div class="mb-5" style="margin-top: -20px;">
                                         <div class="d-flex flex-stack">
                                             <div class="fw-bolder fs-4">PROSES PENGADAAN INVESTASI RUTIN 2024-2025
@@ -2914,8 +3201,365 @@
                                             </tfoot>
                                         </table>
                                     </div>
+
+                                    <div class="row mt-3">
+                                        <!--begin::Col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-5" style="margin-top: -20px;">
+                                                <div class="d-flex flex-stack">
+                                                    <div class="fw-bolder fs-6">PROSES PENGADAAN - ANPER - PKC
+                                                        <span class="fs-6 text-gray-400 ms-2"></span>
+                                                    </div>
+                                                    <!--begin::Menu-->
+                                                    <div>
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                                            data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                            <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                                            <span class="svg-icon svg-icon-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <g stroke="none" stroke-width="1" fill="none"
+                                                                        fill-rule="evenodd">
+                                                                        <rect x="5" y="5" width="5"
+                                                                            height="5" rx="1" fill="#000000"></rect>
+                                                                        <rect x="14" y="5" width="5"
+                                                                            height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                        </rect>
+                                                                        <rect x="5" y="14" width="5"
+                                                                            height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                        </rect>
+                                                                        <rect x="14" y="14" width="5"
+                                                                            height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                        </rect>
+                                                                    </g>
+                                                                </svg>
+                                                            </span>
+                                                            <!--end::Svg Icon-->
+                                                        </button>
+                                                    </div>
+                                                    <!--end::Menu-->
+                                                </div>
+                                                <div class="h-3px w-100 bg-warning"></div>
+                                            </div>
+
+                                            <div id="line2_chart_proses_pengadaan_anper"></div>
+
+                                            <div class="table-responsive">
+                                                <!--begin::Table-->
+                                                <table class="table table-striped table-hover align-middle table-row-dashed fs-7" id="tabel_line2_proses_pengadaan_anper">
+                                                    <!--begin::Table head-->
+                                                    <thead class="bg-light-info">
+                                                        <!--begin::Table row-->
+                                                        <tr class="text-center text-dark fw-bolder text-uppercase gs-0">                                
+                                                            <th>No.</th>
+                                                            <th>ANPER - PKC</th>
+                                                            <th>Jumlah</th>
+                                                            <th>Nilai</th>
+                                                            <th>&nbsp;%&nbsp;</th>
+                                                        </tr>
+                                                        <!--end::Table row-->
+                                                    </thead>
+                                                    <!--end::Table head-->
+                                                    <!--begin::Table body-->
+                                                    <tbody class="text-gray-600 fw-bold">
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="position-relative py-2">
+                                                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">1</a>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">Anggaran</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahProsesPengadanInvestasiANPER,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalProsesPengadanInvestasiANPER,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> - &nbsp;</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="position-relative py-2">
+                                                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">2</a>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">Realisasi</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahProsesPengadanInvestasiANPERGR,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalProsesPengadanInvestasiANPERGR,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    @php
+                                                                        $persentaseNominalProsesPengadanInvestasiANPERGR = 0;
+                                                                        if($nominalProsesPengadanInvestasiANPERGR != 0)
+                                                                        {
+                                                                            $persentaseNominalProsesPengadanInvestasiANPERGR = ($nominalProsesPengadanInvestasiANPERGR / $nominalProsesPengadanInvestasiANPER ) * 100;
+                                                                        }
+                                                                    @endphp
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalProsesPengadanInvestasiANPERGR,2,',','.')  }} % &nbsp;</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="position-relative py-2">
+                                                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">2</a>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">Sisa</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($sisaJumlahProsesPengadanInvestasiANPER,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($sisaNominalProsesPengadanInvestasiANPER,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    @php
+                                                                        $persentaseSisaNominalProsesPengadanInvestasiANPER = 0;
+                                                                        if($sisaNominalProsesPengadanInvestasiANPER != 0)
+                                                                        {
+                                                                            $persentaseSisaNominalProsesPengadanInvestasiANPER = ($sisaNominalProsesPengadanInvestasiANPER / $nominalProsesPengadanInvestasiANPER ) * 100;
+                                                                        }
+                                                                    @endphp
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseSisaNominalProsesPengadanInvestasiANPER,2,',','.')  }} % &nbsp;</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!--end::Table body-->
+                                                </table>
+                                                <!--end::Table-->
+                                            </div>
+
+                                        </div>
+                                        <!--end::Col-->
+
+                                        <!--begin::Col-->
+                                        <div class="col-lg-6">
+                                            <div class="mb-5" style="margin-top: -20px;">
+                                                <div class="d-flex flex-stack">
+                                                    <div class="fw-bolder fs-6">PROSES PENGADAAN - SENTRALISASI PI
+                                                        <span class="fs-6 text-gray-400 ms-2"></span>
+                                                    </div>
+                                                    <!--begin::Menu-->
+                                                    <div>
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-icon btn-color-light-dark btn-active-light-primary"
+                                                            data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">
+                                                            <!--begin::Svg Icon | path: icons/duotune/general/gen024.svg-->
+                                                            <span class="svg-icon svg-icon-2">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px"
+                                                                    viewBox="0 0 24 24">
+                                                                    <g stroke="none" stroke-width="1" fill="none"
+                                                                        fill-rule="evenodd">
+                                                                        <rect x="5" y="5" width="5"
+                                                                            height="5" rx="1" fill="#000000"></rect>
+                                                                        <rect x="14" y="5" width="5"
+                                                                            height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                        </rect>
+                                                                        <rect x="5" y="14" width="5"
+                                                                            height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                        </rect>
+                                                                        <rect x="14" y="14" width="5"
+                                                                            height="5" rx="1" fill="#000000" opacity="0.3">
+                                                                        </rect>
+                                                                    </g>
+                                                                </svg>
+                                                            </span>
+                                                            <!--end::Svg Icon-->
+                                                        </button>
+                                                    </div>
+                                                    <!--end::Menu-->
+                                                </div>
+                                                <div class="h-3px w-100 bg-warning"></div>
+                                            </div>
+
+                                            <div id="line2_chart_proses_pengadaan_pi"></div>
+
+                                            <div class="table-responsive">
+                                                <!--begin::Table-->
+                                                <table class="table table-striped table-hover align-middle table-row-dashed fs-7" id="tabel_line2_proses_pengadaan_anper">
+                                                    <!--begin::Table head-->
+                                                    <thead class="bg-light-info">
+                                                        <!--begin::Table row-->
+                                                        <tr class="text-center text-dark fw-bolder text-uppercase gs-0">                                
+                                                            <th>No.</th>
+                                                            <th>SENTRALISASI PI</th>
+                                                            <th>Jumlah</th>
+                                                            <th>Nilai</th>
+                                                            <th>&nbsp;%&nbsp;</th>
+                                                        </tr>
+                                                        <!--end::Table row-->
+                                                    </thead>
+                                                    <!--end::Table head-->
+                                                    <!--begin::Table body-->
+                                                    <tbody class="text-gray-600 fw-bold">
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="position-relative py-2">
+                                                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">1</a>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">Anggaran</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahProsesPengadanInvestasiPI,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalProsesPengadanInvestasiPI,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> - &nbsp;</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="position-relative py-2">
+                                                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">2</a>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">Realisasi</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($jumlahProsesPengadanInvestasiPIGR,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($nominalProsesPengadanInvestasiPIGR,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    @php
+                                                                        $persentaseNominalProsesPengadanInvestasiPIGR = 0;
+                                                                        if($nominalProsesPengadanInvestasiPIGR != 0)
+                                                                        {
+                                                                            $persentaseNominalProsesPengadanInvestasiPIGR = ($nominalProsesPengadanInvestasiPIGR / $nominalProsesPengadanInvestasiPI ) * 100;
+                                                                        }
+                                                                    @endphp
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseNominalProsesPengadanInvestasiPIGR,2,',','.')  }} % &nbsp;</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="position-relative py-2">
+                                                                    <div class="position-absolute start-0 top-0 w-4px h-100 rounded-2 bg-success"></div>&nbsp;
+                                                                    <a href="#" class="mb-1 text-dark text-hover-primary fw-bolder">2</a>
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-start">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bolder">Sisa</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($sisaJumlahProsesPengadanInvestasiPI,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-end">
+                                                                <div class="d-flex flex-column">
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($sisaNominalProsesPengadanInvestasiPI,0,',','.')  }}</a>
+                                                                    <hr class="my-1">
+                                                                </div>
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-column">
+                                                                    @php
+                                                                        $persentaseSisaNominalProsesPengadanInvestasiPI = 0;
+                                                                        if($sisaNominalProsesPengadanInvestasiPI != 0)
+                                                                        {
+                                                                            $persentaseSisaNominalProsesPengadanInvestasiPI = ($sisaNominalProsesPengadanInvestasiPI / $nominalProsesPengadanInvestasiPI ) * 100;
+                                                                        }
+                                                                    @endphp
+                                                                    <a href="#" class="text-gray-800 text-hover-primary mb-1 fw-bold"> {{ number_format($persentaseSisaNominalProsesPengadanInvestasiPI,2,',','.')  }} % &nbsp;</a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                    <!--end::Table body-->
+                                                </table>
+                                                <!--end::Table-->
+                                            </div>
+
+                                        </div>
+                                        <!--end::Col-->
+                                    </div>
+
+
                                 </div>
                                 <!--end::Item-->
+
                             </div>
                             <!--end::Carousel-->
                         </div>
@@ -2965,6 +3609,13 @@
         let jumlahMsProgramSingleyearAccountPO = {{ $jumlahMsProgramSingleyearAccountPO }};
         let jumlahMsProgramSingleyearAccountGR = {{ $jumlahMsProgramSingleyearAccountGR }};
 
+        let jumlahMsProgramAccountPabrik = {{ $jumlahMsProgramAccountPabrik }};
+        let jumlahMsProgramAccountA2B = {{ $jumlahMsProgramAccountA2B }};
+        let jumlahMsProgramAccountPeralatan = {{ $jumlahMsProgramAccountPeralatan }};
+        let jumlahMsProgramAccountBangunan = {{ $jumlahMsProgramAccountBangunan }};
+        let jumlahMsProgramAccountAsetTBWJD = {{ $jumlahMsProgramAccountAsetTBWJD }};
+        let jumlahMsProgramAccountSCP = {{ $jumlahMsProgramAccountSCP }};
+
         let jumlahMsProgramMultiyearAccountUser = {{ $jumlahMsProgramMultiyearAccountUser }};
         let jumlahMsProgramMultiyearAccountMIR = {{ $jumlahMsProgramMultiyearAccountMIR }};
         let jumlahMsProgramMultiyearAccountSR = {{ $jumlahMsProgramMultiyearAccountSR }};
@@ -2974,6 +3625,20 @@
 
         let jumlahProsesPengadanInvestasiPI = {{ $jumlahProsesPengadanInvestasiPI }};
         let jumlahProsesPengadanInvestasiANPER = {{ $jumlahProsesPengadanInvestasiANPER }};
+
+        let jumlahProsesPengadanInvestasiANPERUser = {{ $jumlahProsesPengadanInvestasiANPERUser }};
+        let jumlahProsesPengadanInvestasiANPERMIR = {{ $jumlahProsesPengadanInvestasiANPERMIR }};
+        let jumlahProsesPengadanInvestasiANPERSR = {{ $jumlahProsesPengadanInvestasiANPERSR }};
+        let jumlahProsesPengadanInvestasiANPERPR = {{ $jumlahProsesPengadanInvestasiANPERPR }};
+        let jumlahProsesPengadanInvestasiANPERPO = {{ $jumlahProsesPengadanInvestasiANPERPO }};
+        let jumlahProsesPengadanInvestasiANPERGR = {{ $jumlahProsesPengadanInvestasiANPERGR }};
+
+        let jumlahProsesPengadanInvestasiPIUser = {{ $jumlahProsesPengadanInvestasiPIUser }};
+        let jumlahProsesPengadanInvestasiPIMIR = {{ $jumlahProsesPengadanInvestasiPIMIR }};
+        let jumlahProsesPengadanInvestasiPISR = {{ $jumlahProsesPengadanInvestasiPISR }};
+        let jumlahProsesPengadanInvestasiPIPR = {{ $jumlahProsesPengadanInvestasiPIPR }};
+        let jumlahProsesPengadanInvestasiPIPO = {{ $jumlahProsesPengadanInvestasiPIPO }};
+        let jumlahProsesPengadanInvestasiPIGR = {{ $jumlahProsesPengadanInvestasiPIGR }};
 
         $("#form_filter_tanggal_cutoff").flatpickr({
             defaultDate: [tanggal_cut_off]
